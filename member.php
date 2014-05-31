@@ -173,6 +173,50 @@ include 'header/connect_database.php';
         <div class="panel-body"> 
         
         
+         <div class="form-group">
+            <label for="inputCompany" class="col-sm-2 control-label">Company Name</label>
+            <div class="col-sm-10">
+              <select class="form-control">
+                <option>Select</option>
+               
+              </select>
+            </div>
+          </div>
+          
+          
+           
+         <div class="form-group">
+            <label for="inputDepartment" class="col-sm-2 control-label">Department</label>
+            <div class="col-sm-10">
+              <select class="form-control">
+                <option>Select</option>
+               
+              </select>
+            </div>
+          </div>
+          
+           
+         <div class="form-group">
+            <label for="inputDesignation" class="col-sm-2 control-label">Designation</label>
+            <div class="col-sm-10">
+              <select class="form-control">
+                <option>Select</option>
+               
+              </select>
+            </div>
+          </div>
+          
+           
+         <div class="form-group">
+            <label for="inputAddress" class="col-sm-2 control-label">Address</label>
+            <div class="col-sm-10">
+              <select class="form-control">
+                <option>Select</option>
+               
+              </select>
+            </div>
+          </div>
+        
         </div>
       </div>
     
