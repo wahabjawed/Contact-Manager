@@ -40,7 +40,7 @@ include 'header/connect_database.php';
       <div class="masthead">
         <h3 class="text-muted">Project name</h3>
         <ul class="nav nav-justified">
-          <li class="active"><a href="#">Home</a></li>
+          <li class="active"><a href="index.php">Home</a></li>
           <li><a href="member.php">Member</a></li>
           <li><a href="company.php">Company</a></li>
           <li><a href="search_company.php">Search Company</a></li>

@@ -14,7 +14,7 @@ include 'header/connect_database.php';
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
-<title>Company - Contact Manager</title>
+<title>Search Company - Contact Manager</title>
 
 <!-- Bootstrap core CSS -->
 <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -39,8 +39,8 @@ include 'header/connect_database.php';
     <ul class="nav nav-justified">
       <li ><a href="index.php">Home</a></li>
       <li ><a href="member.php">Member</a></li>
-      <li class="active"><a href="company.php">Company</a></li>
-      <li><a href="search_company.php">Search Company</a></li>
+      <li ><a href="company.php">Company</a></li>
+      <li class="active"><a href="search_company.php">Search Company</a></li>
       <li><a href="search_member.php">Search Member</a></li>
       <li><a href="#">Contact</a></li>
     </ul>
@@ -51,7 +51,7 @@ include 'header/connect_database.php';
     <form class="form-horizontal" role="form">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">ADD COMPANY</h3>
+          <h3 class="panel-title">SEARCH COMPANY</h3>
         </div>
         <div class="panel-body">
           <div class="form-group">
@@ -202,88 +202,22 @@ include 'header/connect_database.php';
             </div>
           </div>
           <div class="form-group">
-            <label for="inputFax" class="col-sm-2 control-label">Fax</label>
-            <div class="col-sm-10">
-              <input type="tel" class="form-control" id="inputFax" placeholder="Fax">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputCity" class="col-sm-2 control-label">City</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputCity" placeholder="City">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputState" class="col-sm-2 control-label">State</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputState" placeholder="State">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputZipCode" class="col-sm-2 control-label">Zip Code</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputZipCode" placeholder="Zip Code">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputCountry" class="col-sm-2 control-label">Country</label>
+            <label for="inputTitle" class="col-sm-2 control-label">Status</label>
             <div class="col-sm-10">
               <select class="form-control">
-                <option selected="selected" value="">Select</option>
-                <option value="1">Afghanistan</option>
-                <option value="2">Aland Islands</option>
-                <option value="3">Albania</option>
-                <option value="4">Algeria</option>
-                <option value="61">Dominica</option>
-                <option value="62">Dominican Republic</option>
-                <option value="240">Western Sahara</option>
-                <option value="241">Yemen</option>
-                <option value="242">Zambia</option>
-                <option value="243">Zimbabwe</option>
+                <option>All</option>
+                <option>Verified</option>
+                <option>Not Verified</option>
               </select>
             </div>
           </div>
-          <div class="form-group">
-            <label for="inputWebsite" class="col-sm-2 control-label">Website</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputWebsite" placeholder="Website">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputRemarks" class="col-sm-2 control-label">Remarks</label>
-            <div class="col-sm-10">
-              <textarea class="form-control" id="inputRemarks" placeholder="Remarks"  rows="3"></textarea>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">COMPANY CONTACT INFORMATION</h3>
-        </div>
-        <div class="panel-body">
-          <table width="100%">
-            <tr>
-              <td width "50%" ><div class="form-group" Style="margin-left:0px;margin-right:5px;">
-                  <label for="inputAddress" >Address</label>
-                  <input type="text" class="form-control" id="inputAddress" placeholder="Address">
-                </div></td>
-              <td width="25%"><div class="form-group" Style="margin-left:5px;margin-right:5px;">
-                  <label for="inputPhone" >Phone</label>
-                  <input type="tel" class="form-control" id="inputPhone" placeholder="Phone">
-                </div></td>
-              <td width="25%"><div class="form-group" Style="margin-left:5px;margin-right:5px;">
-                  <label for="inputEmail" >Email</label>
-                  <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-                </div></td>
-            </tr>
           
-          </table>
+           <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" class="btn btn-default">Search</button>
         </div>
       </div>
-      <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <button type="submit" class="btn btn-default">Post</button>
+          
         </div>
       </div>
     </form>
