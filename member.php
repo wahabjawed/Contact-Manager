@@ -104,7 +104,7 @@ include 'header/connect_database.php';
             </div>
           </div>
           <div class="form-group">
-            <label for="inputHomePhone" class="col-sm-2 control-label">Home Phone</label>
+            <label for="inputHomePhone" class="col-sm-2 control-label">Phone</label>
             <div class="col-sm-10">
               <input type="tel" class="form-control" id="inputHomePhone" placeholder="Home Phone">
             </div>
@@ -116,7 +116,7 @@ include 'header/connect_database.php';
             </div>
           </div>
           <div class="form-group">
-            <label for="inputHomeAddress" class="col-sm-2 control-label">Home Address</label>
+            <label for="inputHomeAddress" class="col-sm-2 control-label">Address</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" id="inputHomeAddress" placeholder="Home Address">
             </div>
