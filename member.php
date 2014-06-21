@@ -45,10 +45,61 @@ include 'header/connect_database.php';
       <li><a href="#">Contact</a></li>
     </ul>
   </div>
-  
+  <?PHP
+
+	if($_POST)
+	{
+	
+		$Title = $_POST['inputTitle'];
+		$FirstName = $_POST['inputFirstName'];
+		$MiddleName = $_POST['inputMiddleName'];
+		$LastName = $_POST['inputLastName'];
+		$Email = $_POST['inputEmail'];
+		$CellPhone = $_POST['inputCellPhone'];
+		$OfficePhone = $_POST['inputOfficePhone'];
+		$Phone = $_POST['inputPhone'];
+		$Fax = $_POST['inputFax'];
+		$Address = $_POST['inputAddress'];
+		$City = $_POST['inputCity'];
+		$State = $_POST['inputState'];
+		$ZipCode = $_POST['inputZipCode'];
+		$Country = $_POST['inputCountry'];
+		$Remarks = $_POST['inputRemarks'];
+		
+		try {
+			$query = "INSERT INTO member(Title, FirstName, MiddleName, LastName, Email, CellPhone, OfficePhone, Phone, Fax, Address, City, State, ZipCode, Country, Remarks) VALUES (:Title, :FirstName, :MiddleName, :LastName, :Email, :CellPhone, :OfficePhone, :Phone, :Fax, :Address, :City, :State, :ZipCode, :Country, :Remarks);";
+			//$query += "VALUES(:CompanyName)";
+			$sth = $dbh->prepare($query);
+			$sth->bindValue(':Title',$Title);
+			$sth->bindValue(':FirstName',$FirstName);
+			$sth->bindValue(':MiddleName',$MiddleName);
+			$sth->bindValue(':LastName',$LastName);
+			$sth->bindValue(':Email',$Email);
+			$sth->bindValue(':CellPhone',$CellPhone);
+			$sth->bindValue(':OfficePhone',$OfficePhone);
+			$sth->bindValue(':Phone',$Phone);
+			$sth->bindValue(':Fax',$Fax);
+			$sth->bindValue(':Address',$Address);
+			$sth->bindValue(':City',$City);
+			$sth->bindValue(':State',$State);
+			$sth->bindValue(':ZipCode',$ZipCode);
+			$sth->bindValue(':Country',$Country);
+			$sth->bindValue(':Remarks',$Remarks);
+			$sth->execute() ;
+			
+			//$sth->debugDumpParams();
+			var_dump($sth->ErrorInfo());
+			
+			echo "Member Saved Successfully!";
+		} catch(PDOException $e) {
+			die('Could not save to the database:<br/>' . $e);
+		}
+	}
+?>
+
   <!-- Jumbotron -->
   <div class="jumbotron">
-    <form class="form-horizontal" role="form">
+    <form class="form-horizontal" role="form" method="post" action="member.php">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">INDIVIDUAL MEMBER INFORMATION</h3>
@@ -57,92 +108,93 @@ include 'header/connect_database.php';
           <div class="form-group">
             <label for="inputTitle" class="col-sm-2 control-label">Title</label>
             <div class="col-sm-10">
-              <select class="form-control">
+              <select class="form-control" id="inputTitle" name="inputTitle">
                 <option>Select</option>
-                <option>Mr</option>
-                <option>Ms</option>
-                <option>Dr</option>
-                <option>Miss</option>
-                <option>Mrs</option>
+                <option value="Mr">Mr</option>
+                <option value="Ms">Ms</option>
+                <option value="Dr">Dr</option>
+                <option value="Miss">Miss</option>
+                <option value="Mrs">Mrs</option>
               </select>
             </div>
           </div>
           <div class="form-group">
             <label for="inputFirstName" class="col-sm-2 control-label">First Name</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputFirstName" placeholder="First Name">
+              <input type="text" class="form-control" id="inputFirstName" name="inputFirstName" placeholder="First Name">
             </div>
           </div>
           <div class="form-group">
             <label for="inputMiddleName" class="col-sm-2 control-label">Middle Name</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputMiddleName" placeholder="Middle Name">
+              <input type="text" class="form-control" id="inputMiddleName" name="inputMiddleName" placeholder="Middle Name">
             </div>
           </div>
           <div class="form-group">
             <label for="inputLastName" class="col-sm-2 control-label">Last Name</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputLastName" placeholder="Last Name">
+              <input type="text" class="form-control" id="inputLastName" name="inputLastName" placeholder="Last Name">
             </div>
           </div>
           <div class="form-group">
             <label for="inputEmail" class="col-sm-2 control-label">Email</label>
             <div class="col-sm-10">
-              <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+              <input type="email" class="form-control" id="inputEmail" name="inputEmail" placeholder="Email">
             </div>
           </div>
           <div class="form-group">
             <label for="inputCellPhone" class="col-sm-2 control-label">Cell Phone</label>
             <div class="col-sm-10">
-              <input type="tel" class="form-control" id="inputCellPhone" placeholder="Cell Phone">
+              <input type="tel" class="form-control" id="inputCellPhone" name="inputCellPhone" placeholder="Cell Phone">
             </div>
           </div>
           <div class="form-group">
             <label for="inputOfficePhone" class="col-sm-2 control-label">Office Phone</label>
             <div class="col-sm-10">
-              <input type="tel" class="form-control" id="inputOfficePhone" placeholder="Office Phone">
+              <input type="tel" class="form-control" id="inputOfficePhone" name="inputOfficePhone" placeholder="Office Phone">
             </div>
           </div>
           <div class="form-group">
             <label for="inputHomePhone" class="col-sm-2 control-label">Phone</label>
             <div class="col-sm-10">
-              <input type="tel" class="form-control" id="inputHomePhone" placeholder="Home Phone">
+              <input type="tel" class="form-control" id="inputHomePhone" name="inputHomePhone" placeholder="Home Phone">
             </div>
           </div>
           <div class="form-group">
             <label for="inputFax" class="col-sm-2 control-label">Fax</label>
             <div class="col-sm-10">
-              <input type="tel" class="form-control" id="inputFax" placeholder="Fax">
+              <input type="tel" class="form-control" id="inputFax" name="inputFax" placeholder="Fax">
             </div>
           </div>
           <div class="form-group">
             <label for="inputHomeAddress" class="col-sm-2 control-label">Address</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputHomeAddress" placeholder="Home Address">
+              <input type="text" class="form-control" id="inputHomeAddress" name="inputHomeAddress" placeholder="Home Address">
             </div>
           </div>
           <div class="form-group">
             <label for="inputCity" class="col-sm-2 control-label">City</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputCity" placeholder="City">
+              <input type="text" class="form-control" id="inputCity" name="inputCity" placeholder="City">
             </div>
           </div>
           <div class="form-group">
             <label for="inputState" class="col-sm-2 control-label">State</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputState" placeholder="State">
+              <input type="text" class="form-control" id="inputState" name="inputState" placeholder="State">
             </div>
           </div>
           <div class="form-group">
             <label for="inputZipCode" class="col-sm-2 control-label">Zip Code</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputZipCode" placeholder="Zip Code">
+              <input type="text" class="form-control" id="inputZipCode" name="inputZipCode" placeholder="Zip Code">
             </div>
           </div>
+
           <div class="form-group">
             <label for="inputCountry" class="col-sm-2 control-label">Country</label>
             <div class="col-sm-10">
-              <select class="form-control">
+              <select class="form-control" id="inputCountry" name="inputCountry">
                 <option selected="selected" value="">Select</option>
                 <option value="1">Afghanistan</option>
                 <option value="2">Aland Islands</option>
@@ -160,7 +212,7 @@ include 'header/connect_database.php';
           <div class="form-group">
             <label for="inputRemarks" class="col-sm-2 control-label">Remarks</label>
             <div class="col-sm-10">
-              <textarea class="form-control" id="inputRemarks" placeholder="Remarks"  rows="3"></textarea>
+              <textarea class="form-control" id="inputRemarks" name="inputRemarks" placeholder="Remarks"  rows="3"></textarea>
             </div>
           </div>
         </div>
@@ -176,7 +228,7 @@ include 'header/connect_database.php';
          <div class="form-group">
             <label for="inputCompany" class="col-sm-2 control-label">Company Name</label>
             <div class="col-sm-10">
-              <select class="form-control">
+              <select class="form-control" id="inputCompany" name="inputCompany">
                 <option>Select</option>
                
               </select>
@@ -188,7 +240,7 @@ include 'header/connect_database.php';
          <div class="form-group">
             <label for="inputDepartment" class="col-sm-2 control-label">Department</label>
             <div class="col-sm-10">
-              <select class="form-control">
+              <select class="form-control" id="inputDepartment" name="inputDepartment">
                 <option>Select</option>
                
               </select>
@@ -199,7 +251,7 @@ include 'header/connect_database.php';
          <div class="form-group">
             <label for="inputDesignation" class="col-sm-2 control-label">Designation</label>
             <div class="col-sm-10">
-              <select class="form-control">
+              <select class="form-control" id="inputDesignation" name="inputDesignation">
                 <option>Select</option>
                
               </select>
@@ -210,7 +262,7 @@ include 'header/connect_database.php';
          <div class="form-group">
             <label for="inputAddress" class="col-sm-2 control-label">Address</label>
             <div class="col-sm-10">
-              <select class="form-control">
+              <select class="form-control" id="inputCompanyAddress" name="inputCompanyAddress">
                 <option>Select</option>
                
               </select>
