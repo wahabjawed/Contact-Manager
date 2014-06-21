@@ -3,6 +3,49 @@
 include 'header/checkloginstatus.php'; 
 include 'header/connect_database.php'; 
 
+//if($_POST)
+//	{
+//	
+//	$CompanyName = $_POST['inputCompanyName'];
+//	$IndustryCategory = $_POST['inputIndustoryCategory'];
+//	$IndustrySubCategory = $_POST['inputIndustrySubCategory'];
+//	$Fax = $_POST['inputFax'];
+//	$City = $_POST['inputCity'];
+//	$State = $_POST['inputState'];
+//	$ZipCode = $_POST['inputZipCode'];
+//	$Country = $_POST['inputCountry'];
+//	$Website = $_POST['inputWebsite'];
+//	$Remarks = $_POST['inputRemarks'];
+//	
+//	echo $CompanyName + '<br/>';
+//	echo $IndustryCategory + '<br/>';
+//	echo $IndustrySubCategory + '<br/>';
+//	echo $Fax + '<br/>';
+//	echo $City + '<br/>';
+//	echo $State + '<br/>';
+//	echo $ZipCode + '<br/>';
+//	echo $Country + '<br/>';
+//	echo $Website + '<br/>';
+//	echo $Remarks + '<br/>';
+//	
+//	$query = "INSERT INTO Company(CompanyName, IndustryCategory, IndustrySubCategory, Fax, City, State, ZipCode, Country, Website, Remarks) ";
+//	$query += "VALUES(:CompanyName, :IndustryCategory, :IndustrySubCategory, :Fax, :City, :State, :ZipCode, :Country, :Website, :Remarks)";
+//	$sth = $dbh->prepare($query);
+//	$sth->bindValue(':CompanyName',$CompanyName);
+//	$sth->bindValue(':IndustryCategory, ',$IndustryCategory);
+//	$sth->bindValue(':IndustrySubCategory',$IndustrySubCategory);
+//	$sth->bindValue(':Fax',$Fax);
+//	$sth->bindValue(':City',$City);
+//	$sth->bindValue(':State',$State);
+//	$sth->bindValue(':ZipCode',$ZipCode);
+//	$sth->bindValue(':Country',$Country);
+//	$sth->bindValue(':Website',$Website);
+//	$sth->bindValue(':Remarks',$Remarks);
+//	$sth->execute();
+//	
+//	
+//	}
+
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +64,7 @@ include 'header/connect_database.php';
 
 <!-- Custom styles for this template -->
 <link href="css/justified-nav.css" rel="stylesheet">
-
+<script src="js/jquery.js" type="text/javascript"></script>
 <!-- Just for debugging purposes. Don't actually copy this line! -->
 <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 
@@ -30,6 +73,32 @@ include 'header/connect_database.php';
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script type="text/javascript">
+	var addressBarCounter = 0;
+	
+	function AddAddressBar(){
+		addressBarCounter++;
+		var addressBar = '<tr>';
+		addressBar += '<td width "5%" ><div class="form-group" Style="margin-left:0px;margin-right:5px;"><label for="inputPrimary" >Primary</label><input type="radio" class="form-control" id="inputPrimary'+addressBarCounter+'" name="primary" value="'+addressBarCounter+'"></div></td>'
+        addressBar += '<td width "40%" ><div class="form-group" Style="margin-left:0px;margin-right:5px;"><label for="inputAddress" >Address</label><input type="text" class="form-control" id="inputAddress'+addressBarCounter+'" name="inputAddress'+addressBarCounter+'" placeholder="Address"></div></td>';
+        addressBar += '<td width="25%"><div class="form-group" Style="margin-left:5px;margin-right:5px;"><label for="inputPhone" >Phone</label><input type="tel" class="form-control" id="inputPhone'+addressBarCounter+'" name="inputPhone'+addressBarCounter+'" placeholder="Phone"></div></td>';
+        addressBar += '<td width="25%"><div class="form-group" Style="margin-left:5px;margin-right:5px;"><label for="inputEmail" >Email</label><input type="email" class="form-control" id="inputEmail'+addressBarCounter+'" name="inputEmail'+addressBarCounter+'" placeholder="Email"></div></td>';
+        addressBar += '<td width "5%"><button type="button" class="btn btn-sm newAddress" onClick="AddAddressBar();" ><span class="glyphicon glyphicon-plus"></span></button></td>';
+        addressBar += '</tr>';
+		$('#addressBarCounter').val(addressBarCounter);
+		$('#addressTable').append(addressBar);
+		
+		//$('.newAddress').on('click', function(){
+//				AddAddressBar();
+//			});
+	}
+	//$(document).ready(function(e) {
+//        $('.newAddress').on('click', function(){
+//				AddAddressBar();
+//		});
+//    });
+
+    </script>
 </head>
 
 <body>
@@ -45,25 +114,91 @@ include 'header/connect_database.php';
       <li><a href="#">Contact</a></li>
     </ul>
   </div>
-  
+<?PHP
+
+if($_POST)
+	{
+	
+		$CompanyName = $_POST['inputCompanyName'];
+		$IndustoryCategory = $_POST['inputIndustoryCategory'];
+		$IndustorySubCategory = $_POST['inputIndustrySubCategory'];
+		$Fax = $_POST['inputFax'];
+		$City = $_POST['inputCity'];
+		$State = $_POST['inputState'];
+		$ZipCode = $_POST['inputZipCode'];
+		$Country = $_POST['inputCountry'];
+		$Website = $_POST['inputWebsite'];
+		$Remarks = $_POST['inputRemarks'];
+		$CompanyID = 0;
+		$AddressBarCounter = $_POST['addressBarCounter'];
+		$Primary = $_POST['primary'];
+		
+		try {
+			$query = "INSERT INTO company(CompanyName, IndustoryCategory, IndustorySubCategory, Fax, City, State, ZipCode, Country, Website, Remarks) values (:CompanyName, :IndustoryCategory, :IndustorySubCategory, :Fax, :City, :State, :ZipCode, :Country, :Website, :Remarks); SELECT LAST_INSERT_ID();";
+			//$query += "VALUES(:CompanyName)";
+			$sth = $dbh->prepare($query);
+			$sth->bindValue(':CompanyName',$CompanyName);
+			$sth->bindValue(':IndustoryCategory',$IndustoryCategory);
+			$sth->bindValue(':IndustorySubCategory',$IndustorySubCategory);
+			$sth->bindValue(':Fax',$Fax);
+			$sth->bindValue(':City',$City);
+			$sth->bindValue(':State',$State);
+			$sth->bindValue(':ZipCode',$ZipCode);
+			$sth->bindValue(':Country',$Country);
+			$sth->bindValue(':Website',$Website);
+			$sth->bindValue(':Remarks',$Remarks);
+			$sth->execute() ;
+			$rows = $sth->fetch(PDO::FETCH_NUM);
+			$CompanyID = $rows[0];
+			echo $CompanyID;
+			//$sth->debugDumpParams();
+			//var_dump($sth->ErrorInfo());
+		} catch(PDOException $e) {
+			die('Could not save to the database:<br/>' . $e);
+		}
+		
+		for($i = 0; $i <= $AddressBarCounter; $i++){
+			$Address = $_POST["inputAddress$i"];
+			$Phone = $_POST["inputPhone$i"];
+			$Email = $_POST["inputEmail$i"];
+			$IsPrimary = $Primary==$i? true : false;
+			try {
+				$query = "INSERT INTO companyaddress(CompanyID, Address, Phone, Email, IsPrimary) values (:CompanyID, :Address, :Phone, :Email, :IsPrimary)";
+				//$query += "VALUES(:CompanyName)";
+				$sth = $dbh->prepare($query);
+				$sth->bindValue(':CompanyID',$CompanyID);
+				$sth->bindValue(':Address',$Address);
+				$sth->bindValue(':Phone',$Phone);
+				$sth->bindValue(':Email',$Email);
+				$sth->bindValue(':IsPrimary',$IsPrimary);
+				
+				$sth->execute() ;
+				//$sth->debugDumpParams();
+				//var_dump($sth->ErrorInfo());
+			} catch(PDOException $e) {
+				die('Could not save to the database:<br/>' . $e);
+			}
+		}
+	}
+?>
   <!-- Jumbotron -->
   <div class="jumbotron">
-    <form class="form-horizontal" role="form">
+    <form class="form-horizontal" role="form" method="post" action="company.php">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">ADD COMPANY</h3>
         </div>
         <div class="panel-body">
           <div class="form-group">
-            <label for="inputFirstName" class="col-sm-2 control-label">Company Name</label>
+            <label for="inputCompanyName" class="col-sm-2 control-label">Company Name</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputCompanyName" placeholder="Company Name">
+              <input type="text" class="form-control" id="inputCompanyName" name="inputCompanyName" placeholder="Company Name" value="">
             </div>
           </div>
           <div class="form-group">
             <label for="inputIndustryCategory" class="col-sm-2 control-label">Industry Category</label>
             <div class="col-sm-10">
-              <select class="form-control">
+              <select class="form-control" id="inputIndustoryCategory" name="inputIndustoryCategory">
                 <option selected="selected" value="">Select</option>
                 <option value="46"></option>
                 <option value="36">Agribusiness</option>
@@ -118,7 +253,7 @@ include 'header/connect_database.php';
           <div class="form-group">
             <label for="inputIndustrySubCategory" class="col-sm-2 control-label">Industry Sub Category</label>
             <div class="col-sm-10">
-              <select class="form-control">
+              <select class="form-control" id="inputIndustrySubCategory" name="inputIndustrySubCategory">
                 <option selected="selected" value="">Select</option>
                 <option value="64">Accounting</option>
                 <option value="74">Advertisment </option>
@@ -204,31 +339,31 @@ include 'header/connect_database.php';
           <div class="form-group">
             <label for="inputFax" class="col-sm-2 control-label">Fax</label>
             <div class="col-sm-10">
-              <input type="tel" class="form-control" id="inputFax" placeholder="Fax">
+              <input type="tel" class="form-control" id="inputFax" name="inputFax" placeholder="Fax">
             </div>
           </div>
           <div class="form-group">
             <label for="inputCity" class="col-sm-2 control-label">City</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputCity" placeholder="City">
+              <input type="text" class="form-control" id="inputCity" name="inputCity" placeholder="City">
             </div>
           </div>
           <div class="form-group">
             <label for="inputState" class="col-sm-2 control-label">State</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputState" placeholder="State">
+              <input type="text" class="form-control" id="inputState" name="inputState" placeholder="State">
             </div>
           </div>
           <div class="form-group">
             <label for="inputZipCode" class="col-sm-2 control-label">Zip Code</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputZipCode" placeholder="Zip Code">
+              <input type="text" class="form-control" id="inputZipCode" name="inputZipCode" placeholder="Zip Code">
             </div>
           </div>
           <div class="form-group">
             <label for="inputCountry" class="col-sm-2 control-label">Country</label>
             <div class="col-sm-10">
-              <select class="form-control">
+              <select class="form-control" id="inputCountry" name="inputCountry">
                 <option selected="selected" value="">Select</option>
                 <option value="1">Afghanistan</option>
                 <option value="2">Aland Islands</option>
@@ -246,13 +381,13 @@ include 'header/connect_database.php';
           <div class="form-group">
             <label for="inputWebsite" class="col-sm-2 control-label">Website</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputWebsite" placeholder="Website">
+              <input type="text" class="form-control" id="inputWebsite" name="inputWebsite" placeholder="Website">
             </div>
           </div>
           <div class="form-group">
             <label for="inputRemarks" class="col-sm-2 control-label">Remarks</label>
             <div class="col-sm-10">
-              <textarea class="form-control" id="inputRemarks" placeholder="Remarks"  rows="3"></textarea>
+              <textarea class="form-control" id="inputRemarks" name="inputRemarks" placeholder="Remarks"  rows="3"></textarea>
             </div>
           </div>
         </div>
@@ -262,20 +397,31 @@ include 'header/connect_database.php';
           <h3 class="panel-title">COMPANY CONTACT INFORMATION</h3>
         </div>
         <div class="panel-body">
-          <table width="100%">
+        <input type="number" value="0" id="addressBarCounter" name="addressBarCounter"/>
+          <table width="100%" id="addressTable">
             <tr>
-              <td width "50%" ><div class="form-group" Style="margin-left:0px;margin-right:5px;">
+              <td width "5%" ><div class="form-group" Style="margin-left:0px;margin-right:5px;">
+                  <label for="inputPrimary" >Primary</label>
+                  <input type="radio" class="form-control" id="inputPrimary0" name="primary" value="0">
+                </div></td>
+              <td width "40%" ><div class="form-group" Style="margin-left:0px;margin-right:5px;">
                   <label for="inputAddress" >Address</label>
-                  <input type="text" class="form-control" id="inputAddress" placeholder="Address">
+                  <input type="text" class="form-control" id="inputAddress0" name="inputAddress0" placeholder="Address">
                 </div></td>
               <td width="25%"><div class="form-group" Style="margin-left:5px;margin-right:5px;">
                   <label for="inputPhone" >Phone</label>
-                  <input type="tel" class="form-control" id="inputPhone" placeholder="Phone">
+                  <input type="tel" class="form-control" id="inputPhone0" name="inputPhone0" placeholder="Phone">
                 </div></td>
               <td width="25%"><div class="form-group" Style="margin-left:5px;margin-right:5px;">
                   <label for="inputEmail" >Email</label>
-                  <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                  <input type="email" class="form-control" id="inputEmail0" name="inputEmail0" placeholder="Email">
                 </div></td>
+                <td width "5%">
+                	<button type="button" class="btn btn-sm removeAddress"  >
+  					<span class="glyphicon glyphicon-cancel removeAddress"></span></button>
+                	<button type="button" class="btn btn-sm newAddress" onClick="AddAddressBar();" >
+  					<span class="glyphicon glyphicon-plus newAddress"></span></button>
+ 				</td>
             </tr>
           
           </table>
