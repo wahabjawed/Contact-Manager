@@ -2,7 +2,8 @@
 
 include 'header/checkloginstatus.php'; 
 include 'header/connect_database.php'; 
-
+$message = '';
+$messageType = '';
 //if($_POST)
 //	{
 //	
@@ -116,7 +117,7 @@ include 'header/connect_database.php';
   </div>
 <?PHP
 
-if($_POST)
+	if($_POST)
 	{
 	
 		$CompanyName = $_POST['inputCompanyName'];
@@ -134,7 +135,7 @@ if($_POST)
 		$Primary = $_POST['primary'];
 		
 		try {
-			$query = "INSERT INTO company(CompanyName, IndustoryCategory, IndustorySubCategory, Fax, City, State, ZipCode, Country, Website, Remarks) values (:CompanyName, :IndustoryCategory, :IndustorySubCategory, :Fax, :City, :State, :ZipCode, :Country, :Website, :Remarks); SELECT LAST_INSERT_ID();";
+			$query = "INSERT INTO company(CompanyName, IndustoryCategory, IndustorySubCategory, Fax, City, State, ZipCode, Country, Website, Remarks) values (:CompanyName, :IndustoryCategory, :IndustorySubCategory, :Fax, :City, :State, :ZipCode, :Country, :Website, :Remarks);";
 			//$query += "VALUES(:CompanyName)";
 			$sth = $dbh->prepare($query);
 			$sth->bindValue(':CompanyName',$CompanyName);
@@ -148,21 +149,14 @@ if($_POST)
 			$sth->bindValue(':Website',$Website);
 			$sth->bindValue(':Remarks',$Remarks);
 			$sth->execute() ;
-			$rows = $sth->fetch(PDO::FETCH_NUM);
-			$CompanyID = $rows[0];
-			echo $CompanyID;
+			$CompanyID = $dbh->lastInsertId();
 			//$sth->debugDumpParams();
 			//var_dump($sth->ErrorInfo());
-		} catch(PDOException $e) {
-			die('Could not save to the database:<br/>' . $e);
-		}
-		
-		for($i = 0; $i <= $AddressBarCounter; $i++){
+			for($i = 0; $i <= $AddressBarCounter; $i++){
 			$Address = $_POST["inputAddress$i"];
 			$Phone = $_POST["inputPhone$i"];
 			$Email = $_POST["inputEmail$i"];
 			$IsPrimary = $Primary==$i? true : false;
-			try {
 				$query = "INSERT INTO companyaddress(CompanyID, Address, Phone, Email, IsPrimary) values (:CompanyID, :Address, :Phone, :Email, :IsPrimary)";
 				//$query += "VALUES(:CompanyName)";
 				$sth = $dbh->prepare($query);
@@ -175,12 +169,14 @@ if($_POST)
 				$sth->execute() ;
 				//$sth->debugDumpParams();
 				//var_dump($sth->ErrorInfo());
-			} catch(PDOException $e) {
-				die('Could not save to the database:<br/>' . $e);
 			}
+			echo "Company Save Successfully!";
+		} catch(PDOException $e) {
+			die('Could not save to the database:<br/>' . $e);
 		}
 	}
 ?>
+
   <!-- Jumbotron -->
   <div class="jumbotron">
     <form class="form-horizontal" role="form" method="post" action="company.php">
@@ -417,8 +413,6 @@ if($_POST)
                   <input type="email" class="form-control" id="inputEmail0" name="inputEmail0" placeholder="Email">
                 </div></td>
                 <td width "5%">
-                	<button type="button" class="btn btn-sm removeAddress"  >
-  					<span class="glyphicon glyphicon-cancel removeAddress"></span></button>
                 	<button type="button" class="btn btn-sm newAddress" onClick="AddAddressBar();" >
   					<span class="glyphicon glyphicon-plus newAddress"></span></button>
  				</td>
