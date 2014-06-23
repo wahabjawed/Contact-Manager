@@ -2,6 +2,7 @@
 
 include 'header/checkloginstatus.php'; 
 include 'header/connect_database.php'; 
+include 'header/FillCombos.php'; 
 
 ?>
 
@@ -21,8 +22,9 @@ include 'header/connect_database.php';
 
 <!-- Custom styles for this template -->
 <link href="css/justified-nav.css" rel="stylesheet">
+<script src="js/jquery.js" type="text/javascript"></script>
 
-<!-- Just for debugging purposes. Don't actually copy this line! -->
+<!-- Just for debugging purposes. Dont actually copy this line! -->
 <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -30,6 +32,39 @@ include 'header/connect_database.php';
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script type="text/javascript">
+	var contactInfoBarCounter = 0;
+	
+	function AddContactInfoBar(){
+		contactInfoBarCounter++;
+		var contactInfoBar = '<tr>';
+		contactInfoBar += '<td style="width:35%" ><div class="form-group" Style="margin-left:0px;margin-right:5px;"><label for="inputContactType'+contactInfoBarCounter+'" >Type</label><select class="form-control" id="inputContactType'+contactInfoBarCounter+'" name="inputContactType'+contactInfoBarCounter+'"><?PHP FillContactInfoTypeCombo(); ?></select></div></td>';
+        contactInfoBar += '<td style="width:60%" ><div class="form-group" Style="margin-left:5px;margin-right:5px;"><label for="inputContactInfo'+contactInfoBarCounter+'" >Value</label><input type="text" class="form-control" id="inputContactInfo'+contactInfoBarCounter+'" name="inputContactInfo'+contactInfoBarCounter+'" placeholder="Value"></div></td>';
+        contactInfoBar += '<td style="width:5%"><div class="form-group" Style="margin-left:5px;margin-right:0px;margin-top:20px;"><button type="button" class="btn btn-sm " onClick="AddContactInfoBar();" style="padding:5px 10px;" ><span class="glyphicon glyphicon-plus "></span></button></div></td>';
+        contactInfoBar += '</tr>';
+		$('#contactInfoBarCounter').val(contactInfoBarCounter);
+		$('#contactInfoTable').append(contactInfoBar);
+
+	}
+	function FillStateCombo(){
+		$.ajax({ url: 'header/FillCombos.php',
+         data: {action: 'state', country: $('#inputCountry').val()},
+         type: 'post',
+         success: function(output) {
+                      $('#selectState').html('<option value="">Select State</option>'+output);
+                  }
+		});	
+	}
+	function FillCityCombo(){
+		$.ajax({ url: 'header/FillCombos.php',
+         data: {action: 'city', state: $('#inputState').val()},
+         type: 'post',
+         success: function(output) {
+                      $('#selectCity').html('<option value="">Select City</option>'+output);
+                  }
+		});	
+	}
+    </script>
 </head>
 
 <body>
@@ -54,42 +89,55 @@ include 'header/connect_database.php';
 		$FirstName = $_POST['inputFirstName'];
 		$MiddleName = $_POST['inputMiddleName'];
 		$LastName = $_POST['inputLastName'];
-		$Email = $_POST['inputEmail'];
-		$CellPhone = $_POST['inputCellPhone'];
-		$OfficePhone = $_POST['inputOfficePhone'];
-		$Phone = $_POST['inputHomePhone'];
-		$Fax = $_POST['inputFax'];
-		$Address = $_POST['inputHomeAddress'];
-		$City = $_POST['inputCity'];
-		$State = $_POST['inputState'];
-		$ZipCode = $_POST['inputZipCode'];
+		$Address = $_POST['inputAddress'];
 		$Country = $_POST['inputCountry'];
+		$State = $_POST['inputState'];
+		$City = $_POST['inputCity'];
+		$ZipCode = $_POST['inputZipCode'];
 		$Remarks = $_POST['inputRemarks'];
 		
+		$Company = $_POST['inputCompany'];
+		$Department = $_POST['inputDepartment'];
+		$Designation = $_POST['inputDesignation'];
+		
+		$ContactInfoBarCounter = $_POST['contactInfoBarCounter'];
+		
+		$MemberID = 0;
 		try {
-			$query = "INSERT INTO member(Title, FirstName, MiddleName, LastName, Email, CellPhone, OfficePhone, Phone, Fax, Address, City, State, ZipCode, Country, Remarks) VALUES (:Title, :FirstName, :MiddleName, :LastName, :Email, :CellPhone, :OfficePhone, :Phone, :Fax, :Address, :City, :State, :ZipCode, :Country, :Remarks);";
+			$query = "INSERT INTO Addresses(Address, Country, State, City, ZipCode) VALUES(:Address, :Country, :State, :City, :ZipCode); INSERT INTO members(Title, FirstName, MiddleName, LastName, AddressID, Remarks, CompanyID, Department, Designation) SELECT :Title, :FirstName, :MiddleName, :LastName, LAST_INSERT_ID( ), :Remarks, :CompanyID, :Department, :Designation;";
 			//$query += "VALUES(:CompanyName)";
 			$sth = $dbh->prepare($query);
 			$sth->bindValue(':Title',$Title);
 			$sth->bindValue(':FirstName',$FirstName);
 			$sth->bindValue(':MiddleName',$MiddleName);
 			$sth->bindValue(':LastName',$LastName);
-			$sth->bindValue(':Email',$Email);
-			$sth->bindValue(':CellPhone',$CellPhone);
-			$sth->bindValue(':OfficePhone',$OfficePhone);
-			$sth->bindValue(':Phone',$Phone);
-			$sth->bindValue(':Fax',$Fax);
 			$sth->bindValue(':Address',$Address);
-			$sth->bindValue(':City',$City);
-			$sth->bindValue(':State',$State);
-			$sth->bindValue(':ZipCode',$ZipCode);
 			$sth->bindValue(':Country',$Country);
+			$sth->bindValue(':State',$State);
+			$sth->bindValue(':City',$City);
+			$sth->bindValue(':ZipCode',$ZipCode);
 			$sth->bindValue(':Remarks',$Remarks);
+			$sth->bindValue(':CompanyID',$Company);
+			$sth->bindValue(':Department',$Department);
+			$sth->bindValue(':Designation',$Designation);
 			$sth->execute() ;
+			$MemberID = $dbh->lastInsertId();
 			
 			//$sth->debugDumpParams();
-			var_dump($sth->ErrorInfo());
-			
+			//var_dump($sth->ErrorInfo());
+			for($i = 0; $i <= $ContactInfoBarCounter; $i++){
+			$ContactType = $_POST["inputContactType$i"];
+			$ContactInfo = $_POST["inputContactInfo$i"];
+				$query = "INSERT INTO ContactInfos(ContactTypeID, Value) values (:ContactTypeID, :Value); INSERT INTO MemberDetails(MemberID, ContactInfoID) SELECT :MemberID, LAST_INSERT_ID( );";
+				$sth = $dbh->prepare($query);
+				$sth->bindValue(':ContactTypeID',$ContactType);
+				$sth->bindValue(':Value',$ContactInfo);
+				$sth->bindValue(':MemberID',$MemberID);
+				
+				$sth->execute() ;
+				//$sth->debugDumpParams();
+				//var_dump($sth->ErrorInfo());
+			}
 			echo "Member Saved Successfully!";
 		} catch(PDOException $e) {
 			die('Could not save to the database:<br/>' . $e);
@@ -137,53 +185,39 @@ include 'header/connect_database.php';
             </div>
           </div>
           <div class="form-group">
-            <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+            <label for="inputAddress" class="col-sm-2 control-label">Address</label>
             <div class="col-sm-10">
-              <input type="email" class="form-control" id="inputEmail" name="inputEmail" placeholder="Email">
+              <input type="text" class="form-control" id="inputAddress" name="inputAddress" placeholder="Address">
             </div>
           </div>
           <div class="form-group">
-            <label for="inputCellPhone" class="col-sm-2 control-label">Cell Phone</label>
-            <div class="col-sm-10">
-              <input type="tel" class="form-control" id="inputCellPhone" name="inputCellPhone" placeholder="Cell Phone">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputOfficePhone" class="col-sm-2 control-label">Office Phone</label>
-            <div class="col-sm-10">
-              <input type="tel" class="form-control" id="inputOfficePhone" name="inputOfficePhone" placeholder="Office Phone">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputHomePhone" class="col-sm-2 control-label">Phone</label>
-            <div class="col-sm-10">
-              <input type="tel" class="form-control" id="inputHomePhone" name="inputHomePhone" placeholder="Home Phone">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputFax" class="col-sm-2 control-label">Fax</label>
-            <div class="col-sm-10">
-              <input type="tel" class="form-control" id="inputFax" name="inputFax" placeholder="Fax">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputHomeAddress" class="col-sm-2 control-label">Address</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputHomeAddress" name="inputHomeAddress" placeholder="Home Address">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputCity" class="col-sm-2 control-label">City</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputCity" name="inputCity" placeholder="City">
+            <label for="inputCountry" class="col-sm-2 control-label">Country</label>
+            <div class="col-sm-10" style="height:35px;" >
+              <select class="form-control" onchange="document.getElementById('inputCountry').value=this.options[this.selectedIndex].text; FillStateCombo();">
+				<option value="">Select Country</option>
+				<?PHP FillCountryCombo(); ?>
+              </select>
+              <input type="text" class="form-control" id="inputCountry" name="inputCountry" placeholder="Country"  style="position:relative;top:-34px;width:92%" onfocus="this.select()">
             </div>
           </div>
           <div class="form-group">
             <label for="inputState" class="col-sm-2 control-label">State</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputState" name="inputState" placeholder="State">
+            <div class="col-sm-10" style="height:35px;">
+            <select class="form-control" id="selectState" onchange="document.getElementById('inputState').value=this.options[this.selectedIndex].text; FillCityCombo();">
+                
+              </select>
+              <input type="text" class="form-control" id="inputState" name="inputState" placeholder="State" style="position:relative;top:-34px;width:92%" onfocus="this.select()">
             </div>
           </div>
+          <div class="form-group">
+            <label for="inputCity" class="col-sm-2 control-label">City</label>
+            <div class="col-sm-10" style="height:35px;">
+              <select class="form-control" id="selectCity" onchange="document.getElementById('inputCity').value=this.options[this.selectedIndex].text;">
+              </select>
+              <input type="text" class="form-control" id="inputCity" name="inputCity" placeholder="City" style="position:relative;top:-34px;width:92%" onfocus="this.select()">
+            </div>
+          </div>
+          
           <div class="form-group">
             <label for="inputZipCode" class="col-sm-2 control-label">Zip Code</label>
             <div class="col-sm-10">
@@ -191,24 +225,7 @@ include 'header/connect_database.php';
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="inputCountry" class="col-sm-2 control-label">Country</label>
-            <div class="col-sm-10">
-              <select class="form-control" id="inputCountry" name="inputCountry">
-                <option selected="selected" value="">Select</option>
-                <option value="1">Afghanistan</option>
-                <option value="2">Aland Islands</option>
-                <option value="3">Albania</option>
-                <option value="4">Algeria</option>
-                <option value="61">Dominica</option>
-                <option value="62">Dominican Republic</option>
-                <option value="240">Western Sahara</option>
-                <option value="241">Yemen</option>
-                <option value="242">Zambia</option>
-                <option value="243">Zimbabwe</option>
-              </select>
-            </div>
-          </div>
+          
           <div class="form-group">
             <label for="inputRemarks" class="col-sm-2 control-label">Remarks</label>
             <div class="col-sm-10">
@@ -229,49 +246,68 @@ include 'header/connect_database.php';
             <label for="inputCompany" class="col-sm-2 control-label">Company Name</label>
             <div class="col-sm-10">
               <select class="form-control" id="inputCompany" name="inputCompany">
-                <option>Select</option>
-               
+                <?PHP FillCompanyCombo(0); ?>
               </select>
             </div>
           </div>
           
           
            
-         <div class="form-group">
+         <div class="form-group" >
             <label for="inputDepartment" class="col-sm-2 control-label">Department</label>
-            <div class="col-sm-10">
-              <select class="form-control" id="inputDepartment" name="inputDepartment">
-                <option>Select</option>
-               
+            <div class="col-sm-10" style="height:35px;">
+              <select class="form-control" onchange="document.getElementById('inputDepartment').value=this.options[this.selectedIndex].text;" >
+                <option value="">Select</option>
+				<?PHP FillDepartmentCombo(); ?>
               </select>
+              <input type="text" class="form-control" id="inputDepartment" name="inputDepartment" placeholder="Department"  style="position:relative;top:-34px;width:92%" onfocus="this.select()">
             </div>
           </div>
           
            
-         <div class="form-group">
+         <div class="form-group" >
             <label for="inputDesignation" class="col-sm-2 control-label">Designation</label>
-            <div class="col-sm-10">
-              <select class="form-control" id="inputDesignation" name="inputDesignation">
-                <option>Select</option>
-               
+            <div class="col-sm-10" style="height:35px;">
+              <select class="form-control" onchange="document.getElementById('inputDesignation').value=this.options[this.selectedIndex].text;">
+                <option value="">Select</option>
+				<?PHP FillDesignationCombo(); ?>         
               </select>
+              <input type="text" class="form-control" id="inputDesignation" name="inputDesignation" placeholder="Designation"  style="position:relative;top:-34px;width:92%" onfocus="this.select()">
             </div>
           </div>
-          
-           
-         <div class="form-group">
-            <label for="inputAddress" class="col-sm-2 control-label">Address</label>
-            <div class="col-sm-10">
-              <select class="form-control" id="inputCompanyAddress" name="inputCompanyAddress">
-                <option>Select</option>
-               
-              </select>
-            </div>
-          </div>
-        
+
         </div>
       </div>
-    
+    <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">CONTACT INFORMATION</h3>
+        </div>
+        <div class="panel-body">
+        <input type="number" value="0" id="contactInfoBarCounter" name="contactInfoBarCounter" style="visibility:hidden;"/>
+          <table width="100%" id="contactInfoTable">
+            <tr>
+              <td style="width:35%" ><div class="form-group" Style="margin-left:0px;margin-right:5px;">
+                  <label for="inputContactType0" >Type</label>
+                  <select class="form-control" id="inputContactType0" name="inputContactType0">
+                    <?PHP FillContactInfoTypeCombo(); ?>           
+                  </select>
+                </div></td>
+              <td style="width:60%" ><div class="form-group" Style="margin-left:5px;margin-right:5px;">
+                  <label for="inputContactInfo0" >Value</label>
+                  <input type="text" class="form-control" id="inputContactInfo0" name="inputContactInfo0" placeholder="Value">
+                </div></td>
+              
+                <td style="width:5%">
+                <div class="form-group" Style="margin-left:5px;margin-right:0px;margin-top:20px;">
+                	<button type="button" class="btn btn-sm " onClick="AddContactInfoBar();" style="padding:5px 10px;" >
+  					<span class="glyphicon glyphicon-plus "></span></button>
+                    </div>
+ 				</td>
+            </tr>
+          
+          </table>
+        </div>
+      </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <button type="submit" class="btn btn-default">Post</button>

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 21, 2014 at 03:48 PM
+-- Generation Time: Jun 23, 2014 at 06:32 AM
 -- Server version: 5.5.24-log
 -- PHP Version: 5.3.13
 
@@ -23,114 +23,370 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `company`
+-- Table structure for table `addresses`
 --
 
-CREATE TABLE IF NOT EXISTS `company` (
-  `CompanyID` int(11) NOT NULL AUTO_INCREMENT,
-  `CompanyName` varchar(300) DEFAULT NULL,
-  `IndustoryCategory` int(11) DEFAULT NULL,
-  `IndustorySubCategory` int(11) DEFAULT NULL,
-  `Fax` varchar(20) DEFAULT NULL,
-  `City` varchar(200) DEFAULT NULL,
-  `State` varchar(200) DEFAULT NULL,
-  `ZipCode` int(11) DEFAULT NULL,
-  `Country` int(11) DEFAULT NULL,
-  `Website` varchar(50) DEFAULT NULL,
-  `Remarks` varchar(1000) DEFAULT NULL,
-  PRIMARY KEY (`CompanyID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
-
---
--- Dumping data for table `company`
---
-
-INSERT INTO `company` (`CompanyID`, `CompanyName`, `IndustoryCategory`, `IndustorySubCategory`, `Fax`, `City`, `State`, `ZipCode`, `Country`, `Website`, `Remarks`) VALUES
-(1, 'asdf', 46, 1, '1234', 'qwer', 'qwer', 234, 0, 'qwer', 'qwer'),
-(2, 'qwer', 0, 0, '', '', '', 0, 0, '', ''),
-(3, 'qwer', 0, 0, '', '', '', 0, 0, '', ''),
-(4, 'qwer', 26, 0, '', '', '', 0, 0, '', ''),
-(5, 'qwer', 26, 0, '', '', '', 0, 0, '', ''),
-(6, 'qwer', 26, 68, '', '', '', 0, 0, '', ''),
-(7, 'qwer', 26, 68, 'qwerqwer', '', '', 0, 0, '', ''),
-(8, 'qwer', 26, 68, 'qwerqwer', '', '', 0, 0, '', ''),
-(9, 'New Company', 36, 64, '1234567890', 'Karachi', 'Sindh', 74000, 1, 'company.com', 'company remarks'),
-(10, 'Test1', 36, 74, '1234567890', 'Karachi', 'Sindh', 74000, 2, 'company.com', 'qwerty'),
-(11, 'Test1', 36, 74, '1234567890', 'Karachi', 'Sindh', 74000, 2, 'company.com', 'qwerty'),
-(12, 'Test1', 36, 64, '1234567890', 'Karachi', 'Sindh', 74000, 1, 'company.com', 'qwerty'),
-(13, 'Test1', 36, 64, '1234567890', 'Karachi', 'Sindh', 74000, 1, 'company.com', 'qwerty'),
-(14, 'Test1', 36, 74, '1234567890', 'Karachi', 'Sindh', 74000, 1, 'company.com', 'qwery'),
-(15, 'Test1', 36, 74, '1234567890', 'Karachi', 'Sindh', 74000, 1, 'company.com', 'qwery'),
-(16, 'Test1', 36, 74, '1234567890', 'Karachi', 'Sindh', 74000, 1, 'company.com', 'qwery'),
-(17, 'Test2', 36, 74, '1234567890', 'Karachi', 'Sindh', 74000, 2, 'company.com', 'qwerty'),
-(18, 'Test2', 36, 74, '1234567890', 'Karachi', 'Sindh', 74000, 2, 'company.com', 'qwerty'),
-(19, 'asdf', 1, 1, '123', 'Karachi', 'Sindh', 74000, 2, 'asdf.com', 'asdfadsf'),
-(20, 'Test2', 36, 74, '1234567890', 'Karachi', 'Sindh', 74000, 2, 'company.com', 'qwerty'),
-(21, 'Test1', 46, 64, '1234567890', 'Karachi', 'Sindh', 74000, 2, 'company.com', 'qwert');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `companyaddress`
---
-
-CREATE TABLE IF NOT EXISTS `companyaddress` (
-  `CompanyAddressID` int(11) NOT NULL AUTO_INCREMENT,
-  `CompanyID` int(11) NOT NULL,
-  `Address` varchar(100) DEFAULT NULL,
-  `Phone` varchar(20) DEFAULT NULL,
-  `Email` varchar(50) DEFAULT NULL,
-  `IsPrimary` tinyint(1) NOT NULL,
-  PRIMARY KEY (`CompanyAddressID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
-
---
--- Dumping data for table `companyaddress`
---
-
-INSERT INTO `companyaddress` (`CompanyAddressID`, `CompanyID`, `Address`, `Phone`, `Email`, `IsPrimary`) VALUES
-(1, 0, 'Add1', '1', 'test@test.com', 0),
-(2, 0, 'Add2', '2', 'test@test.com', 0),
-(3, 0, 'Add3', '3', 'test@test.com', 0),
-(4, 0, 'Add4', '4', 'test@test.com', 0),
-(5, 0, 'Add1', '1', 'test@test.com', 1),
-(6, 0, 'Add2', '2', 'test@test.com', 0),
-(7, 20, 'Add1', '1', 'test@test.com', 0),
-(8, 20, 'Add2', '2', 'test@test.com', 1),
-(9, 21, 'Add1', '1', 'test@test.com', 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `member`
---
-
-CREATE TABLE IF NOT EXISTS `member` (
-  `MemberID` int(11) NOT NULL AUTO_INCREMENT,
-  `Title` varchar(10) DEFAULT NULL,
-  `FirstName` varchar(200) DEFAULT NULL,
-  `MiddleName` varchar(200) DEFAULT NULL,
-  `LastName` varchar(200) DEFAULT NULL,
-  `Email` varchar(50) DEFAULT NULL,
-  `CellPhone` varchar(20) DEFAULT NULL,
-  `OfficePhone` varchar(20) DEFAULT NULL,
-  `Phone` varchar(20) DEFAULT NULL,
-  `Fax` varchar(20) DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `addresses` (
+  `AddressID` int(11) NOT NULL AUTO_INCREMENT,
   `Address` varchar(1000) DEFAULT NULL,
-  `City` varchar(200) DEFAULT NULL,
-  `State` varchar(200) DEFAULT NULL,
+  `Country` varchar(300) DEFAULT NULL,
+  `State` varchar(300) DEFAULT NULL,
+  `City` varchar(300) DEFAULT NULL,
   `ZipCode` int(11) DEFAULT NULL,
-  `Country` int(11) DEFAULT NULL,
+  PRIMARY KEY (`AddressID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+
+--
+-- Dumping data for table `addresses`
+--
+
+INSERT INTO `addresses` (`AddressID`, `Address`, `Country`, `State`, `City`, `ZipCode`) VALUES
+(1, 'Add1', 'Pakistan', 'Sindh', 'Karachi', 74000),
+(2, 'qwery', 'Pakistan', 'Sindh', 'Karachi', 74000),
+(3, 'qwery', 'Pakistan', 'Sindh', 'Karachi', 74000),
+(6, 'TC Branch 1 Add', 'Pakistan', 'Sindh', 'Karachi', 744000),
+(7, 'TC Branch 2 Add', 'Pakistan', 'Sindh', 'Karachi', 744000),
+(8, 'Member1 Address', 'Pakistan', 'Sindh', 'Karachi', 744000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `branchdetails`
+--
+
+CREATE TABLE IF NOT EXISTS `branchdetails` (
+  `BranchDetailID` int(11) NOT NULL AUTO_INCREMENT,
+  `BranchID` int(11) NOT NULL,
+  `ContactInfoID` int(11) NOT NULL,
+  PRIMARY KEY (`BranchDetailID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+
+--
+-- Dumping data for table `branchdetails`
+--
+
+INSERT INTO `branchdetails` (`BranchDetailID`, `BranchID`, `ContactInfoID`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 2, 3),
+(4, 2, 4),
+(9, 6, 11),
+(10, 6, 12),
+(11, 7, 13),
+(12, 7, 14);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `branches`
+--
+
+CREATE TABLE IF NOT EXISTS `branches` (
+  `BranchID` int(11) NOT NULL AUTO_INCREMENT,
+  `CompanyID` int(11) NOT NULL,
+  `BranchName` varchar(500) NOT NULL,
+  `AddressID` int(11) NOT NULL,
+  `IsHeadOffice` tinyint(1) NOT NULL,
+  PRIMARY KEY (`BranchID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `branches`
+--
+
+INSERT INTO `branches` (`BranchID`, `CompanyID`, `BranchName`, `AddressID`, `IsHeadOffice`) VALUES
+(1, 1, 'Branch 1', 1, 0),
+(2, 1, 'Branch 2', 2, 1),
+(5, 4, 'TC Branch 1', 6, 1),
+(6, 4, 'TC Branch 2', 7, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `companies`
+--
+
+CREATE TABLE IF NOT EXISTS `companies` (
+  `CompanyID` int(11) NOT NULL AUTO_INCREMENT,
+  `CompanyName` varchar(500) NOT NULL,
+  `IndustoryCategory` int(11) NOT NULL,
+  `IndustorySubCategory` int(11) NOT NULL,
+  `Website` varchar(300) NOT NULL,
+  `Remarks` varchar(1000) NOT NULL,
+  PRIMARY KEY (`CompanyID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `companies`
+--
+
+INSERT INTO `companies` (`CompanyID`, `CompanyName`, `IndustoryCategory`, `IndustorySubCategory`, `Website`, `Remarks`) VALUES
+(1, 'qwer', 36, 64, 'company.com', 'qwerty'),
+(4, 'Testing Company', 1, 1, 'website.com', 'qwerty');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contactinfos`
+--
+
+CREATE TABLE IF NOT EXISTS `contactinfos` (
+  `ContactInfoID` int(11) NOT NULL AUTO_INCREMENT,
+  `ContactTypeID` int(11) NOT NULL,
+  `Value` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`ContactInfoID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+
+--
+-- Dumping data for table `contactinfos`
+--
+
+INSERT INTO `contactinfos` (`ContactInfoID`, `ContactTypeID`, `Value`) VALUES
+(1, 2, '12346579'),
+(2, 1, 'qwerrqw@qe.com'),
+(3, 1, 'qwert@qwe.com'),
+(4, 2, '1345678'),
+(5, 1, 'qweryty@qwer.com'),
+(6, 2, '123465'),
+(11, 1, 'testing@tc.com'),
+(12, 2, '123456789'),
+(13, 1, 'branch2@tc.com'),
+(14, 2, '45679813'),
+(15, 1, 'Member1@tc.com'),
+(16, 2, '987654321');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contacttypes`
+--
+
+CREATE TABLE IF NOT EXISTS `contacttypes` (
+  `ContactTypeID` int(11) NOT NULL,
+  `ContactTypeName` varchar(300) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `contacttypes`
+--
+
+INSERT INTO `contacttypes` (`ContactTypeID`, `ContactTypeName`) VALUES
+(1, 'Email'),
+(2, 'Phone'),
+(3, 'Office Phone'),
+(4, 'Cell Phone'),
+(5, 'Fax');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `industorycategories`
+--
+
+CREATE TABLE IF NOT EXISTS `industorycategories` (
+  `CategoryID` int(11) NOT NULL,
+  `CategoryName` varchar(300) NOT NULL,
+  PRIMARY KEY (`CategoryID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `industorycategories`
+--
+
+INSERT INTO `industorycategories` (`CategoryID`, `CategoryName`) VALUES
+(1, 'FMCG'),
+(2, 'Services'),
+(3, 'Research'),
+(4, 'Insurance'),
+(5, 'Financial Services'),
+(6, 'Banking'),
+(7, 'Pharmaceuticals'),
+(8, 'Energy'),
+(9, 'Telecommunication'),
+(10, 'Manufacturing'),
+(11, 'Marketing Services'),
+(12, 'Electronics'),
+(13, 'Logistics'),
+(14, 'Media'),
+(15, 'Group'),
+(16, 'Chemical'),
+(17, 'Consultancy'),
+(18, 'Automobile'),
+(19, 'Textiles'),
+(20, 'Trading Company'),
+(21, 'Tobacco'),
+(22, 'Engineering consultants'),
+(23, 'Social Sector'),
+(24, 'Govt'),
+(25, 'Aviation Industry'),
+(26, 'Education'),
+(27, 'Construction'),
+(28, 'Hotels and Resorts'),
+(29, 'Real Estate'),
+(30, 'Aumtomotive'),
+(31, 'Health Care'),
+(32, 'Technology'),
+(33, 'N/A'),
+(34, 'Oil &amp; Gas'),
+(35, 'Trade'),
+(36, 'Agribusiness'),
+(37, 'Automotive Parts'),
+(38, 'Manufacturing and Sales'),
+(39, 'Sales and Marketing'),
+(40, 'Manufacturing and Processing'),
+(41, 'Printing and Packaging '),
+(42, 'Confectionery'),
+(43, 'Communication and Public Relations'),
+(44, 'Other'),
+(45, 'House Financing '),
+(47, 'Auditing');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `industorysubcategories`
+--
+
+CREATE TABLE IF NOT EXISTS `industorysubcategories` (
+  `SubCategoryID` int(11) NOT NULL,
+  `SubCategoryName` varchar(300) NOT NULL,
+  PRIMARY KEY (`SubCategoryID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `industorysubcategories`
+--
+
+INSERT INTO `industorysubcategories` (`SubCategoryID`, `SubCategoryName`) VALUES
+(1, 'Distribution'),
+(2, 'Life and Non- Life Insurance'),
+(3, 'Investments'),
+(4, 'Banks'),
+(5, 'Health Care'),
+(6, 'Financial Products'),
+(7, 'Oil &amp; Gas'),
+(8, 'Mobile communication'),
+(9, 'Beverages'),
+(10, 'Consumer Care'),
+(11, 'Steel Pipe Manufacturing'),
+(12, 'Food and Retails Franchising'),
+(13, 'Production and Marketing'),
+(14, 'Engineering services'),
+(15, 'Supply Chain'),
+(16, 'Manufacturing'),
+(17, 'Print and Online'),
+(18, 'Various'),
+(19, 'Production'),
+(20, 'Online'),
+(21, 'Food and Retails'),
+(22, 'Human Resource Consultancy'),
+(23, 'Exports'),
+(24, 'Personal Care'),
+(25, 'Power Generation &amp; Distribution'),
+(26, 'Trading'),
+(27, 'Rice Processing'),
+(28, 'Life Style'),
+(29, 'Marketing and Distribution'),
+(30, 'Education'),
+(31, 'Consultancy'),
+(32, 'Retail'),
+(33, 'Plastic'),
+(34, 'Water Treatment'),
+(35, 'Public Sector'),
+(36, 'Travelling'),
+(37, 'I.T'),
+(38, 'Education Board'),
+(39, 'Building Services'),
+(40, 'Assest Management'),
+(41, 'Hotels'),
+(42, 'Confectionery'),
+(43, 'Shipping'),
+(44, 'Steel Products'),
+(45, 'Material'),
+(46, 'Storage'),
+(47, 'Higher Education'),
+(48, 'Food and retail'),
+(49, 'Power'),
+(50, 'I.T Products'),
+(51, 'Parts'),
+(52, 'Public'),
+(53, 'Builders'),
+(54, 'Networking'),
+(55, 'Agriculture'),
+(56, 'Business Education'),
+(57, 'Suppliers'),
+(58, 'Pharmaceuticals'),
+(59, 'Services'),
+(60, 'Training and Development'),
+(61, 'Renewable Energy'),
+(62, 'Housing'),
+(63, 'Islamic Investments'),
+(64, 'Accounting'),
+(65, 'N/A'),
+(66, 'Leasing'),
+(67, 'Food and Beverage'),
+(68, 'Cement'),
+(69, 'Safety Products'),
+(70, 'Chemical'),
+(71, 'Financial Depository'),
+(72, 'Software'),
+(73, 'Specialized'),
+(74, 'Advertisment '),
+(75, 'Microfinance'),
+(76, 'Development Finance'),
+(77, 'Other'),
+(78, 'Auditing ');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `memberdetails`
+--
+
+CREATE TABLE IF NOT EXISTS `memberdetails` (
+  `MemberDetailID` int(11) NOT NULL AUTO_INCREMENT,
+  `MemberID` int(11) NOT NULL,
+  `ContactInfoID` int(11) NOT NULL,
+  PRIMARY KEY (`MemberDetailID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `memberdetails`
+--
+
+INSERT INTO `memberdetails` (`MemberDetailID`, `MemberID`, `ContactInfoID`) VALUES
+(1, 3, 5),
+(2, 3, 6),
+(3, 8, 15),
+(4, 8, 16);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `members`
+--
+
+CREATE TABLE IF NOT EXISTS `members` (
+  `MemberID` int(11) NOT NULL AUTO_INCREMENT,
+  `Title` varchar(300) DEFAULT NULL,
+  `FirstName` varchar(300) DEFAULT NULL,
+  `MiddleName` varchar(300) DEFAULT NULL,
+  `LastName` varchar(300) DEFAULT NULL,
+  `AddressID` int(11) DEFAULT NULL,
   `Remarks` varchar(1000) DEFAULT NULL,
+  `CompanyID` int(11) DEFAULT NULL,
+  `Department` varchar(500) DEFAULT NULL,
+  `Designation` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`MemberID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
--- Dumping data for table `member`
+-- Dumping data for table `members`
 --
 
-INSERT INTO `member` (`MemberID`, `Title`, `FirstName`, `MiddleName`, `LastName`, `Email`, `CellPhone`, `OfficePhone`, `Phone`, `Fax`, `Address`, `City`, `State`, `ZipCode`, `Country`, `Remarks`) VALUES
-(1, 'Ms', 'First', 'Middle', 'Last', 'qwer@qwer.com', '132465', '123456', '132456', '1234567890', 'Home Address', 'Karachi', 'Sindh', 74000, 2, 'qwerty');
+INSERT INTO `members` (`MemberID`, `Title`, `FirstName`, `MiddleName`, `LastName`, `AddressID`, `Remarks`, `CompanyID`, `Department`, `Designation`) VALUES
+(1, 'Mr', 'First', 'Middle', 'Last', 3, 'qwerty', 1, 'HR Department', 'HR Manager'),
+(2, 'Mr', 'Member1 First Name', 'Member1 Middle Name', 'Member1 Last Name', 8, 'Testing Remarks', 4, 'Finance Department', 'Finance Manager');
 
 -- --------------------------------------------------------
 

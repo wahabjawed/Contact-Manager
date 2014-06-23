@@ -2,6 +2,15 @@
 
 include 'header/checkloginstatus.php'; 
 include 'header/connect_database.php'; 
+include 'header/FillCombos.php';
+
+$MemberName = "";
+$Company = 0;
+if($_POST)
+		{
+			$MemberName = $_POST['inputMemberName'];
+			$Company = $_POST['selectCompany'];
+		}
 
 ?>
 
@@ -48,27 +57,28 @@ include 'header/connect_database.php';
   
   <!-- Jumbotron -->
   <div class="jumbotron">
-    <form class="form-horizontal" role="form">
+    <form class="form-horizontal" role="form" method="post" action="search_member.php">
       <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">SEARCH MEMBER</h3>
       </div>
       <div class="panel-body">
         <div class="form-group">
-          <label for="inputFirstName" class="col-sm-2 control-label">Member Name</label>
+          <label for="inputMemberName" class="col-sm-2 control-label">Member Name</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" id="inputCompanyName" placeholder="Company Name">
+            <input type="text" class="form-control" id="inputMemberName" name="inputMemberName" placeholder="Member Name" value="<?PHP echo $MemberName; ?>">
           </div>
         </div>
         <div class="form-group">
-          <label for="inputTitle" class="col-sm-2 control-label">Company Name</label>
+          <label for="selectCompany" class="col-sm-2 control-label">Company</label>
           <div class="col-sm-10">
-            <select class="form-control">
-              <option>Select</option>
+            <select class="form-control" id="selectCompany" name="selectCompany">
+            <option <?PHP echo $Company==0?'selected':''; ?> value="0">All</option>
+               <?PHP FillCompanyCombo($Company); ?>
             </select>
           </div>
           </div>
-          <div class="form-group">
+          <!--<div class="form-group">
             <label for="inputIndustryCategory" class="col-sm-2 control-label">Industry Category</label>
             <div class="col-sm-10">
               <select class="form-control">
@@ -122,8 +132,8 @@ include 'header/connect_database.php';
                 <option value="20">Trading Company</option>
               </select>
             </div>
-          </div>
-          <div class="form-group">
+          </div>-->
+          <!--<div class="form-group">
             <label for="inputTitle" class="col-sm-2 control-label">Status</label>
             <div class="col-sm-10">
               <select class="form-control">
@@ -132,8 +142,8 @@ include 'header/connect_database.php';
                 <option>Not Verified</option>
               </select>
             </div>
-          </div>
-           <div class="form-group">
+          </div>-->
+           <!--<div class="form-group">
             <label for="inputTitle" class="col-sm-2 control-label">Sorting Order</label>
             <div class="col-sm-10">
               <label class="radio-inline">
@@ -146,7 +156,7 @@ include 'header/connect_database.php';
                 <input type="radio" id="inlineCheckbox3" value="age">
                 Sort by age </label>
             </div>
-          </div>
+          </div>-->
          
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
@@ -156,6 +166,50 @@ include 'header/connect_database.php';
         </div>
       </div>
     </form>
+    <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Search Results</h3>
+    </div>
+    <div class="panel-body">
+    <table style="width:100%;">
+      <thead style="text-align:center;">
+      <tr>
+         <th>Title</th>
+         <th>First Name</th>
+         <th>Middle Name</th>
+         <th>Last Name</th>
+         <th>Remarks Name</th>
+      </tr>
+     </thead>
+     <tbody style="text-align:left;">
+    <?PHP 
+		if($_POST)
+		{
+			//$CompanyName = $_POST['inputCompanyName'];
+//			$IndustoryCategory = $_POST['selectIndustoryCategory'];
+//			$IndustorySubCategory = $_POST['selectIndustorySubCategory'];
+			$MemberName = $MemberName==""? null : $MemberName;
+			$Company = $Company==0? null : $Company;
+
+			try {
+				$query = "SELECT Title, FirstName, MiddleName, LastName, Remarks FROM Members WHERE CONCAT(Title, FirstName, MiddleName, LastName) LIKE IFNULL(CONCAT('%',REPLACE(?, ' ', '%'),'%'), CONCAT(Title, FirstName, MiddleName, LastName)) AND CompanyID = IFNULL(?, CompanyID);";
+				$sth = $dbh->prepare($query);
+				$sth->execute(array($MemberName, $Company)) ;
+				//$sth->debugDumpParams();
+				//var_dump($sth->ErrorInfo());
+				while ($row = $sth->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
+				  echo "<tr><td>".$row[0]."</td><td>".$row[1]."</td><td>".$row[2]."</td><td>".$row[3]."</td><td>".$row[4]."</td> \n";
+				}
+				$query = null;
+				} catch(PDOException $e) {
+				die('Could not save to the database:<br/>' . $e);
+				}
+			}
+	?>
+        </tbody>
+        </table>
+    </div>
+    </div>
   </div>
   
   <!-- Site footer -->
