@@ -9,7 +9,7 @@ if($_POST)
 	$username = $_POST['username'];
 	$password = $_POST['password'];
 
-	$query = "SELECT count(*) from User WHERE username=:username AND password =:password";
+	$query = "SELECT count(*) from user WHERE username=:username AND password =:password";
 	$sth = $dbh->prepare($query);
 	$sth->bindValue(':username',$username);
 	$sth->bindValue(':password',$password);
@@ -24,7 +24,7 @@ if($_POST)
 	}
 	else
 	{
-		$_SESSION['username'] = "fakesession";
+		//$_SESSION['username'] = "fakesession";
 		echo "incorrect credentials";
 	}
 	
