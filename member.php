@@ -69,18 +69,8 @@ include 'header/FillCombos.php';
 
 <body>
 <div class="container">
-  <div class="masthead">
-    <h3 class="text-muted">Project name</h3>
-    <ul class="nav nav-justified">
-      <li ><a href="index.php">Home</a></li>
-      <li class="active"><a href="member.php">Member</a></li>
-      <li><a href="company.php">Company</a></li>
-      <li><a href="search_company.php">Search Company</a></li>
-      <li><a href="search_member.php">Search Member</a></li>
-      <li><a href="#">Contact</a></li>
-    </ul>
-  </div>
-  <?PHP
+ <?php include 'header/menu-top-navigation.php';
+  
 
 	if($_POST)
 	{

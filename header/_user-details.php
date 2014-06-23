@@ -1,38 +1,32 @@
 <?php
-session_start();
 
-if(!isset($_SESSION['username']) && !isset($_COOKIE['remember'])){
-	header('Location: login.php');		
-} else{
-	
-	
 		if(isset($_SESSION['username']))
 		{
 			$username = $_SESSION['username'];
-		}
-		else
-		{
-			//include 'cookie_user.php';
 			
-		}
-	
-		include 'connect_to_mysql.php';
-		$query = "SELECT * FROM users WHERE username like '$username'";
-		$result = mysql_query($query);
+			try {
+				$query = "SELECT * FROM user u,userType ut WHERE u.type=ut.userTypeID and u.username like :username";
+			 	$stmt = $dbh->prepare($query);
+				$stmt->bindParam(':username', $username);
+    		 	$stmt->execute();
+    		 	$result = $stmt->fetchAll();
+			   	$row = $result[0];
+				$canDelete  = $row['canDelete'];
+				$canInsert  = $row['canInsert'];
+				$canUpdate  = $row['canUpdate'];
+				$canManage  = $row['canManage'];
+				$canVerify  = $row['canVerify'];
+				$query = null;
+				} catch(PDOException $e) {
+				die('Could not save to the database:<br/>' . $e);
+				}
 		
-		while ($row = mysql_fetch_array($result)){
-			$_userID = $row['ID'];
-			$_username = $row['username'];
-			$_fname = $row['fname'];
-			$_fname_uppercase = strtoupper($_fname);
-			$_lname = $row['lname'];
-			$_lname_uppercase = strtoupper($_lname);
-			$_college = $row['college'];
-			$_email = $row['email'];
-			$_password = $row['password'];
-			$_joinDate = $row['joinDate'];
-			$_profilePic = $row['profilePic'];
-		}
-}	
-
+		}else{
+			
+				header('Location: login.php');	
+			}
+		
+			
+		
+	
 ?>
