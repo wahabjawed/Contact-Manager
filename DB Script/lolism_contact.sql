@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.1
+-- version 4.0.9
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Jun 23, 2014 at 06:32 AM
--- Server version: 5.5.24-log
--- PHP Version: 5.3.13
+-- Host: 127.0.0.1
+-- Generation Time: Jun 24, 2014 at 11:09 AM
+-- Server version: 5.6.14
+-- PHP Version: 5.5.6
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `lolism_contact`
+-- Database: `contactdb`
 --
 
 -- --------------------------------------------------------
@@ -113,6 +113,9 @@ CREATE TABLE IF NOT EXISTS `companies` (
   `IndustorySubCategory` int(11) NOT NULL,
   `Website` varchar(300) NOT NULL,
   `Remarks` varchar(1000) NOT NULL,
+  `insertedBy` int(5) NOT NULL,
+  `isVerified` int(1) NOT NULL DEFAULT '0',
+  `verifiedBy` int(5) DEFAULT NULL,
   PRIMARY KEY (`CompanyID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
@@ -120,9 +123,9 @@ CREATE TABLE IF NOT EXISTS `companies` (
 -- Dumping data for table `companies`
 --
 
-INSERT INTO `companies` (`CompanyID`, `CompanyName`, `IndustoryCategory`, `IndustorySubCategory`, `Website`, `Remarks`) VALUES
-(1, 'qwer', 36, 64, 'company.com', 'qwerty'),
-(4, 'Testing Company', 1, 1, 'website.com', 'qwerty');
+INSERT INTO `companies` (`CompanyID`, `CompanyName`, `IndustoryCategory`, `IndustorySubCategory`, `Website`, `Remarks`, `insertedBy`, `isVerified`, `verifiedBy`) VALUES
+(1, 'qwer', 36, 64, 'company.com', 'qwerty', 0, 0, 0),
+(4, 'Testing Company', 1, 1, 'website.com', 'qwerty', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -377,6 +380,9 @@ CREATE TABLE IF NOT EXISTS `members` (
   `CompanyID` int(11) DEFAULT NULL,
   `Department` varchar(500) DEFAULT NULL,
   `Designation` varchar(500) DEFAULT NULL,
+  `insertedBy` int(5) NOT NULL,
+  `isVerified` int(1) NOT NULL DEFAULT '0',
+  `verifiedBy` int(5) DEFAULT NULL,
   PRIMARY KEY (`MemberID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
@@ -384,9 +390,9 @@ CREATE TABLE IF NOT EXISTS `members` (
 -- Dumping data for table `members`
 --
 
-INSERT INTO `members` (`MemberID`, `Title`, `FirstName`, `MiddleName`, `LastName`, `AddressID`, `Remarks`, `CompanyID`, `Department`, `Designation`) VALUES
-(1, 'Mr', 'First', 'Middle', 'Last', 3, 'qwerty', 1, 'HR Department', 'HR Manager'),
-(2, 'Mr', 'Member1 First Name', 'Member1 Middle Name', 'Member1 Last Name', 8, 'Testing Remarks', 4, 'Finance Department', 'Finance Manager');
+INSERT INTO `members` (`MemberID`, `Title`, `FirstName`, `MiddleName`, `LastName`, `AddressID`, `Remarks`, `CompanyID`, `Department`, `Designation`, `insertedBy`, `isVerified`, `verifiedBy`) VALUES
+(1, 'Mr', 'First', 'Middle', 'Last', 3, 'qwerty', 1, 'HR Department', 'HR Manager', 0, 0, NULL),
+(2, 'Mr', 'Member1 First Name', 'Member1 Middle Name', 'Member1 Last Name', 8, 'Testing Remarks', 4, 'Finance Department', 'Finance Manager', 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -403,14 +409,16 @@ CREATE TABLE IF NOT EXISTS `user` (
   `type` int(5) NOT NULL,
   `email` varchar(50) NOT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`userID`, `username`, `password`, `first_name`, `last_name`, `type`, `email`) VALUES
-(1, 'rayyan', 'binary', 'Rayyan', 'Taqdees', 1, 'rayyan.182@gmail.com');
+(1, 'sub', 'binary', 'Rayyan', 'Taqdees', 1, 'rayyan.182@gmail.com'),
+(2, 'super', 'binary', 'Rayyan', 'Taqdees', 3, 'rayyan.182@gmail.com'),
+(3, 'admin', 'binary', 'Rayyan', 'Taqdees', 2, 'rayyan.182@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -421,15 +429,22 @@ INSERT INTO `user` (`userID`, `username`, `password`, `first_name`, `last_name`,
 CREATE TABLE IF NOT EXISTS `usertype` (
   `userTypeID` int(5) NOT NULL AUTO_INCREMENT,
   `designation` varchar(20) NOT NULL,
+  `canVerify` int(1) NOT NULL,
+  `canInsert` int(1) NOT NULL,
+  `canUpdate` int(1) NOT NULL,
+  `canDelete` int(1) NOT NULL,
+  `canManage` int(1) NOT NULL,
   PRIMARY KEY (`userTypeID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `usertype`
 --
 
-INSERT INTO `usertype` (`userTypeID`, `designation`) VALUES
-(1, 'Admin');
+INSERT INTO `usertype` (`userTypeID`, `designation`, `canVerify`, `canInsert`, `canUpdate`, `canDelete`, `canManage`) VALUES
+(2, 'Admin', 1, 1, 1, 0, 0),
+(1, 'Sub Admin', 0, 1, 0, 0, 0),
+(3, 'Super Admin', 1, 1, 1, 1, 1);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
