@@ -2,11 +2,11 @@
 
 $db_host = "localhost"; 
 
-$db_username = "icvcloud_hemani";  
+$db_username = "wahab";  
 
-$db_pass = "Hemani786!";  
+$db_pass = "wahab";  
 
-$db_name = "icvcloud_contact"; 
+$db_name = "contactdb"; 
 
 // Run the connection here  
 

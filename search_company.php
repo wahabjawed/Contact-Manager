@@ -2,6 +2,7 @@
 
 include 'header/checkloginstatus.php'; 
 include 'header/connect_database.php';
+include 'header/_user-details.php';
 include 'header/FillCombos.php';
 $CompanyName = "";
 $IndustoryCategory = 0;
@@ -43,17 +44,7 @@ if($_POST)
 
 <body>
 <div class="container">
-  <div class="masthead">
-    <h3 class="text-muted">Project name</h3>
-    <ul class="nav nav-justified">
-      <li ><a href="index.php">Home</a></li>
-      <li ><a href="member.php">Member</a></li>
-      <li ><a href="company.php">Company</a></li>
-      <li class="active"><a href="search_company.php">Search Company</a></li>
-      <li><a href="search_member.php">Search Member</a></li>
-      <li><a href="#">Contact</a></li>
-    </ul>
-  </div>
+ <?php include 'header/menu-top-navigation.php';?>
   
   <!-- Jumbotron -->
   <div class="jumbotron">
@@ -110,12 +101,26 @@ if($_POST)
       <h3 class="panel-title">Search Results</h3>
     </div>
     <div class="panel-body">
-    <table style="width:100%;">
+    <table style="width:100%;" class="table table-bordered">
       <thead style="text-align:center;">
       <tr>
          <th>CompanyName</th>
          <th>Website</th>
          <th>Remarks</th>
+           <?PHP
+    if($canVerify==1){
+	 echo"<th>Verify</th>";
+	}
+	if($canUpdate==1){
+	 echo"<th>Update</th>";
+	}
+	if($canDelete==1){
+	 echo"<th>Delete</th>";
+	}
+	
+
+	
+	?>
       </tr>
      </thead>
      <tbody style="text-align:left;">
@@ -130,13 +135,34 @@ if($_POST)
 			$IndustorySubCategory = $IndustorySubCategory==0? null : $IndustorySubCategory;
 
 			try {
-				$query = "SELECT CompanyName, Website, Remarks FROM Companies WHERE CompanyName LIKE IFNULL(CONCAT('%',?,'%'), CompanyName) AND IndustoryCategory = IFNULL(?, IndustoryCategory) AND IndustorySubCategory = IFNULL(?, IndustorySubCategory);";
+				$query = "SELECT CompanyName, Website, Remarks,CompanyID,isVerified FROM Companies WHERE CompanyName LIKE IFNULL(CONCAT('%',?,'%'), CompanyName) AND IndustoryCategory = IFNULL(?, IndustoryCategory) AND IndustorySubCategory = IFNULL(?, IndustorySubCategory);";
 				$sth = $dbh->prepare($query);
 				$sth->execute(array($CompanyName, $IndustoryCategory, $IndustorySubCategory)) ;
 				//$sth->debugDumpParams();
 				//var_dump($sth->ErrorInfo());
 				while ($row = $sth->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
-				  echo "<tr><td>".$row[0]."</td><td>".$row[1]."</td><td>".$row[2]."</td> \n";
+				  echo "<tr><td>".$row[0]."</td><td>".$row[1]."</td><td>".$row[2]."</td>";
+				  
+				  
+				  if($canVerify==1){
+		if($row[4]==1){
+			
+		 echo"	<td><a href='verification.php?id={$row[3]}&action=unverify&type=company' onclick='return unverifyConfirm(${row[3]});'><span class='glyphicon glyphicon-star'></span> UnVerify </a></td>";
+		
+			}else{
+		
+	 echo"	<td><a href='verification.php?id={$row[3]}&action=verify&type=company' onclick='return verifyConfirm(${row[3]});'><span class='glyphicon glyphicon-star'></span> Verify </a></td>";
+	}
+	}
+	if($canUpdate==1){
+	 echo"<td><a href='updateCategory.php?id={$row[3]}' onclick='return updateConfirm(${row[3]});'><span class='glyphicon glyphicon-star'></span> Update </a></td>";
+	}
+	if($canDelete==1){
+	 echo"<td><a href='updateCategory.php?id={$row[3]}' onclick='return updateConfirm(${row[3]});'><span class='glyphicon glyphicon-star'></span> Delete </a></td>";
+	}
+		
+				  
+				  
 				}
 				$query = null;
 				} catch(PDOException $e) {
