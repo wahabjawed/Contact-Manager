@@ -1,6 +1,16 @@
 <?php
 
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+
+=======
+	include 'header/_user-details.php';
+	
+	
+>>>>>>> origin/master
+>>>>>>> origin/master
 	
     	echo "
 		
@@ -12,7 +22,15 @@
       <li ><a href='company.php'>Company</a></li>
       <li ><a href='search_company.php'>Search Company</a></li>
       <li><a href='search_member.php'>Search Member</a></li>
+<<<<<<< HEAD
       <li><a href='user_management.php'>User Management</a></li>
+=======
+<<<<<<< HEAD
+      <li><a href='user_management.php'>User Management</a></li>
+=======
+      <li><a href='#'>Contact</a></li>
+>>>>>>> origin/master
+>>>>>>> origin/master
     </ul>
   </div>";
          	

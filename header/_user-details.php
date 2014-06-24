@@ -11,7 +11,14 @@
     		 	$stmt->execute();
     		 	$result = $stmt->fetchAll();
 			   	$row = $result[0];
+<<<<<<< HEAD
 				$userID     = $row['userID'];
+=======
+<<<<<<< HEAD
+				$userID     = $row['userID'];
+=======
+>>>>>>> origin/master
+>>>>>>> origin/master
 				$canDelete  = $row['canDelete'];
 				$canInsert  = $row['canInsert'];
 				$canUpdate  = $row['canUpdate'];
