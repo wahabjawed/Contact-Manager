@@ -2,6 +2,7 @@
 
 include 'header/checkloginstatus.php'; 
 include 'header/connect_database.php'; 
+include 'header/_user-details.php';
 include 'header/FillCombos.php'; 
 
 ?>
@@ -94,7 +95,7 @@ include 'header/FillCombos.php';
 		
 		$MemberID = 0;
 		try {
-			$query = "INSERT INTO Addresses(Address, Country, State, City, ZipCode) VALUES(:Address, :Country, :State, :City, :ZipCode); INSERT INTO members(Title, FirstName, MiddleName, LastName, AddressID, Remarks, CompanyID, Department, Designation) SELECT :Title, :FirstName, :MiddleName, :LastName, LAST_INSERT_ID( ), :Remarks, :CompanyID, :Department, :Designation;";
+			$query = "INSERT INTO Addresses(Address, Country, State, City, ZipCode) VALUES(:Address, :Country, :State, :City, :ZipCode); INSERT INTO members(Title, FirstName, MiddleName, LastName, AddressID, Remarks, CompanyID, Department, Designation,insertedBy) SELECT :Title, :FirstName, :MiddleName, :LastName, LAST_INSERT_ID( ), :Remarks, :CompanyID, :Department, :Designation,:InsertedBy;";
 			//$query += "VALUES(:CompanyName)";
 			$sth = $dbh->prepare($query);
 			$sth->bindValue(':Title',$Title);
@@ -110,6 +111,7 @@ include 'header/FillCombos.php';
 			$sth->bindValue(':CompanyID',$Company);
 			$sth->bindValue(':Department',$Department);
 			$sth->bindValue(':Designation',$Designation);
+			$sth->bindValue(':InsertedBy',$userID);
 			$sth->execute() ;
 			$MemberID = $dbh->lastInsertId();
 			

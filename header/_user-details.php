@@ -11,7 +11,6 @@
     		 	$stmt->execute();
     		 	$result = $stmt->fetchAll();
 			   	$row = $result[0];
-
 				$userID     = $row['userID'];
 				$canDelete  = $row['canDelete'];
 				$canInsert  = $row['canInsert'];

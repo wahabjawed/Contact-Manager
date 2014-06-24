@@ -2,7 +2,7 @@
 
 include 'header/checkloginstatus.php'; 
 include 'header/connect_database.php';
- 
+include 'header/_user-details.php';
 include 'header/FillCombos.php'; 
 ?>
 
@@ -187,7 +187,7 @@ include 'header/FillCombos.php';
 		$HeadOffice = $_POST['radioHeadOffice'];
 		
 		try {
-			$query = "INSERT INTO companies(CompanyName, IndustoryCategory, IndustorySubCategory, Website, Remarks) values (:CompanyName, :IndustoryCategory, :IndustorySubCategory, :Website, :Remarks);";
+			$query = "INSERT INTO companies(CompanyName, IndustoryCategory, IndustorySubCategory, Website, Remarks,insertedBy) values (:CompanyName, :IndustoryCategory, :IndustorySubCategory, :Website, :Remarks, :InsertedBy);";
 			//$query += "VALUES(:CompanyName)";
 			$sth = $dbh->prepare($query);
 			$sth->bindValue(':CompanyName',$CompanyName);
@@ -195,6 +195,7 @@ include 'header/FillCombos.php';
 			$sth->bindValue(':IndustorySubCategory',$IndustorySubCategory);
 			$sth->bindValue(':Website',$Website);
 			$sth->bindValue(':Remarks',$Remarks);
+			$sth->bindValue(':InsertedBy',$userID);
 			$sth->execute() ;
 			$CompanyID = $dbh->lastInsertId();
 			//$sth->debugDumpParams();

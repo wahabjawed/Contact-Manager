@@ -40,6 +40,60 @@ if($_POST)
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
+    
+    <script>
+		
+	function verifyConfirm()
+	{
+		
+		var result = confirm("Are you sure you want to verify?");
+		
+		if(result == true)
+		{	
+return true;				
+		}else{
+			return false;
+			}
+		
+	}
+	
+	
+	
+	function unverifyConfirm()
+	{
+		
+		var result = confirm("Are you sure you want to unverify?");
+		
+		if(result == true)
+		{	
+return true;				
+		}else{
+			return false;
+			}
+		
+	}
+	
+	
+	function deleteConfirm(){
+	
+	var result = confirm("Are you sure you want to delete?");
+		
+		if(result == true)
+		{	
+return true;				
+		}else{
+			return false;
+			}
+		
+	
+		
+		}
+	
+	
+	
+</script>
+    
 </head>
 
 <body>
@@ -127,18 +181,18 @@ if($_POST)
 	if($canVerify==1){
 		if($row[6]==1){
 			
-		 echo"	<td><a href='verification.php?id={$row[5]}&action=unverify&type=member' onclick='return unverifyConfirm(${row[5]});'><span class='glyphicon glyphicon-star'></span> UnVerify </a></td>";
+		 echo"	<td><a href='verification.php?id={$row[5]}&action=unverify&type=member' onclick='return unverifyConfirm();'><span class='glyphicon glyphicon-star'></span> UnVerify </a></td>";
 		
 			}else{
 		
-	 echo"	<td><a href='verification.php?id={$row[5]}&action=verify&type=member' onclick='return verifyConfirm(${row[5]});'><span class='glyphicon glyphicon-star'></span> Verify </a></td>";
+	 echo"	<td><a href='verification.php?id={$row[5]}&action=verify&type=member' onclick='return verifyConfirm();'><span class='glyphicon glyphicon-star'></span> Verify </a></td>";
 	}
 	}
 	if($canUpdate==1){
-	 echo"<td><a href='updateCategory.php?id={$row[5]}' onclick='return updateConfirm(${row[5]});'><span class='glyphicon glyphicon-star'></span> Update </a></td>";
+	 echo"<td><a href='updateCategory.php?id={$row[5]}'><span class='glyphicon glyphicon-star'></span> Update </a></td>";
 	}
 	if($canDelete==1){
-	 echo"<td><a href='updateCategory.php?id={$row[5]}' onclick='return updateConfirm(${row[5]});'><span class='glyphicon glyphicon-star'></span> Delete </a></td>";
+	 echo"<td><a href='deleteCategory.php?id={$row[5]}' onclick='return deleteConfirm();'><span class='glyphicon glyphicon-star'></span> Delete </a></td>";
 	}
 				}
 				$query = null;

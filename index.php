@@ -1,8 +1,8 @@
 <?php
 
 include 'header/checkloginstatus.php'; 
-include 'header/_user-details.php';
 include 'header/connect_database.php'; 
+include 'header/_user-details.php';
 
 ?>
 
