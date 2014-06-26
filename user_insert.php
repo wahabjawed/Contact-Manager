@@ -48,25 +48,23 @@ header( 'Location: index.php' );
 	if($_POST)
 	{
 	
-		$CompanyName = $_POST['inputCompanyName'];
-		$IndustoryCategory = $_POST['inputIndustoryCategory'];
-		$IndustorySubCategory = $_POST['inputIndustrySubCategory'];
-		$Website = $_POST['inputWebsite'];
-		$Remarks = $_POST['inputRemarks'];
-		$CompanyID = 0;
-		$BranchCounter = $_POST['branchCounter'];
-		$HeadOffice = $_POST['radioHeadOffice'];
+		$username = $_POST['inputUName'];
+		$fname = $_POST['inputFName'];
+		$lname = $_POST['inputLName'];
+		$email = $_POST['inputEmail'];
+		$password = $_POST['inputPassword'];
+		$type= $_POST['inputDesignation'];
 		
 		try {
-			$query = "INSERT INTO companies(CompanyName, IndustoryCategory, IndustorySubCategory, Website, Remarks,insertedBy) values (:CompanyName, :IndustoryCategory, :IndustorySubCategory, :Website, :Remarks, :InsertedBy);";
+			$query = "INSERT INTO user(username, first_name, last_name, email, type,password) values (:username, :first_name, :last_name, :email, :type,:password);";
 			//$query += "VALUES(:CompanyName)";
 			$sth = $dbh->prepare($query);
-			$sth->bindValue(':CompanyName',$CompanyName);
-			$sth->bindValue(':IndustoryCategory',$IndustoryCategory);
-			$sth->bindValue(':IndustorySubCategory',$IndustorySubCategory);
-			$sth->bindValue(':Website',$Website);
-			$sth->bindValue(':Remarks',$Remarks);
-			$sth->bindValue(':InsertedBy',$userID);
+			$sth->bindValue(':username',$username);
+			$sth->bindValue(':first_name',$fname);
+			$sth->bindValue(':last_name',$lname);
+			$sth->bindValue(':email',$email);
+			$sth->bindValue(':type',$type);
+			$sth->bindValue(':password',$password);
 			$sth->execute() ;
 		
 			echo "User Saved Successfully!";
@@ -78,7 +76,7 @@ header( 'Location: index.php' );
   
   <!-- Jumbotron -->
   <div class="jumbotron">
-    <form class="form-horizontal" role="form" method="post" action="company.php">
+    <form class="form-horizontal" role="form" method="post" action="user_insert.php">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">ADD USER</h3>
@@ -118,7 +116,26 @@ header( 'Location: index.php' );
             <label for="inputDesignatiion" class="col-sm-2 control-label">Designation</label>
             <div class="col-sm-10">
               <select class="form-control" id="inputDesignation" name="inputDesignation">
-               
+               <?php 
+			   
+			 $query = "select * from usertype";
+			$stmt = $dbh->prepare($query);
+			$stmt->execute();
+ 
+ 
+ while($result = $stmt->fetch(PDO::FETCH_ASSOC))
+			{
+				//	$result = $result[0];
+			$_uid = $result['userTypeID'];
+		    $_designation = $result['designation'];
+		
+		    
+			echo "<option value=${_uid}> ${_designation} </option>";
+			}
+		 ?>
+         
+			   
+			   
               </select>
             </div>
           </div>

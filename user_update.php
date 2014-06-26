@@ -7,7 +7,30 @@ include 'header/_user-details.php';
 if($canManage==0){
 
 header( 'Location: index.php' );
+
 }
+
+
+
+if(isset($_GET['id'])){
+	
+	$id = $_GET['id'];
+	
+	$query = "Select * from user where userID = :ID";
+	$sth = $dbh->prepare($query);
+	$sth->bindValue(':ID',$id);
+	$sth->execute();
+	$result = $sth->fetchAll();
+	$row = $result[0];
+	$_userID=$row['userID'];
+	$username = $row['username'];
+	$fname = $row['first_name'];
+	$lname = $row['last_name'];
+	$password = $row['password'];
+	$email=$row['email'];
+	$type=$row['type'];
+	
+	}
 
 ?>
 
@@ -42,35 +65,37 @@ header( 'Location: index.php' );
 
 <body>
 <div class="container">
-  <?php include 'header/menu-top-navigation.php';?>
-  <?PHP
+  <?php include 'header/menu-top-navigation.php';
+  
 
 	if($_POST)
 	{
 	
-		$CompanyName = $_POST['inputCompanyName'];
-		$IndustoryCategory = $_POST['inputIndustoryCategory'];
-		$IndustorySubCategory = $_POST['inputIndustrySubCategory'];
-		$Website = $_POST['inputWebsite'];
-		$Remarks = $_POST['inputRemarks'];
-		$CompanyID = 0;
-		$BranchCounter = $_POST['branchCounter'];
-		$HeadOffice = $_POST['radioHeadOffice'];
+		
+		$username = $_POST['inputUName'];
+		$fname = $_POST['inputFName'];
+		$lname = $_POST['inputLName'];
+		$email = $_POST['inputEmail'];
+		$password = $_POST['inputPassword'];
+		$type= $_POST['inputDesignation'];
 		
 		try {
-			$query = "INSERT INTO companies(CompanyName, IndustoryCategory, IndustorySubCategory, Website, Remarks,insertedBy) values (:CompanyName, :IndustoryCategory, :IndustorySubCategory, :Website, :Remarks, :InsertedBy);";
-			//$query += "VALUES(:CompanyName)";
+			$query = "UPDATE user SET username=:username,first_name=:first_name,last_name=:last_name,email=:email,password=:password,type=:type where userID = :id";
+			
 			$sth = $dbh->prepare($query);
-			$sth->bindValue(':CompanyName',$CompanyName);
-			$sth->bindValue(':IndustoryCategory',$IndustoryCategory);
-			$sth->bindValue(':IndustorySubCategory',$IndustorySubCategory);
-			$sth->bindValue(':Website',$Website);
-			$sth->bindValue(':Remarks',$Remarks);
-			$sth->bindValue(':InsertedBy',$userID);
+			$sth->bindValue(':id',$_GET["id"]);
+			$sth->bindValue(':username',$username);
+			$sth->bindValue(':first_name',$fname);
+			$sth->bindValue(':last_name',$lname);
+			$sth->bindValue(':email',$email);
+			$sth->bindValue(':type',$type);
+			$sth->bindValue(':password',$password);
 			$sth->execute() ;
 		
-			echo "User Saved Successfully!";
+			echo "User Updated Successfully!";
+			header( 'Location: user_management.php' );
 		} catch(PDOException $e) {
+		
 			die('Could not save to the database:<br/>' . $e);
 		}
 	}
@@ -78,47 +103,73 @@ header( 'Location: index.php' );
   
   <!-- Jumbotron -->
   <div class="jumbotron">
-    <form class="form-horizontal" role="form" method="post" action="company.php">
+    <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data" action="user_update.php?id=<?php echo $_GET['id']; ?>">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">ADD USER</h3>
+          <h3 class="panel-title">UPDATE USER</h3>
         </div>
         <div class="panel-body">
+
+          
           <div class="form-group">
             <label for="inputFName" class="col-sm-2 control-label">First Name</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputFName" name="inputFName" placeholder="First Name" >
+              <input type="text" class="form-control" id="inputFName" name="inputFName" placeholder="First Name" value=<?php echo $fname;?> >
             </div>
           </div>
            <div class="form-group">
             <label for="inputLName" class="col-sm-2 control-label">Last Name</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputLName" name="inputLName" placeholder="Last Name" >
+              <input type="text" class="form-control" id="inputLName" name="inputLName" placeholder="Last Name" value=<?php echo $lname;?> >
             </div>
           </div>
            <div class="form-group">
             <label for="inputUName" class="col-sm-2 control-label">Username</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputUName" name="inputUName" placeholder="Username" >
+              <input type="text" class="form-control" id="inputUName" name="inputUName" placeholder="Username" value=<?php echo $username;?> >
             </div>
           </div>
             <div class="form-group">
             <label for="inputEmail" class="col-sm-2 control-label">Email</label>
             <div class="col-sm-10">
-              <input type="Email" class="form-control" id="inputEmail" name="inputEmail" placeholder="Email" >
+              <input type="Email" class="form-control" id="inputEmail" name="inputEmail" placeholder="Email" value=<?php echo $email;?> >
             </div>
           </div>
             <div class="form-group">
             <label for="inputPassword" class="col-sm-2 control-label">Password</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputPassword" name="inputPassword" placeholder="Password" >
+              <input type="text" class="form-control" id="inputPassword" name="inputPassword" placeholder="Password" value=<?php echo $password;?> >
             </div>
           </div>
           <div class="form-group">
             <label for="inputDesignatiion" class="col-sm-2 control-label">Designation</label>
             <div class="col-sm-10">
-              <select class="form-control" id="inputDesignation" name="inputDesignation">
-               
+              <select class="form-control" id="inputDesignation" name="inputDesignation" >
+                              <?php 
+			   
+			 $query = "select * from usertype";
+			$stmt = $dbh->prepare($query);
+			$stmt->execute();
+ 
+ 
+ while($result = $stmt->fetch(PDO::FETCH_ASSOC))
+			{
+				//	$result = $result[0];
+			$_uid = $result['userTypeID'];
+		    $_designation = $result['designation'];
+		
+		if($_uid==$type){
+			
+			echo "<option value=${_uid} selected='selected'> ${_designation} </option>";
+			}else{
+		    
+			echo "<option value=${_uid}> ${_designation} </option>";
+			}
+			}
+		 ?>
+         
+			   
+			   
               </select>
             </div>
           </div>
