@@ -2,16 +2,19 @@
 if($_POST){
 	if(isset($_POST['action']) && !empty($_POST['action'])) {
     	$action = $_POST['action'];
+		
 		switch($action) {
 			case 'state' : FillStateCombo($_POST['country']);break;
 			case 'city' : FillCityCombo($_POST['state']);break;
-			// ...etc...
+	
 		}
 	}
 }
 function FillIndustoryCategoryCombo($selectedCategory){
+	
 	require 'connect_database.php'; 
-
+	
+	
 	try {
 			$query = "SELECT CategoryID, CategoryName FROM IndustoryCategories;";
 			$sth = $dbh->prepare($query);

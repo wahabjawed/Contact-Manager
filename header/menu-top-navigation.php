@@ -11,9 +11,12 @@
       <li ><a href='member.php'>Member</a></li>
       <li ><a href='company.php'>Company</a></li>
       <li ><a href='search_company.php'>Search Company</a></li>
-      <li><a href='search_member.php'>Search Member</a></li>
-      <li><a href='user_management.php'>User Management</a></li>
-    </ul>
+      <li><a href='search_member.php'>Search Member</a></li>";
+      
+	  if($canManage==1){
+	  echo "<li><a href='user_management.php'>User Management</a></li>";
+	  }
+	echo"</ul>
   </div>";
          	
 	
