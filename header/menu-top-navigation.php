@@ -5,7 +5,7 @@
     	echo "
 		
 		  <div class='masthead'>
-    <h3 class='text-muted'>Project name</h3>
+   <center> <h3 class='text-muted'>Contact Management</h3></center>
     <ul class='nav nav-justified'>
       <li ><a href='index.php'>Home</a></li>
       <li ><a href='member.php'>Member</a></li>

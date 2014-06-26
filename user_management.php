@@ -14,8 +14,8 @@ header( 'Location: index.php' );
 
 if($_POST)
 	{	
-			$searchTerm = $_POST['searchTerm'];
-			$query = "select u.userID, u.username, u.first_name, t.designation, u.email from user u, usertype t where u.type=t.userTypeID  and (u.userID=:searchTerm or u.username like :searchTerm) order by u.userID";
+			$searchTerm = "%".$_POST['searchTerm']."%";
+			$query = "select u.userID, u.username, u.first_name, t.designation, u.email from user u, usertype t where u.type=t.userTypeID  and (u.userID=:searchTerm or u.username like :searchTerm or u.first_name like :searchTerm) order by u.userID";
 			$stmt = $dbh->prepare($query);
 			$stmt->bindParam(':searchTerm', $searchTerm);
     		$stmt->execute();
@@ -62,7 +62,7 @@ else{
 
 <script>
 function link(){
-	window.location.href = "insert_user.php"
+	window.location.href = "user_insert.php"
 	}
 
 
