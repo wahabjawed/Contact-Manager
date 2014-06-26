@@ -77,7 +77,7 @@ function resets(){
 		
 		if(result == true)
 		{	
-			this.document.deleteForm.action = "delete_user.php?id="+id;
+			this.document.deleteForm.action = "delete.php?id="+id+"&type=user";
 			
 			this.document.deleteForm.submit();
 		
@@ -109,7 +109,7 @@ function resets(){
     </form>
     </div>
     <div class="table-responsive">
-       <form name="deleteForm" action="delete.php" method="post">
+       <form name="deleteForm" action="" method="post">
       <table class="table table-bordered">
         <thead>
           <tr>
