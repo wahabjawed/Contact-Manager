@@ -12,7 +12,17 @@
 		
 		if($type == "company"){
 		
-		$redirectURL="company.php";
+		$redirectURL="search_company.php";
+		
+		$query = "DELETE FROM Addresses WHERE AddressID IN(SELECT AddressID FROM Branches WHERE CompanyID = :ID);";
+		$sth = $dbh->prepare($query);
+		$sth->bindValue(':ID',$id);
+		$sth->execute();
+		
+		$query = "DELETE FROM ContactInfos WHERE ContactInfoID IN(SELECT ContactInfoID FROM BranchDetails WHERE BranchID IN(SELECT BranchID FROM Branches WHERE CompanyID = :ID));";
+		$sth = $dbh->prepare($query);
+		$sth->bindValue(':ID',$id);
+		$sth->execute();
 		
 		$query = "DELETE from branchedetails where BranchID in (select * from branches where CompanyID =:ID)";
 		$sth = $dbh->prepare($query);
@@ -32,9 +42,19 @@
 		
 		}else if($type=="member"){
 		
-		$redirectURL="member.php";	
+		$redirectURL="search_member.php";	
+		
+		$query = "DELETE FROM ContactInfos WHERE ContactInfoID IN(SELECT ContactInfoID FROM MemberDetails WHERE MemberID = :ID);";
+		$sth = $dbh->prepare($query);
+		$sth->bindValue(':ID',$id);
+		$sth->execute();
 		
 		$query = "DELETE from memberdetials where MemberID =:ID";
+		$sth = $dbh->prepare($query);
+		$sth->bindValue(':ID',$id);
+		$sth->execute();
+		
+		$query = "DELETE FROM Addresses WHERE AddressID = (SELECT AddressID FROM Members WHERE MemberID = :ID);";
 		$sth = $dbh->prepare($query);
 		$sth->bindValue(':ID',$id);
 		$sth->execute();

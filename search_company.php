@@ -210,7 +210,7 @@ return true;
 	 echo"<td><a href='company_update.php?id={$row[3]}'><span class='glyphicon glyphicon-star'></span> Update </a></td>";
 	}
 	if($canDelete==1){
-	 echo"<td><a href='updateCategory.php?id={$row[3]}' onclick='return deleteConfirm();'><span class='glyphicon glyphicon-star'></span> Delete </a></td>";
+	 echo"<td><a href='delete.php?type=company&id={$row[3]}' onclick='return deleteConfirm();'><span class='glyphicon glyphicon-star'></span> Delete </a></td>";
 	}
 		
 				  

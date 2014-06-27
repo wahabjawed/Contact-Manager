@@ -192,7 +192,7 @@ return true;
 	 echo"<td><a href='member_update.php?id={$row[5]}'><span class='glyphicon glyphicon-star'></span> Update </a></td>";
 	}
 	if($canDelete==1){
-	 echo"<td><a href='deleteCategory.php?id={$row[5]}' onclick='return deleteConfirm();'><span class='glyphicon glyphicon-star'></span> Delete </a></td>";
+	 echo"<td><a href='delete.php?type=member&id={$row[5]}' onclick='return deleteConfirm();'><span class='glyphicon glyphicon-star'></span> Delete </a></td>";
 	}
 				}
 				$query = null;
