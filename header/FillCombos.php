@@ -2,19 +2,15 @@
 if($_POST){
 	if(isset($_POST['action']) && !empty($_POST['action'])) {
     	$action = $_POST['action'];
-		
 		switch($action) {
 			case 'state' : FillStateCombo($_POST['country']);break;
 			case 'city' : FillCityCombo($_POST['state']);break;
-	
 		}
 	}
 }
 function FillIndustoryCategoryCombo($selectedCategory){
-	
 	require 'connect_database.php'; 
-	
-	
+
 	try {
 			$query = "SELECT CategoryID, CategoryName FROM IndustoryCategories;";
 			$sth = $dbh->prepare($query);
@@ -53,7 +49,7 @@ function FillIndustorySubCategoryCombo($selectedSubCategory){
 		}
 	}
 
-function FillContactInfoTypeCombo(){
+function FillContactInfoTypeCombo($selectedTypeId){
 	require 'connect_database.php'; 
 
 	try {
@@ -61,7 +57,8 @@ function FillContactInfoTypeCombo(){
 			$sth = $dbh->prepare($query);
 			$sth->execute() ;
 			while ($row = $sth->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
-			  echo '<option value="'.$row[0].'">'.$row[1].'</option>';
+			  $selected = $row[0]==$selectedTypeId? 'selected' : '';
+			  echo '<option value="'.$row[0].'" '. $selected .'>'.$row[1].'</option>';
 			}
 			$query = null;
 			//$sth->debugDumpParams();

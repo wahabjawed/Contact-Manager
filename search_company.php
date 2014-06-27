@@ -182,9 +182,6 @@ return true;
     <?PHP 
 		if($_POST)
 		{
-			//$CompanyName = $_POST['inputCompanyName'];
-//			$IndustoryCategory = $_POST['selectIndustoryCategory'];
-//			$IndustorySubCategory = $_POST['selectIndustorySubCategory'];
 			$CompanyName = $CompanyName==""? null : $CompanyName;
 			$IndustoryCategory = $IndustoryCategory==0? null : $IndustoryCategory;
 			$IndustorySubCategory = $IndustorySubCategory==0? null : $IndustorySubCategory;
@@ -210,7 +207,7 @@ return true;
 	}
 	}
 	if($canUpdate==1){
-	 echo"<td><a href='updateCategory.php?id={$row[3]}'><span class='glyphicon glyphicon-star'></span> Update </a></td>";
+	 echo"<td><a href='company_update.php?id={$row[3]}'><span class='glyphicon glyphicon-star'></span> Update </a></td>";
 	}
 	if($canDelete==1){
 	 echo"<td><a href='updateCategory.php?id={$row[3]}' onclick='return deleteConfirm();'><span class='glyphicon glyphicon-star'></span> Delete </a></td>";
