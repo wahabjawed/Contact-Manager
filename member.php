@@ -39,7 +39,7 @@ include 'header/FillCombos.php';
 	function AddContactInfoBar(){
 		contactInfoBarCounter++;
 		var contactInfoBar = '<tr>';
-		contactInfoBar += '<td style="width:35%" ><div class="form-group" Style="margin-left:0px;margin-right:5px;"><label for="inputContactType'+contactInfoBarCounter+'" >Type</label><select class="form-control" id="inputContactType'+contactInfoBarCounter+'" name="inputContactType'+contactInfoBarCounter+'"><?PHP FillContactInfoTypeCombo(); ?></select></div></td>';
+		contactInfoBar += '<td style="width:35%" ><div class="form-group" Style="margin-left:0px;margin-right:5px;"><label for="inputContactType'+contactInfoBarCounter+'" >Type</label><select class="form-control" id="inputContactType'+contactInfoBarCounter+'" name="inputContactType'+contactInfoBarCounter+'"><?PHP FillContactInfoTypeCombo(0); ?></select></div></td>';
         contactInfoBar += '<td style="width:60%" ><div class="form-group" Style="margin-left:5px;margin-right:5px;"><label for="inputContactInfo'+contactInfoBarCounter+'" >Value</label><input type="text" class="form-control" id="inputContactInfo'+contactInfoBarCounter+'" name="inputContactInfo'+contactInfoBarCounter+'" placeholder="Value"></div></td>';
         contactInfoBar += '<td style="width:5%"><div class="form-group" Style="margin-left:5px;margin-right:0px;margin-top:20px;"><button type="button" class="btn btn-sm " onClick="AddContactInfoBar();" style="padding:5px 10px;" ><span class="glyphicon glyphicon-plus "></span></button></div></td>';
         contactInfoBar += '</tr>';
@@ -95,7 +95,7 @@ include 'header/FillCombos.php';
 		
 		$MemberID = 0;
 		try {
-			$query = "INSERT INTO Addresses(Address, Country, State, City, ZipCode) VALUES(:Address, :Country, :State, :City, :ZipCode); INSERT INTO members(Title, FirstName, MiddleName, LastName, AddressID, Remarks, CompanyID, Department, Designation,insertedBy) SELECT :Title, :FirstName, :MiddleName, :LastName, LAST_INSERT_ID( ), :Remarks, :CompanyID, :Department, :Designation,:InsertedBy;";
+			$query = "INSERT INTO addresses(Address, Country, State, City, ZipCode) VALUES(:Address, :Country, :State, :City, :ZipCode); INSERT INTO members(Title, FirstName, MiddleName, LastName, AddressID, Remarks, CompanyID, Department, Designation,insertedBy) SELECT :Title, :FirstName, :MiddleName, :LastName, LAST_INSERT_ID( ), :Remarks, :CompanyID, :Department, :Designation,:InsertedBy;";
 			//$query += "VALUES(:CompanyName)";
 			$sth = $dbh->prepare($query);
 			$sth->bindValue(':Title',$Title);
@@ -113,18 +113,18 @@ include 'header/FillCombos.php';
 			$sth->bindValue(':Designation',$Designation);
 			$sth->bindValue(':InsertedBy',$userID);
 			$sth->execute() ;
-			$MemberID = $dbh->lastInsertId();
+			//$MemberID = $dbh->lastInsertId();
 			
 			//$sth->debugDumpParams();
 			//var_dump($sth->ErrorInfo());
 			for($i = 0; $i <= $ContactInfoBarCounter; $i++){
 			$ContactType = $_POST["inputContactType$i"];
 			$ContactInfo = $_POST["inputContactInfo$i"];
-				$query = "INSERT INTO ContactInfos(ContactTypeID, Value) values (:ContactTypeID, :Value); INSERT INTO MemberDetails(MemberID, ContactInfoID) SELECT :MemberID, LAST_INSERT_ID( );";
+				$query = "INSERT INTO contactinfos(ContactTypeID, Value) values (:ContactTypeID, :Value); INSERT INTO memberdetails(MemberID, ContactInfoID) SELECT MAX(MemberID), LAST_INSERT_ID( ) FROM members;";
 				$sth = $dbh->prepare($query);
 				$sth->bindValue(':ContactTypeID',$ContactType);
 				$sth->bindValue(':Value',$ContactInfo);
-				$sth->bindValue(':MemberID',$MemberID);
+				//$sth->bindValue(':MemberID',$MemberID);
 				
 				$sth->execute() ;
 				//$sth->debugDumpParams();
@@ -281,7 +281,7 @@ include 'header/FillCombos.php';
               <td style="width:35%" ><div class="form-group" Style="margin-left:0px;margin-right:5px;">
                   <label for="inputContactType0" >Type</label>
                   <select class="form-control" id="inputContactType0" name="inputContactType0">
-                    <?PHP FillContactInfoTypeCombo(); ?>           
+                    <?PHP FillContactInfoTypeCombo(0); ?>           
                   </select>
                 </div></td>
               <td style="width:60%" ><div class="form-group" Style="margin-left:5px;margin-right:5px;">

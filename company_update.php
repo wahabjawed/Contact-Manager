@@ -172,6 +172,8 @@ include 'header/FillCombos.php';
 		    FillCityCombo(i);
 		}
     });
+	
+	
     </script>
 </head>
 
@@ -193,15 +195,17 @@ include 'header/FillCombos.php';
 		$CompanyID = $_GET['id'];
 		$BranchCounter = $_POST['branchCounter'];
 		$HeadOffice = $_POST['radioHeadOffice'];
+		$Category = $_POST['inputCategory'];
 		
 		try {
-			$query = "UPDATE Companies SET CompanyName = :CompanyName, IndustoryCategory = :IndustoryCategory, IndustorySubCategory = :IndustorySubCategory, Website = :Website, Remarks = :Remarks WHERE CompanyID = :CompanyID; DELETE FROM Addresses WHERE AddressID IN(SELECT AddressID FROM Branches WHERE CompanyID = :CompanyID); DELETE FROM ContactInfos WHERE ContactInfoID IN(SELECT ContactInfoID FROM BranchDetails WHERE BranchID IN(SELECT BranchID FROM Branches WHERE CompanyID = :CompanyID)); DELETE FROM BranchDetails WHERE BranchID IN(SELECT BranchID FROM Branches WHERE CompanyID = :CompanyID); DELETE FROM Branches WHERE CompanyID = :CompanyID;";
+			$query = "UPDATE companies SET CompanyName = :CompanyName, IndustoryCategory = :IndustoryCategory, IndustorySubCategory = :IndustorySubCategory, Category = :Category, Website = :Website, Remarks = :Remarks WHERE CompanyID = :CompanyID; DELETE FROM addresses WHERE AddressID IN(SELECT AddressID FROM branches WHERE CompanyID = :CompanyID); DELETE FROM contactinfos WHERE ContactInfoID IN(SELECT ContactInfoID FROM branchdetails WHERE BranchID IN(SELECT BranchID FROM branches WHERE CompanyID = :CompanyID)); DELETE FROM branchdetails WHERE BranchID IN(SELECT BranchID FROM branches WHERE CompanyID = :CompanyID); DELETE FROM branches WHERE CompanyID = :CompanyID;";
 			//$query += "VALUES(:CompanyName)";
 			$sth = $dbh->prepare($query);
 			$sth->bindValue(':CompanyID',$CompanyID);
 			$sth->bindValue(':CompanyName',$CompanyName);
 			$sth->bindValue(':IndustoryCategory',$IndustoryCategory);
 			$sth->bindValue(':IndustorySubCategory',$IndustorySubCategory);
+			$sth->bindValue(':Category',$Category);
 			$sth->bindValue(':Website',$Website);
 			$sth->bindValue(':Remarks',$Remarks);
 			$sth->execute() ;
@@ -262,7 +266,7 @@ include 'header/FillCombos.php';
 	if($_GET)
 	{
 		$CompanyID = $_GET['id'];
-		$query = "SELECT * FROM Companies C INNER JOIN IndustoryCategories IC ON C.IndustoryCategory = IC.CategoryID INNER JOIN IndustorySubCategories ISC ON C.IndustorySubCategory = ISC.SubCategoryID INNER JOIN (SELECT CompanyID, COUNT(*) BranchCount FROM Branches WHERE CompanyID = :CompanyID) B ON C.CompanyID = B.CompanyID;";
+		$query = "SELECT * FROM companies C INNER JOIN industorycategories IC ON C.IndustoryCategory = IC.CategoryID INNER JOIN IndustorySubCategories ISC ON C.IndustorySubCategory = ISC.SubCategoryID INNER JOIN (SELECT CompanyID, COUNT(*) BranchCount FROM branches WHERE CompanyID = :CompanyID) B ON C.CompanyID = B.CompanyID;";
 		$sth = $dbh->prepare($query);
 		$sth->bindValue(':CompanyID',$CompanyID);
 		$sth->execute() ;
@@ -271,11 +275,26 @@ include 'header/FillCombos.php';
 		$CompanyName = $rows['CompanyName'];
 		$IndustoryCategory = $rows['IndustoryCategory'];
 		$IndustorySubCategory = $rows['IndustorySubCategory'];
+		$Category = $rows['Category'];
 		$Website = $rows['Website'];
 		$Remarks = $rows['Remarks'];
 		$BranchCounter = $rows['BranchCount'];
 	}
 ?>
+<script>
+	function SelectCategory(value){
+		var s = document.getElementById("inputCategory");
+		for ( var i = 0; i < s.options.length; i++ ) {
+        if ( s.options[i].value == value) {
+            s.options[i].selected = true;
+            return;
+        }
+    }
+	}
+	$(document).ready(function(e) {
+        SelectCategory('<?PHP echo $Category; ?>');
+    });
+</script>
   <!-- Jumbotron -->
   <div class="jumbotron">
     <form class="form-horizontal" role="form" method="post" action="company_update.php?id=<?PHP echo $CompanyID ?>">
@@ -307,6 +326,17 @@ include 'header/FillCombos.php';
             </div>
           </div>
           <div class="form-group">
+            <label for="inputCategory" class="col-sm-2 control-label">Category</label>
+            <div class="col-sm-10">
+              <select class="form-control" id="inputCategory" name="inputCategory">
+              	<option value="">Select</option>
+                <option value="1">Customer</option>
+              	<option value="2">Supplier</option>
+              	<option value="3">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
             <label for="inputWebsite" class="col-sm-2 control-label">Website</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" id="inputWebsite" name="inputWebsite" placeholder="Website" value="<?PHP echo $Website; ?>">
@@ -330,7 +360,7 @@ include 'header/FillCombos.php';
             	<li ><a href="javascript:AddBranch();" >Add Branch</a></li>
                 <!--<li id="branchTab0" class="active"><a href="#branch0" data-toggle="tab">Branch 1</a></li>-->
                 <?PHP 
-					$query = "SELECT B.BranchID, BranchName, Address, Country, State, City, ZipCode, IsHeadOffice, ContactInfoBarCount FROM Branches AS B INNER JOIN Addresses AS A ON B.AddressID = A.AddressID LEFT JOIN (SELECT BranchID, COUNT(*) AS ContactInfoBarCount FROM BranchDetails GROUP BY BranchID) AS BD ON BD.BranchID = B.BranchID WHERE B.CompanyID = :CompanyID;";
+					$query = "SELECT B.BranchID, BranchName, Address, Country, State, City, ZipCode, IsHeadOffice, ContactInfoBarCount FROM branches AS B INNER JOIN addresses AS A ON B.AddressID = A.AddressID LEFT JOIN (SELECT BranchID, COUNT(*) AS ContactInfoBarCount FROM branchdetails GROUP BY BranchID) AS BD ON BD.BranchID = B.BranchID WHERE B.CompanyID = :CompanyID;";
 					$sth = $dbh->prepare($query);
 					$sth->bindValue(':CompanyID',$CompanyID);
 					$sth->execute() ;
@@ -422,7 +452,7 @@ include 'header/FillCombos.php';
           echo '<div class="panel-body">';
           echo '<table width="100%" id="contactInfoTable'.$j.'">';
 			
-			$query = "SELECT ContactTypeID, Value FROM BranchDetails BD INNER JOIN ContactInfos CI ON BD.ContactInfoID = CI.ContactInfoID WHERE BranchID = :BranchID;";
+			$query = "SELECT ContactTypeID, Value FROM branchdetails BD INNER JOIN contactinfos CI ON BD.ContactInfoID = CI.ContactInfoID WHERE BranchID = :BranchID;";
 			$sth = $dbh->prepare($query);
 			$sth->bindValue(':BranchID',$rows[$j]['BranchID']);
 			$sth->execute() ;

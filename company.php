@@ -4,6 +4,7 @@ include 'header/checkloginstatus.php';
 include 'header/connect_database.php';
 include 'header/_user-details.php';
 include 'header/FillCombos.php'; 
+include 'header/mail_sender.php'; 
 ?>
 
 <!DOCTYPE html>
@@ -105,7 +106,7 @@ include 'header/FillCombos.php';
         branchTabContent += '<td style="width:35%" ><div class="form-group" Style="margin-left:0px;margin-right:5px;">';
         branchTabContent += '<label for="inputContactTypeb'+branchCounter+'c0" >Type</label>';
         branchTabContent += '<select class="form-control" id="inputContactTypeb'+branchCounter+'c0" name="inputContactTypeb'+branchCounter+'c0">';
-        branchTabContent += '<?PHP FillContactInfoTypeCombo(); ?>';
+        branchTabContent += '<?PHP FillContactInfoTypeCombo(0); ?>';
         branchTabContent += '</select>';
         branchTabContent += '</div></td>';
         branchTabContent += '<td style="width:60%" ><div class="form-group" Style="margin-left:5px;margin-right:5px;">';
@@ -139,7 +140,7 @@ include 'header/FillCombos.php';
 		var contactInfoBarCounter = $('#contactInfoBarCounter'+branch).val();
 		contactInfoBarCounter++;
 		var contactInfoBar = '<tr>';
-		contactInfoBar += '<td style="width:35%" ><div class="form-group" Style="margin-left:0px;margin-right:5px;"><label for="inputContactTypeb'+branch+'c'+contactInfoBarCounter+'" >Type</label><select class="form-control" id="inputContactTypeb'+branch+'c'+contactInfoBarCounter+'" name="inputContactTypeb'+branch+'c'+contactInfoBarCounter+'"><?PHP FillContactInfoTypeCombo(); ?></select></div></td>';
+		contactInfoBar += '<td style="width:35%" ><div class="form-group" Style="margin-left:0px;margin-right:5px;"><label for="inputContactTypeb'+branch+'c'+contactInfoBarCounter+'" >Type</label><select class="form-control" id="inputContactTypeb'+branch+'c'+contactInfoBarCounter+'" name="inputContactTypeb'+branch+'c'+contactInfoBarCounter+'"><?PHP FillContactInfoTypeCombo(0); ?></select></div></td>';
         contactInfoBar += '<td style="width:60%" ><div class="form-group" Style="margin-left:5px;margin-right:5px;"><label for="inputContactInfob'+branch+'c'+contactInfoBarCounter+'" >Value</label><input type="text" class="form-control" id="inputContactInfob'+branch+'c'+contactInfoBarCounter+'" name="inputContactInfob'+branch+'c'+contactInfoBarCounter+'" placeholder="Value"></div></td>';
         contactInfoBar += '<td style="width:5%"><div class="form-group" Style="margin-left:5px;margin-right:0px;margin-top:20px;"><button type="button" class="btn btn-sm " onClick="AddContactInfoBar($(this).data(\'branch\'));" style="padding:5px 10px;" data-branch="'+branch+'" ><span class="glyphicon glyphicon-plus "></span></button></div></td>';
         contactInfoBar += '</tr>';
@@ -185,14 +186,15 @@ include 'header/FillCombos.php';
 		$CompanyID = 0;
 		$BranchCounter = $_POST['branchCounter'];
 		$HeadOffice = $_POST['radioHeadOffice'];
-		
+		$Category = $_POST['inputCategory'];
 		try {
-			$query = "INSERT INTO companies(CompanyName, IndustoryCategory, IndustorySubCategory, Website, Remarks,insertedBy) values (:CompanyName, :IndustoryCategory, :IndustorySubCategory, :Website, :Remarks, :InsertedBy);";
+			$query = "INSERT INTO companies(CompanyName, IndustoryCategory, IndustorySubCategory, Category, Website, Remarks,insertedBy) values (:CompanyName, :IndustoryCategory, :IndustorySubCategory, :Category, :Website, :Remarks, :InsertedBy);";
 			//$query += "VALUES(:CompanyName)";
 			$sth = $dbh->prepare($query);
 			$sth->bindValue(':CompanyName',$CompanyName);
 			$sth->bindValue(':IndustoryCategory',$IndustoryCategory);
 			$sth->bindValue(':IndustorySubCategory',$IndustorySubCategory);
+			$sth->bindValue(':Category',$Category);
 			$sth->bindValue(':Website',$Website);
 			$sth->bindValue(':Remarks',$Remarks);
 			$sth->bindValue(':InsertedBy',$userID);
@@ -212,7 +214,7 @@ include 'header/FillCombos.php';
 				$BranchID = 0;
 				$ContactInfoBarCounter = $_POST["contactInfoBarCounter$i"];
 								
-				$query = "INSERT INTO Addresses(Address, Country, State, City, ZipCode) VALUES(:Address, :Country, :State, :City, :ZipCode); INSERT INTO Branches(CompanyID, BranchName, AddressID, IsHeadOffice) SELECT :CompanyID, :BranchName, LAST_INSERT_ID( ), :IsHeadOffice ;";
+				$query = "INSERT INTO addresses(Address, Country, State, City, ZipCode) VALUES(:Address, :Country, :State, :City, :ZipCode); INSERT INTO branches(CompanyID, BranchName, AddressID, IsHeadOffice) SELECT :CompanyID, :BranchName, LAST_INSERT_ID( ), :IsHeadOffice ;";
 				$sth = $dbh->prepare($query);
 				$sth->bindValue(':Address',$Address);
 				$sth->bindValue(':Country',$Country);
@@ -225,23 +227,24 @@ include 'header/FillCombos.php';
 				$sth->bindValue(':IsHeadOffice',$IsHeadOffice);
 				
 				$sth->execute() ;
-				$BranchID = $dbh->lastInsertId();
+				//$BranchID = $dbh->lastInsertId();
 				//$sth->debugDumpParams();
 				//var_dump($sth->ErrorInfo());
 				for($j = 0; $j <= $ContactInfoBarCounter; $j++){
 					$ContactType = $_POST["inputContactTypeb".$i."c".$j];
 					$ContactInfo = $_POST["inputContactInfob".$i."c".$j];
-					$query = "INSERT INTO ContactInfos(ContactTypeID, Value) values (:ContactTypeID, :Value); INSERT INTO BranchDetails(BranchID, ContactInfoID) SELECT :BranchID, LAST_INSERT_ID( ) ;";
+					$query = "INSERT INTO contactinfos(ContactTypeID, Value) values (:ContactTypeID, :Value); INSERT INTO branchdetails(BranchID, ContactInfoID) SELECT MAX(BranchID), LAST_INSERT_ID( ) From branches ;";
 					$sth = $dbh->prepare($query);
 					$sth->bindValue(':ContactTypeID',$ContactType);
 					$sth->bindValue(':Value',$ContactInfo);
-					$sth->bindValue(':BranchID',$BranchID);
+					//$sth->bindValue(':BranchID',$BranchID);
 					
 					$sth->execute() ;
 					//$sth->debugDumpParams();
 					//var_dump($sth->ErrorInfo());
 				}
 			}
+			SendEmailOfCompanyCreation($CompanyID);
 			echo "Company Saved Successfully!";
 		} catch(PDOException $e) {
 			die('Could not save to the database:<br/>' . $e);
@@ -276,6 +279,17 @@ include 'header/FillCombos.php';
             <div class="col-sm-10">
               <select class="form-control" id="inputIndustrySubCategory" name="inputIndustrySubCategory">
               	<?PHP FillIndustorySubCategoryCombo(0); ?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputCategory" class="col-sm-2 control-label">Category</label>
+            <div class="col-sm-10">
+              <select class="form-control" id="inputCategory" name="inputCategory">
+              	<option value="">Select</option>
+              	<option value="1">Customer</option>
+              	<option value="2">Supplier</option>
+              	<option value="3">Other</option>
               </select>
             </div>
           </div>
@@ -373,7 +387,7 @@ include 'header/FillCombos.php';
               <td style="width:35%" ><div class="form-group" Style="margin-left:0px;margin-right:5px;">
                   <label for="inputContactTypeb0c0" >Type</label>
                   <select class="form-control" id="inputContactTypeb0c0" name="inputContactTypeb0c0">
-                    <?PHP FillContactInfoTypeCombo(); ?>           
+                    <?PHP FillContactInfoTypeCombo(0); ?>           
                   </select>
                 </div></td>
               <td style="width:60%" ><div class="form-group" Style="margin-left:5px;margin-right:5px;">

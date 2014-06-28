@@ -97,6 +97,13 @@ return true;
 </head>
 
 <body>
+<?PHP
+		if(isset($_POST['Export']))
+		{
+			header("Location: header/export_member.php?Company=$Company&MemberName=$MemberName");
+		}
+    ?>
+
 <div class="container">
   <?php include 'header/menu-top-navigation.php';?>
   
@@ -126,6 +133,7 @@ return true;
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
               <button type="submit" class="btn btn-default">Search</button>
+              <button type="submit" class="btn btn-default" value="Export" name="Export" >Export</button>
             </div>
           </div>
         </div>
@@ -171,7 +179,7 @@ return true;
 			$Company = $Company==0? null : $Company;
 
 			try {
-				$query = "SELECT Title, FirstName, MiddleName, LastName, Remarks,MemberID,isVerified FROM Members WHERE CONCAT(Title, FirstName, MiddleName, LastName) LIKE IFNULL(CONCAT('%',REPLACE(?, ' ', '%'),'%'), CONCAT(Title, FirstName, MiddleName, LastName)) AND CompanyID = IFNULL(?, CompanyID);";
+				$query = "SELECT Title, FirstName, MiddleName, LastName, Remarks,MemberID,isVerified FROM members WHERE CONCAT(Title, FirstName, MiddleName, LastName) LIKE IFNULL(CONCAT('%',REPLACE(?, ' ', '%'),'%'), CONCAT(Title, FirstName, MiddleName, LastName)) AND CompanyID = IFNULL(?, CompanyID);";
 				$sth = $dbh->prepare($query);
 				$sth->execute(array($MemberName, $Company)) ;
 				//$sth->debugDumpParams();

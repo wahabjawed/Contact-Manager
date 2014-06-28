@@ -95,7 +95,7 @@ include 'header/FillCombos.php';
 		$ContactInfoBarCounter = $_POST['contactInfoBarCounter'];
 		$MemberID = $_GET['id'];
 		try {
-			$query = "UPDATE Members SET Title = :Title, FirstName = :FirstName, MiddleName = :MiddleName, LastName = :LastName, Remarks = :Remarks, CompanyID = :CompanyID, Department = :Department, Designation = :Designation WHERE MemberID = :MemberID; UPDATE Addresses SET Address = :Address, Country = :Country, State = :State, City = :City, ZipCode = :ZipCode WHERE AddressID = (SELECT AddressID FROM Members WHERE MemberID = :MemberID); DELETE FROM ContactInfos WHERE ContactInfoID IN(SELECT ContactInfoID FROM MemberDetails WHERE MemberID = :MemberID); DELETE FROM MemberDetails WHERE MemberID = :MemberID;";
+			$query = "UPDATE members SET Title = :Title, FirstName = :FirstName, MiddleName = :MiddleName, LastName = :LastName, Remarks = :Remarks, CompanyID = :CompanyID, Department = :Department, Designation = :Designation WHERE MemberID = :MemberID; UPDATE addresses SET Address = :Address, Country = :Country, State = :State, City = :City, ZipCode = :ZipCode WHERE AddressID = (SELECT AddressID FROM members WHERE MemberID = :MemberID); DELETE FROM contactinfos WHERE ContactInfoID IN(SELECT ContactInfoID FROM memberdetails WHERE MemberID = :MemberID); DELETE FROM memberdetails WHERE MemberID = :MemberID;";
 			//$query += "VALUES(:CompanyName)";
 			$sth = $dbh->prepare($query);
 			$sth->bindValue(':MemberID',$MemberID);
@@ -120,7 +120,7 @@ include 'header/FillCombos.php';
 			for($i = 0; $i <= $ContactInfoBarCounter; $i++){
 			$ContactType = $_POST["inputContactType$i"];
 			$ContactInfo = $_POST["inputContactInfo$i"];
-				$query = "INSERT INTO ContactInfos(ContactTypeID, Value) values (:ContactTypeID, :Value); INSERT INTO MemberDetails(MemberID, ContactInfoID) SELECT :MemberID, LAST_INSERT_ID( );";
+				$query = "INSERT INTO contactinfos(ContactTypeID, Value) values (:ContactTypeID, :Value); INSERT INTO memberdetails(MemberID, ContactInfoID) SELECT :MemberID, LAST_INSERT_ID( );";
 				$sth = $dbh->prepare($query);
 				$sth->bindValue(':MemberID',$MemberID);
 				$sth->bindValue(':ContactTypeID',$ContactType);
@@ -142,7 +142,7 @@ include 'header/FillCombos.php';
 	if($_GET)
 	{
 		$MemberID = $_GET['id'];
-		$query = "SELECT * FROM Members B INNER JOIN Addresses A ON B.AddressID = A.AddressID INNER JOIN (SELECT MemberID, COUNT(*) AS ContactInfoBarCount FROM MemberDetails WHERE MemberID = :MemberID) C ON C.MemberID = B.MemberID;";
+		$query = "SELECT * FROM members B INNER JOIN Addresses A ON B.AddressID = A.AddressID INNER JOIN (SELECT MemberID, COUNT(*) AS ContactInfoBarCount FROM memberdetails WHERE MemberID = :MemberID) C ON C.MemberID = B.MemberID;";
 		$sth = $dbh->prepare($query);
 		$sth->bindValue(':MemberID',$MemberID);
 		$sth->execute() ;
@@ -167,7 +167,7 @@ include 'header/FillCombos.php';
 <script>
 
 	function SelectTitle(value){
-		var s = document.getElementById("inputTitle");;
+		var s = document.getElementById("inputTitle");
 		for ( var i = 0; i < s.options.length; i++ ) {
         if ( s.options[i].value == value) {
             s.options[i].selected = true;
@@ -321,7 +321,7 @@ include 'header/FillCombos.php';
         <input type="number" value="<?PHP echo --$ContactInfoBarCount ;?>" id="contactInfoBarCounter" name="contactInfoBarCounter" style="visibility:hidden;"/>
           <table width="100%" id="contactInfoTable">
           <?PHP 
-				$query = "SELECT ContactTypeID, Value FROM MemberDetails BD INNER JOIN ContactInfos CI ON BD.ContactInfoID = CI.ContactInfoID WHERE MemberID = :MemberID;";
+				$query = "SELECT ContactTypeID, Value FROM memberdetails BD INNER JOIN ContactInfos CI ON BD.ContactInfoID = CI.ContactInfoID WHERE MemberID = :MemberID;";
 				$sth = $dbh->prepare($query);
 				$sth->bindValue(':MemberID',$MemberID);
 				$sth->execute() ;

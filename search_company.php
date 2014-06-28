@@ -98,6 +98,12 @@ return true;
 </head>
 
 <body>
+<?PHP
+		if(isset($_POST['Export']))
+		{
+			header("Location: header/export_company.php?CompanyName=$CompanyName&IndustoryCategory=$IndustoryCategory&IndustorySubCategory=$IndustorySubCategory");
+		}
+    ?>
 <div class="container">
  <?php include 'header/menu-top-navigation.php';?>
   
@@ -145,6 +151,7 @@ return true;
            <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <button type="submit" class="btn btn-default">Search</button>
+          <button type="submit" class="btn btn-default" value="Export" name="Export" >Export</button>
         </div>
       </div>
           
@@ -187,7 +194,7 @@ return true;
 			$IndustorySubCategory = $IndustorySubCategory==0? null : $IndustorySubCategory;
 
 			try {
-				$query = "SELECT CompanyName, Website, Remarks,CompanyID,isVerified FROM Companies WHERE CompanyName LIKE IFNULL(CONCAT('%',?,'%'), CompanyName) AND IndustoryCategory = IFNULL(?, IndustoryCategory) AND IndustorySubCategory = IFNULL(?, IndustorySubCategory);";
+				$query = "SELECT CompanyName, Website, Remarks,CompanyID,isVerified FROM companies WHERE CompanyName LIKE IFNULL(CONCAT('%',?,'%'), CompanyName) AND IndustoryCategory = IFNULL(?, IndustoryCategory) AND IndustorySubCategory = IFNULL(?, IndustorySubCategory);";
 				$sth = $dbh->prepare($query);
 				$sth->execute(array($CompanyName, $IndustoryCategory, $IndustorySubCategory)) ;
 				//$sth->debugDumpParams();

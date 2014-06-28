@@ -5,6 +5,7 @@ if($_POST){
 		switch($action) {
 			case 'state' : FillStateCombo($_POST['country']);break;
 			case 'city' : FillCityCombo($_POST['state']);break;
+			// ...etc...
 		}
 	}
 }
@@ -12,7 +13,7 @@ function FillIndustoryCategoryCombo($selectedCategory){
 	require 'connect_database.php'; 
 
 	try {
-			$query = "SELECT CategoryID, CategoryName FROM IndustoryCategories;";
+			$query = "SELECT CategoryID, CategoryName FROM industorycategories;";
 			$sth = $dbh->prepare($query);
 			$sth->execute() ;
 			$select = $selectedCategory==0?'selected':'';
@@ -32,7 +33,7 @@ function FillIndustorySubCategoryCombo($selectedSubCategory){
 	require 'connect_database.php'; 
 
 	try {
-			$query = "SELECT SubCategoryID, SubCategoryName FROM IndustorySubCategories;";
+			$query = "SELECT SubCategoryID, SubCategoryName FROM industorysubcategories;";
 			$sth = $dbh->prepare($query);
 			$sth->execute() ;
 			$select = $selectedSubCategory==0?'selected':'';
@@ -53,7 +54,7 @@ function FillContactInfoTypeCombo($selectedTypeId){
 	require 'connect_database.php'; 
 
 	try {
-			$query = "SELECT ContactTypeID, ContactTypeName FROM ContactTypes;";
+			$query = "SELECT ContactTypeID, ContactTypeName FROM contacttypes;";
 			$sth = $dbh->prepare($query);
 			$sth->execute() ;
 			while ($row = $sth->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
@@ -72,7 +73,7 @@ function FillContactInfoTypeCombo($selectedTypeId){
 	require 'connect_database.php'; 
 
 	try {
-			$query = "SELECT CompanyID, CompanyName FROM Companies;";
+			$query = "SELECT CompanyID, CompanyName FROM companies;";
 			$sth = $dbh->prepare($query);
 			$sth->execute() ;
 			while ($row = $sth->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
@@ -90,7 +91,7 @@ function FillContactInfoTypeCombo($selectedTypeId){
 	require 'connect_database.php'; 
 
 	try {
-			$query = "SELECT DISTINCT Department FROM Members;";
+			$query = "SELECT DISTINCT Department FROM members;";
 			$sth = $dbh->prepare($query);
 			$sth->execute() ;
 			while ($row = $sth->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
@@ -107,7 +108,7 @@ function FillContactInfoTypeCombo($selectedTypeId){
 	require 'connect_database.php'; 
 
 	try {
-			$query = "SELECT DISTINCT Designation FROM Members;";
+			$query = "SELECT DISTINCT Designation FROM members;";
 			$sth = $dbh->prepare($query);
 			$sth->execute() ;
 			while ($row = $sth->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
@@ -124,7 +125,7 @@ function FillContactInfoTypeCombo($selectedTypeId){
 	require 'connect_database.php'; 
 
 	try {
-			$query = "SELECT DISTINCT Country FROM Addresses;";
+			$query = "SELECT DISTINCT Country FROM addresses;";
 			$sth = $dbh->prepare($query);
 			$sth->execute() ;
 			while ($row = $sth->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
@@ -141,7 +142,7 @@ function FillContactInfoTypeCombo($selectedTypeId){
 	require 'connect_database.php'; 
 
 	try {
-			$query = "SELECT DISTINCT State FROM Addresses WHERE Country LIKE '$country';";
+			$query = "SELECT DISTINCT State FROM addresses WHERE Country LIKE '$country';";
 			$sth = $dbh->prepare($query);
 			$sth->execute() ;
 			while ($row = $sth->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
@@ -158,7 +159,7 @@ function FillContactInfoTypeCombo($selectedTypeId){
 	require 'connect_database.php'; 
 
 	try {
-			$query = "SELECT DISTINCT City FROM Addresses WHERE State LIKE '$state';";
+			$query = "SELECT DISTINCT City FROM addresses WHERE State LIKE '$state';";
 			$sth = $dbh->prepare($query);
 			$sth->execute() ;
 			while ($row = $sth->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
