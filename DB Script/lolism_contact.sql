@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 27, 2014 at 05:09 AM
+-- Generation Time: Jun 28, 2014 at 10:47 AM
 -- Server version: 5.5.24-log
 -- PHP Version: 5.3.13
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
   `City` varchar(300) DEFAULT NULL,
   `ZipCode` int(11) DEFAULT NULL,
   PRIMARY KEY (`AddressID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=63 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=71 ;
 
 --
 -- Dumping data for table `addresses`
@@ -57,11 +57,16 @@ INSERT INTO `addresses` (`AddressID`, `Address`, `Country`, `State`, `City`, `Zi
 (48, 'qwery', 'Pakistan', 'Sindh', 'Karachi', 74000),
 (49, 'qwery', 'Pakistan', 'Sindh', 'Karachi', 74000),
 (51, 'qwery', 'Pakistan', 'Sindh', 'Karachi', 74000),
-(58, 'qwery', 'Pakistan', 'Sindh', 'Karachi', 74000),
-(59, 'qwery', 'Pakistan', 'Sindh', 'Karachi', 74000),
 (60, 'qwery', 'Pakistan', 'Sindh', 'Karachi', 74000),
 (61, 'qwery', 'Pakistan', 'Sindh', 'Karachi', 74000),
-(62, 'qwery 1', 'Pakistan', 'Sindh', 'Karachi', 74000);
+(63, 'qwery', 'Pakistan', 'Sindh', 'Karachi', 74000),
+(64, 'qwery', 'Pakistan', 'Sindh', 'Karachi', 74000),
+(65, 'qwery', 'Pakistan', 'Sindh', 'Karachi', 74000),
+(66, 'qwery', 'Pakistan', 'Sindh', 'Karachi', 74000),
+(67, 'qwery', 'Pakistan', 'Sindh', 'Karachi', 74000),
+(68, 'qwery', 'Pakistan', 'Sindh', 'Karachi', 74000),
+(69, 'qwery', 'Pakistan', 'Sindh', 'Karachi', 74000),
+(70, 'qwery', 'Pakistan', 'Sindh', 'Karachi', 74000);
 
 -- --------------------------------------------------------
 
@@ -74,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `branchdetails` (
   `BranchID` int(11) NOT NULL,
   `ContactInfoID` int(11) NOT NULL,
   PRIMARY KEY (`BranchDetailID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=133 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=137 ;
 
 --
 -- Dumping data for table `branchdetails`
@@ -102,7 +107,10 @@ INSERT INTO `branchdetails` (`BranchDetailID`, `BranchID`, `ContactInfoID`) VALU
 (129, 56, 133),
 (130, 56, 134),
 (131, 57, 135),
-(132, 57, 136);
+(132, 57, 136),
+(134, 51, 142),
+(135, 52, 143),
+(136, 53, 148);
 
 -- --------------------------------------------------------
 
@@ -117,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `branches` (
   `AddressID` int(11) NOT NULL,
   `IsHeadOffice` tinyint(1) NOT NULL,
   PRIMARY KEY (`BranchID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=58 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=54 ;
 
 --
 -- Dumping data for table `branches`
@@ -138,8 +146,9 @@ INSERT INTO `branches` (`BranchID`, `CompanyID`, `BranchName`, `AddressID`, `IsH
 (46, 8, 'Branch 1', 48, 1),
 (47, 9, 'Branch 1', 49, 1),
 (49, 10, 'Branch 1', 51, 1),
-(56, 11, 'Branch 1', 58, 0),
-(57, 11, 'Branch 2', 59, 1);
+(51, 11, 'Branch 1', 63, 1),
+(52, 12, 'Branch 1 1', 64, 1),
+(53, 13, 'Branch 1', 69, 1);
 
 -- --------------------------------------------------------
 
@@ -149,31 +158,34 @@ INSERT INTO `branches` (`BranchID`, `CompanyID`, `BranchName`, `AddressID`, `IsH
 
 CREATE TABLE IF NOT EXISTS `companies` (
   `CompanyID` int(11) NOT NULL AUTO_INCREMENT,
-  `CompanyName` varchar(500) NOT NULL,
-  `IndustoryCategory` int(11) NOT NULL,
-  `IndustorySubCategory` int(11) NOT NULL,
-  `Website` varchar(300) NOT NULL,
-  `Remarks` varchar(1000) NOT NULL,
+  `CompanyName` varchar(500) DEFAULT NULL,
+  `IndustoryCategory` int(11) DEFAULT NULL,
+  `IndustorySubCategory` int(11) DEFAULT NULL,
+  `Category` int(11) DEFAULT NULL,
+  `Website` varchar(300) DEFAULT NULL,
+  `Remarks` varchar(1000) DEFAULT NULL,
   `insertedBy` int(5) NOT NULL,
   `isVerified` int(1) NOT NULL DEFAULT '0',
   `verifiedBy` int(5) DEFAULT NULL,
   PRIMARY KEY (`CompanyID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 --
 -- Dumping data for table `companies`
 --
 
-INSERT INTO `companies` (`CompanyID`, `CompanyName`, `IndustoryCategory`, `IndustorySubCategory`, `Website`, `Remarks`, `insertedBy`, `isVerified`, `verifiedBy`) VALUES
-(1, 'asdfasdf', 17, 45, 'updatedcompany.com', 'qweryy', 0, 0, 0),
-(4, 'Testing Company', 1, 1, 'website.com', 'qwerty', 0, 0, 0),
-(5, 'qwer', 36, 64, 'company.com', 'qwerty', 2, 0, NULL),
-(6, 'Test1', 1, 1, 'company.com', 'asdfgh', 2, 0, NULL),
-(7, 'asdfasdf', 1, 1, 'company.com', 'asj', 2, 0, NULL),
-(8, 'asdfasdf', 1, 1, 'company.com', 'qweryt', 2, 0, NULL),
-(9, 'asdfasdf', 1, 1, 'company.com', 'qwerty', 2, 0, NULL),
-(10, 'asdfasdf', 1, 1, 'company.com', 'qweryrt', 2, 0, NULL),
-(11, 'qwerty', 1, 1, 'company.com', '', 2, 0, NULL);
+INSERT INTO `companies` (`CompanyID`, `CompanyName`, `IndustoryCategory`, `IndustorySubCategory`, `Category`, `Website`, `Remarks`, `insertedBy`, `isVerified`, `verifiedBy`) VALUES
+(1, 'asdfasdf', 17, 45, NULL, 'updatedcompany.com', 'qweryy', 0, 0, 0),
+(4, 'Testing Company', 1, 1, NULL, 'website.com', 'qwerty', 0, 0, 0),
+(5, 'qwer', 36, 64, NULL, 'company.com', 'qwerty', 2, 0, NULL),
+(6, 'Test1', 1, 1, NULL, 'company.com', 'asdfgh', 2, 0, NULL),
+(7, 'asdfasdf', 1, 1, NULL, 'company.com', 'asj', 2, 0, NULL),
+(8, 'asdfasdf', 1, 1, NULL, 'company.com', 'qweryt', 2, 0, NULL),
+(9, 'asdfasdf', 1, 1, NULL, 'company.com', 'qwerty', 2, 0, NULL),
+(10, 'asdfasdf', 1, 1, NULL, 'company.com', 'qweryrt', 2, 0, NULL),
+(11, 'qwerty', 1, 1, 3, 'company.com', 'qwerty', 2, 0, NULL),
+(12, 'qwerty', 1, 1, 2, 'company.com', 'qwerty', 2, 0, NULL),
+(13, 'qwer', 1, 1, 2, 'company.com', 'qwty', 2, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -186,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `contactinfos` (
   `ContactTypeID` int(11) NOT NULL,
   `Value` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`ContactInfoID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=209 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=150 ;
 
 --
 -- Dumping data for table `contactinfos`
@@ -215,21 +227,18 @@ INSERT INTO `contactinfos` (`ContactInfoID`, `ContactTypeID`, `Value`) VALUES
 (110, 2, '2342435234'),
 (111, 1, 'qwerewr@qwer.com'),
 (112, 2, '789456123'),
-(131, 1, 'qwerewr@qwer.com'),
-(132, 2, '123465'),
-(133, 1, 'qwerewr@qwer.com'),
-(134, 4, '123465'),
-(135, 2, '123465'),
-(136, 4, '87894563'),
 (137, 1, 'qweryty@qwer.com'),
 (138, 2, '123465'),
 (139, 1, 'qweryty@qwer.com'),
 (140, 2, '123465'),
-(204, 1, 'qweryty@qwer.com'),
-(205, 2, '123465'),
-(206, 3, 'qweryty@qwer.com'),
-(207, 4, '789465'),
-(208, 5, 'qweryty@qwer.com');
+(142, 1, 'qwerewr@qwer.com'),
+(143, 1, 'qwerewr@qwer.com'),
+(144, 1, 'qweryty@qwer.com'),
+(145, 1, 'qweryty@qwer.com'),
+(146, 1, 'qweryty@qwer.com'),
+(147, 1, 'qweryty@qwer.com'),
+(148, 1, 'qwerewr@qwer.com'),
+(149, 1, 'qweryty@qwer.com');
 
 -- --------------------------------------------------------
 
@@ -424,7 +433,7 @@ CREATE TABLE IF NOT EXISTS `memberdetails` (
   `MemberID` int(11) NOT NULL,
   `ContactInfoID` int(11) NOT NULL,
   PRIMARY KEY (`MemberDetailID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=125 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=130 ;
 
 --
 -- Dumping data for table `memberdetails`
@@ -443,7 +452,12 @@ INSERT INTO `memberdetails` (`MemberDetailID`, `MemberID`, `ContactInfoID`) VALU
 (121, 5, 205),
 (122, 5, 206),
 (123, 5, 207),
-(124, 5, 208);
+(124, 5, 208),
+(125, 5, 144),
+(126, 6, 145),
+(127, 7, 146),
+(128, 8, 147),
+(129, 9, 149);
 
 -- --------------------------------------------------------
 
@@ -466,7 +480,7 @@ CREATE TABLE IF NOT EXISTS `members` (
   `isVerified` int(1) NOT NULL DEFAULT '0',
   `verifiedBy` int(5) DEFAULT NULL,
   PRIMARY KEY (`MemberID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `members`
@@ -477,7 +491,11 @@ INSERT INTO `members` (`MemberID`, `Title`, `FirstName`, `MiddleName`, `LastName
 (2, 'Mr', 'Member1 First Name', 'Member1 Middle Name', 'Member1 Last Name', 8, 'Testing Remarks', 4, 'Finance Department', 'Finance Manager', 0, 0, NULL),
 (3, 'Mr', 'First', 'Middle', 'Last', 60, '', 1, 'HR Department', 'HR Manager', 2, 0, NULL),
 (4, 'Mr', 'First', 'Middle', 'Last', 61, '', 11, 'HR Department', 'HR Manager', 2, 0, NULL),
-(5, 'Miss', 'First 1', 'Middle 1', 'Last 1', 62, 'qwt 2', 4, 'Finance Department', 'Finance Manager', 2, 0, NULL);
+(5, 'Mr', 'First', 'Middle', 'Last', 65, '', 1, 'Finance Department', 'Finance Manager', 2, 0, NULL),
+(6, 'Mr', 'First', 'Middle', 'Last', 66, '', 1, 'Finance Department', 'Finance Manager', 2, 0, NULL),
+(7, 'Mr', 'First', 'Middle', 'Last', 67, '', 1, 'Finance Department', 'Finance Manager', 2, 0, NULL),
+(8, 'Mr', 'First', 'Middle', 'Last', 68, '', 1, 'Finance Department', 'Finance Manager', 2, 0, NULL),
+(9, 'Mr', 'First', 'Middle', 'Last', 70, '', 1, 'Finance Department', 'Finance Manager', 2, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -503,7 +521,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 INSERT INTO `user` (`userID`, `username`, `password`, `first_name`, `last_name`, `type`, `email`) VALUES
 (1, 'sub', 'binary', 'Rayyan', 'Taqdees', 1, 'rayyan.182@gmail.com'),
 (2, 'super', 'binary', 'Rayyan', 'Taqdees', 3, 'rayyan.182@gmail.com'),
-(3, 'admin', 'binary', 'Rayyan', 'Taqdees', 2, 'rayyan.182@gmail.com');
+(3, 'admin', 'binary', 'Rayyan', 'Taqdees', 2, 'm.saadsurya@gmail.com');
 
 -- --------------------------------------------------------
 

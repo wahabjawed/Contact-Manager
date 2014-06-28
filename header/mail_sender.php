@@ -1,5 +1,5 @@
 <?php
-function SendEmailOfCompanyCreation($CompanyID){
+function SendEmailOfCreation($Entity, $ID){
 	require 'connect_database.php'; 
 	
 	
@@ -7,10 +7,15 @@ function SendEmailOfCompanyCreation($CompanyID){
 			$query = "SELECT email FROM user WHERE type = 2;";
 			$sth = $dbh->prepare($query);
 			$sth->execute() ;
-			while ($row = $sth->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
-				$message = "Dear User, \n A new company has been inserted with ID: $CompanyID.";
-				$message = wordwrap($message, 70, "\r\n");
-				mail($row['email'], 'Company Creation Notification', $message);
+			$to = "";
+			while ($row = $sth->fetch(PDO::FETCH_ORI_NEXT)) {
+				$to .= ($to==""?"":", ").$row['email'];
+			}
+			$message = "Dear User, \n A new ".$Entity." has been inserted with ID: $ID .";
+			$message = wordwrap($message, 70, "\r\n");
+			$headers = 'From: info@icvcloud.com';
+			if($to != ""){
+			mail($to, $Entity.' Creation Notification', $message, $headers);
 			}
 			$query = null;
 			//$sth->debugDumpParams();

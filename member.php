@@ -4,7 +4,7 @@ include 'header/checkloginstatus.php';
 include 'header/connect_database.php'; 
 include 'header/_user-details.php';
 include 'header/FillCombos.php'; 
-
+include 'header/mail_sender.php'; 
 ?>
 
 <!DOCTYPE html>
@@ -129,7 +129,13 @@ include 'header/FillCombos.php';
 				$sth->execute() ;
 				//$sth->debugDumpParams();
 				//var_dump($sth->ErrorInfo());
+				
 			}
+			$query = "SELECT MAX(MemberID) FROM members;";
+			$sth = $dbh->prepare($query);
+			$sth->execute();
+			$r = $sth->fetch();
+			SendEmailOfCreation("Member", $r[0]);
 			echo "Member Saved Successfully!";
 		} catch(PDOException $e) {
 			die('Could not save to the database:<br/>' . $e);

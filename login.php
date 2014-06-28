@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 include 'header/connect_database.php'; 
 
@@ -18,6 +19,7 @@ if($_POST)
 	
 	if($rows[0]==1)
 	{
+		
 		$_SESSION['username'] = $username;
 		header("location:index.php");
 		

@@ -244,7 +244,7 @@ include 'header/mail_sender.php';
 					//var_dump($sth->ErrorInfo());
 				}
 			}
-			SendEmailOfCompanyCreation($CompanyID);
+			SendEmailOfCreation("Company", $CompanyID);
 			echo "Company Saved Successfully!";
 		} catch(PDOException $e) {
 			die('Could not save to the database:<br/>' . $e);

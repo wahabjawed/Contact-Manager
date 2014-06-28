@@ -16,6 +16,8 @@
 	  if($canManage==1){
 	  echo "<li><a href='user_management.php'>User Management</a></li>";
 	  }
+	   echo "<li><a href='login.php'>Logout</a></li>";
+
 	echo"</ul>
   </div>";
          	

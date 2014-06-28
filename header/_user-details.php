@@ -5,7 +5,7 @@
 			$username = $_SESSION['username'];
 			
 			try {
-				$query = "SELECT * FROM user u,userType ut WHERE u.type=ut.userTypeID and u.username like :username";
+				$query = "SELECT * FROM user u,usertype ut WHERE u.type=ut.userTypeID and u.username like :username";
 			 	$stmt = $dbh->prepare($query);
 				$stmt->bindParam(':username', $username);
     		 	$stmt->execute();

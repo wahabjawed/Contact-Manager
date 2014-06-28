@@ -31,7 +31,7 @@ if($_POST)
 
 <!-- Custom styles for this template -->
 <link href="css/justified-nav.css" rel="stylesheet">
-
+<script src="js/jquery.js" type="text/javascript"></script>
 <!-- Just for debugging purposes. Don't actually copy this line! -->
 <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 
@@ -89,7 +89,14 @@ return true;
 	
 		
 		}
-	
+	function ExportToExcel()
+	{
+		var Company = $('#selectCompany').val();
+		var MemberName = $('#inputMemberName').val();
+		
+		window.open('header/export_member.php?Company='+Company+'&MemberName='+MemberName, '_blank');
+		return false;
+	}
 	
 	
 </script>
@@ -98,10 +105,11 @@ return true;
 
 <body>
 <?PHP
-		if(isset($_POST['Export']))
-		{
-			header("Location: header/export_member.php?Company=$Company&MemberName=$MemberName");
-		}
+		//if(isset($_POST['Export']))
+//		{
+//			header("Location: header/export_member.php?Company=$Company&MemberName=$MemberName");
+//		}
+
     ?>
 
 <div class="container">
@@ -133,7 +141,7 @@ return true;
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
               <button type="submit" class="btn btn-default">Search</button>
-              <button type="submit" class="btn btn-default" value="Export" name="Export" >Export</button>
+              <button class="btn btn-default" value="Export" name="Export" onClick="return ExportToExcel();" >Export</button>
             </div>
           </div>
         </div>

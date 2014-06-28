@@ -147,7 +147,7 @@ function resets(){
       					<td>${designation}</td>
       					<td>${email}</td>
             <td><a href='#' onclick='return deleteConfirm(${id});' > Delete </a>
-			<a href='update_user.php?id={$id}'>Update</a></td>
+			<a href='user_update.php?id={$id}'>Update</a></td>
    
           </tr>";
 			}
