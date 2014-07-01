@@ -7,7 +7,6 @@ if(isset($_GET['logout'])){
 	
 	if($_GET['logout'] == 'true')
 	{	
-		session_start();
 		session_destroy();
 	}
 	

@@ -187,7 +187,7 @@ if(isset($_GET['id'])){
   
   <!-- Site footer -->
   <div class="footer">
-    <p>SilverSages &copy; Company 2014</p>
+    <p>&copy; StudioBinary 2014</p>
   </div>
 </div>
 <!-- /container --> 

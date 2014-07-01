@@ -187,6 +187,9 @@ return true;
 	if($canDelete==1){
 	 echo"<th>Delete</th>";
 	}
+	if($userTypeID==1){
+	 echo"<th>Note</th>";
+	}
 	
 
 	
@@ -228,7 +231,9 @@ return true;
 	 echo"<td><a href='delete.php?type=company&id={$row[3]}' onclick='return deleteConfirm();'><span class='glyphicon glyphicon-star'></span> Delete </a></td>";
 	}
 		
-				  
+	if($userTypeID==1){
+	 echo"<td><a href='note.php?type=company'><span class='glyphicon glyphicon-star'></span> Notify </a></td>";
+	}			  
 				  
 				}
 				$query = null;
@@ -245,7 +250,7 @@ return true;
   
   <!-- Site footer -->
   <div class="footer">
-    <p>&copy; Company 2014</p>
+    <p>&copy; StudioBinary 2014</p>
   </div>
 </div>
 <!-- /container --> 

@@ -161,7 +161,7 @@ function resets(){
   </div>
   
   <div class="footer">
-    <p>© SilverSages Studios 2014</p>
+    <p>&copy; StudioBinary 2014</p>
   
 </div>
 <!-- /container --> 

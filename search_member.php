@@ -170,6 +170,9 @@ return true;
 	if($canDelete==1){
 	 echo"<th>Delete</th>";
 	}
+		if($userTypeID==1){
+	 echo"<th>Note</th>";
+	}
 	
 
 	
@@ -210,6 +213,9 @@ return true;
 	if($canDelete==1){
 	 echo"<td><a href='delete.php?type=member&id={$row[5]}' onclick='return deleteConfirm();'><span class='glyphicon glyphicon-star'></span> Delete </a></td>";
 	}
+		if($userTypeID==1){
+	 echo"<td><a href='note.php?type=member'><span class='glyphicon glyphicon-star'></span> Notify </a></td>";
+	}			  
 				}
 				$query = null;
 				} catch(PDOException $e) {
@@ -225,7 +231,7 @@ return true;
   
   <!-- Site footer -->
   <div class="footer">
-    <p>&copy; Company 2014</p>
+    <p>&copy; StudioBinary 2014</p>
   </div>
 </div>
 <!-- /container --> 

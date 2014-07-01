@@ -12,6 +12,8 @@
     		 	$result = $stmt->fetchAll();
 			   	$row = $result[0];
 				$userID     = $row['userID'];
+				$userName     = $row['username'];
+				$userTypeID     = $row['userTypeID'];				
 				$canDelete  = $row['canDelete'];
 				$canInsert  = $row['canInsert'];
 				$canUpdate  = $row['canUpdate'];

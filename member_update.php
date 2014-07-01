@@ -87,6 +87,7 @@ include 'header/FillCombos.php';
 		$City = $_POST['inputCity'];
 		$ZipCode = $_POST['inputZipCode'];
 		$Remarks = $_POST['inputRemarks'];
+		$Scope = $_POST['inputScope'];
 		
 		$Company = $_POST['inputCompany'];
 		$Department = $_POST['inputDepartment'];
@@ -95,7 +96,7 @@ include 'header/FillCombos.php';
 		$ContactInfoBarCounter = $_POST['contactInfoBarCounter'];
 		$MemberID = $_GET['id'];
 		try {
-			$query = "UPDATE members SET Title = :Title, FirstName = :FirstName, MiddleName = :MiddleName, LastName = :LastName, Remarks = :Remarks, CompanyID = :CompanyID, Department = :Department, Designation = :Designation WHERE MemberID = :MemberID; UPDATE addresses SET Address = :Address, Country = :Country, State = :State, City = :City, ZipCode = :ZipCode WHERE AddressID = (SELECT AddressID FROM members WHERE MemberID = :MemberID); DELETE FROM contactinfos WHERE ContactInfoID IN(SELECT ContactInfoID FROM memberdetails WHERE MemberID = :MemberID); DELETE FROM memberdetails WHERE MemberID = :MemberID;";
+			$query = "UPDATE members SET Title = :Title, Scope=:Scope, FirstName = :FirstName, MiddleName = :MiddleName, LastName = :LastName, Remarks = :Remarks, CompanyID = :CompanyID, Department = :Department, Designation = :Designation WHERE MemberID = :MemberID; UPDATE addresses SET Address = :Address, Country = :Country, State = :State, City = :City, ZipCode = :ZipCode WHERE AddressID = (SELECT AddressID FROM members WHERE MemberID = :MemberID); DELETE FROM contactinfos WHERE ContactInfoID IN(SELECT ContactInfoID FROM memberdetails WHERE MemberID = :MemberID); DELETE FROM memberdetails WHERE MemberID = :MemberID;";
 			//$query += "VALUES(:CompanyName)";
 			$sth = $dbh->prepare($query);
 			$sth->bindValue(':MemberID',$MemberID);
@@ -112,6 +113,7 @@ include 'header/FillCombos.php';
 			$sth->bindValue(':CompanyID',$Company);
 			$sth->bindValue(':Department',$Department);
 			$sth->bindValue(':Designation',$Designation);
+			$sth->bindValue(':Scope',$Scope);
 			$sth->execute() ;
 			//$MemberID = $dbh->lastInsertId();
 			
@@ -161,7 +163,13 @@ include 'header/FillCombos.php';
 		$CompanyID = $rows['CompanyID'];	
 		$Department = $rows['Department'];	
 		$Designation = $rows['Designation'];
+		$InsertedAt = $rows['insertedAt'];
+		$InsertedBy = $rows['insertedBy'];
+		$VerifiedBy = $rows['verifiedBy'];
+		$VerifiedAt = $rows['verifiedAt'];
+		$Scope=$rows['Scope'];
 		$ContactInfoBarCount = $rows['ContactInfoBarCount'];	
+
 		}
 ?>
 <script>
@@ -183,6 +191,33 @@ include 'header/FillCombos.php';
   <!-- Jumbotron -->
   <div class="jumbotron">
     <form class="form-horizontal" role="form" method="post" action="member_update.php?id=<?PHP echo $MemberID; ?>">
+      
+      
+           <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">AUDIT LOG</h3>
+        </div>
+        <div class="panel-body">
+        <table class="table table-bordered">
+        <thead>
+        <th>Inserted By</th>
+        <th>Inserted At</th>
+        <th>Verified By</th>
+        <th>Verified At</th>
+        </thead>
+        <tr>
+        <td><?PHP echo $InsertedBy ?></td>
+        <td><?PHP echo $InsertedAt ?></td>
+        <td><?PHP echo $VerifiedBy ?></td>
+        <td><?PHP echo $VerifiedAt ?></td>
+        </tr>
+		
+        
+        </table>
+        </div>
+        </div>
+
+      
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">INDIVIDUAL MEMBER INFORMATION</h3>
@@ -225,6 +260,17 @@ include 'header/FillCombos.php';
               <input type="text" class="form-control" id="inputAddress" name="inputAddress" placeholder="Address"  value="<?PHP echo $Address; ?>">
             </div>
           </div>
+          
+          <div class="form-group">
+            <label for="inputScope" class="col-sm-2 control-label">Scope</label>
+            <div class="col-sm-10">
+              <select class="form-control" id="inputScope" name="inputScope">
+              	<option value="1" <?PHP echo ($Scope=='1'?'selected':''); ?> >Global</option>
+              	<option value="2"  <?PHP echo ($Scope=='2'?'selected':'');?> >Shared</option>	
+              </select>
+            </div>
+          </div>
+          
           <div class="form-group">
             <label for="inputCountry" class="col-sm-2 control-label">Country</label>
             <div class="col-sm-10" style="height:35px;" >
@@ -363,7 +409,7 @@ include 'header/FillCombos.php';
   
   <!-- Site footer -->
   <div class="footer">
-    <p>&copy; Company 2014</p>
+    <p>&copy; StudioBinary 2014</p>
   </div>
 </div>
 <!-- /container --> 

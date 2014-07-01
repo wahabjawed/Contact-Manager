@@ -69,7 +69,7 @@ include 'header/_user-details.php';
 
       <!-- Site footer -->
       <div class="footer">
-        <p>&copy; Company 2014</p>
+        <p>&copy; StudioBinary 2014</p>
       </div>
 
     </div> <!-- /container -->

@@ -30,12 +30,13 @@
 		$verifyID="0";	
 		}
 		
-			$query = "UPDATE " .$table. " SET isVerified = :verifyID,verifiedBy = :userID where ".$updateID." =:ID";
+			$query = "UPDATE " .$table. " SET isVerified = :verifyID,verifiedBy = :userID, verifiedAt=:verifiedAt where ".$updateID." =:ID";
 								
 		$sth = $dbh->prepare($query);
 		$sth->bindValue(':ID',$id);
-		$sth->bindValue(':userID',$userID);
+		$sth->bindValue(':userID',$userName);
 		$sth->bindValue(':verifyID',$verifyID);
+		$sth->bindValue(':verifiedAt',date('Y/m/d H:i:s'));
 		$sth->execute();
 		
 	

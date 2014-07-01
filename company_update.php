@@ -196,9 +196,10 @@ include 'header/FillCombos.php';
 		$BranchCounter = $_POST['branchCounter'];
 		$HeadOffice = $_POST['radioHeadOffice'];
 		$Category = $_POST['inputCategory'];
+		$Scope=$_POST["inputScope"];
 		
 		try {
-			$query = "UPDATE companies SET CompanyName = :CompanyName, IndustoryCategory = :IndustoryCategory, IndustorySubCategory = :IndustorySubCategory, Category = :Category, Website = :Website, Remarks = :Remarks WHERE CompanyID = :CompanyID; DELETE FROM addresses WHERE AddressID IN(SELECT AddressID FROM branches WHERE CompanyID = :CompanyID); DELETE FROM contactinfos WHERE ContactInfoID IN(SELECT ContactInfoID FROM branchdetails WHERE BranchID IN(SELECT BranchID FROM branches WHERE CompanyID = :CompanyID)); DELETE FROM branchdetails WHERE BranchID IN(SELECT BranchID FROM branches WHERE CompanyID = :CompanyID); DELETE FROM branches WHERE CompanyID = :CompanyID;";
+			$query = "UPDATE companies SET CompanyName = :CompanyName, Scope=:Scope, IndustoryCategory = :IndustoryCategory, IndustorySubCategory = :IndustorySubCategory, Category = :Category, Website = :Website, Remarks = :Remarks WHERE CompanyID = :CompanyID; DELETE FROM addresses WHERE AddressID IN(SELECT AddressID FROM branches WHERE CompanyID = :CompanyID); DELETE FROM contactinfos WHERE ContactInfoID IN(SELECT ContactInfoID FROM branchdetails WHERE BranchID IN(SELECT BranchID FROM branches WHERE CompanyID = :CompanyID)); DELETE FROM branchdetails WHERE BranchID IN(SELECT BranchID FROM branches WHERE CompanyID = :CompanyID); DELETE FROM branches WHERE CompanyID = :CompanyID;";
 			//$query += "VALUES(:CompanyName)";
 			$sth = $dbh->prepare($query);
 			$sth->bindValue(':CompanyID',$CompanyID);
@@ -208,6 +209,7 @@ include 'header/FillCombos.php';
 			$sth->bindValue(':Category',$Category);
 			$sth->bindValue(':Website',$Website);
 			$sth->bindValue(':Remarks',$Remarks);
+			$sth->bindValue(':Scope',$Scope);
 			$sth->execute() ;
 			//$sth->debugDumpParams();
 			//var_dump($sth->ErrorInfo());
@@ -218,18 +220,20 @@ include 'header/FillCombos.php';
 				$State = $_POST["inputState$i"];
 				$City = $_POST["inputCity$i"];
 				$ZipCode = $_POST["inputZipCode$i"];
+				
 				$IsHeadOffice = $HeadOffice==$i? true : false;
 				
 				$BranchID = 0;
 				$ContactInfoBarCounter = $_POST["contactInfoBarCounter$i"];
 								
-				$query = "INSERT INTO Addresses(Address, Country, State, City, ZipCode) VALUES(:Address, :Country, :State, :City, :ZipCode); INSERT INTO Branches(CompanyID, BranchName, AddressID, IsHeadOffice) SELECT :CompanyID, :BranchName, LAST_INSERT_ID( ), :IsHeadOffice ;";
+				$query = "INSERT INTO Addresses(Address, Country, State, City, ZipCode) VALUES(:Address, :Country, :State, :City, :ZipCode); INSERT INTO Branches(CompanyID, BranchName, AddressID, IsHeadOffice) SELECT :CompanyID, :BranchName, LAST_INSERT_ID( ), :IsHeadOffice;";
 				$sth = $dbh->prepare($query);
 				$sth->bindValue(':Address',$Address);
 				$sth->bindValue(':Country',$Country);
 				$sth->bindValue(':State',$State);
 				$sth->bindValue(':City',$City);
 				$sth->bindValue(':ZipCode',$ZipCode);
+				
 
 				$sth->bindValue(':CompanyID',$CompanyID);
 				$sth->bindValue(':BranchName',$BranchName);
@@ -278,6 +282,11 @@ include 'header/FillCombos.php';
 		$Category = $rows['Category'];
 		$Website = $rows['Website'];
 		$Remarks = $rows['Remarks'];
+		$InsertedAt = $rows['insertedAt'];
+		$InsertedBy = $rows['insertedBy'];
+		$VerifiedBy = $rows['verifiedBy'];
+		$VerifiedAt = $rows['verifiedAt'];
+		$Scope=$rows['Scope'];
 		$BranchCounter = $rows['BranchCount'];
 	}
 ?>
@@ -298,9 +307,35 @@ include 'header/FillCombos.php';
   <!-- Jumbotron -->
   <div class="jumbotron">
     <form class="form-horizontal" role="form" method="post" action="company_update.php?id=<?PHP echo $CompanyID ?>">
+
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">ADD COMPANY</h3>
+          <h3 class="panel-title">AUDIT LOG</h3>
+        </div>
+        <div class="panel-body">
+        <table class="table table-bordered">
+        <thead>
+        <th>Inserted By</th>
+        <th>Inserted At</th>
+        <th>Verified By</th>
+        <th>Verified At</th>
+        </thead>
+        <tr>
+        <td><?PHP echo $InsertedBy ?></td>
+        <td><?PHP echo $InsertedAt ?></td>
+        <td><?PHP echo $VerifiedBy ?></td>
+        <td><?PHP echo $VerifiedAt ?></td>
+        </tr>
+		
+        
+        </table>
+        </div>
+        </div>
+
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">UPDATE COMPANY</h3>
         </div>
         <div class="panel-body">
           <div class="form-group">
@@ -336,6 +371,17 @@ include 'header/FillCombos.php';
               </select>
             </div>
           </div>
+          
+                     <div class="form-group">
+            <label for="inputScope" class="col-sm-2 control-label">Scope</label>
+            <div class="col-sm-10">
+              <select class="form-control" id="inputScope" name="inputScope">
+<option value="1" <?PHP echo ($Scope=='1'?'selected':''); ?> >Global </option>
+              	<option value="2"  <?PHP echo ($Scope=='2'?'selected':'');?> >Shared</option>	
+                              </select>
+            </div>
+          </div>
+          
           <div class="form-group">
             <label for="inputWebsite" class="col-sm-2 control-label">Website</label>
             <div class="col-sm-10">
@@ -501,7 +547,7 @@ include 'header/FillCombos.php';
   
   <!-- Site footer -->
   <div class="footer">
-    <p>&copy; Company 2014</p>
+    <p>&copy; StudioBinary 2014</p>
   </div>
 </div>
 <!-- /container --> 

@@ -186,18 +186,21 @@ include 'header/mail_sender.php';
 		$CompanyID = 0;
 		$BranchCounter = $_POST['branchCounter'];
 		$HeadOffice = $_POST['radioHeadOffice'];
-		$Category = $_POST['inputCategory'];
+		$Type = $_POST['inputCategory'];
+		$Scope = $_POST['inputScope'];
 		try {
-			$query = "INSERT INTO companies(CompanyName, IndustoryCategory, IndustorySubCategory, Category, Website, Remarks,insertedBy) values (:CompanyName, :IndustoryCategory, :IndustorySubCategory, :Category, :Website, :Remarks, :InsertedBy);";
+			$query = "INSERT INTO companies(CompanyName, IndustoryCategory, IndustorySubCategory, Category, Website, Remarks,insertedBy,insertedAt,Scope) values (:CompanyName, :IndustoryCategory, :IndustorySubCategory, :Category, :Website, :Remarks, :InsertedBy, :InsertedAt, :Scope);";
 			//$query += "VALUES(:CompanyName)";
 			$sth = $dbh->prepare($query);
 			$sth->bindValue(':CompanyName',$CompanyName);
 			$sth->bindValue(':IndustoryCategory',$IndustoryCategory);
 			$sth->bindValue(':IndustorySubCategory',$IndustorySubCategory);
-			$sth->bindValue(':Category',$Category);
+			$sth->bindValue(':Category',$Type);
 			$sth->bindValue(':Website',$Website);
 			$sth->bindValue(':Remarks',$Remarks);
-			$sth->bindValue(':InsertedBy',$userID);
+			$sth->bindValue(':InsertedBy',$userName);
+			$sth->bindValue(':InsertedAt',date('Y/m/d H:i:s'));
+			$sth->bindValue(':Scope',$Scope);
 			$sth->execute() ;
 			$CompanyID = $dbh->lastInsertId();
 			//$sth->debugDumpParams();
@@ -283,13 +286,23 @@ include 'header/mail_sender.php';
             </div>
           </div>
           <div class="form-group">
-            <label for="inputCategory" class="col-sm-2 control-label">Category</label>
+            <label for="inputCategory" class="col-sm-2 control-label">Type</label>
             <div class="col-sm-10">
               <select class="form-control" id="inputCategory" name="inputCategory">
               	<option value="">Select</option>
               	<option value="1">Customer</option>
               	<option value="2">Supplier</option>
               	<option value="3">Other</option>
+              </select>
+            </div>
+          </div>
+          
+           <div class="form-group">
+            <label for="inputScope" class="col-sm-2 control-label">Scope</label>
+            <div class="col-sm-10">
+              <select class="form-control" id="inputScope" name="inputScope">
+              	<option value="1">Global</option>
+              	<option value="2">Shared</option>	
               </select>
             </div>
           </div>
@@ -428,7 +441,7 @@ include 'header/mail_sender.php';
   
   <!-- Site footer -->
   <div class="footer">
-    <p>&copy; Company 2014</p>
+    <p>&copy; StudioBinary 2014</p>
   </div>
 </div>
 <!-- /container --> 
