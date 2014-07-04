@@ -7,11 +7,15 @@ include 'header/FillCombos.php';
 $CompanyName = "";
 $IndustoryCategory = 0;
 $IndustorySubCategory = 0;
+$Type = 0;
+$Country = "";
 if($_POST)
 		{
 			$CompanyName = $_POST['inputCompanyName'];
 			$IndustoryCategory = $_POST['selectIndustoryCategory'];
 			$IndustorySubCategory = $_POST['selectIndustorySubCategory'];
+			$Type = $_POST['selectCategory'];
+			$Country = $_POST['selectCountry'];
 		}
 ?>
 
@@ -94,12 +98,35 @@ return true;
 		var CompanyName = $('#inputCompanyName').val();
 		var IndustoryCategory = $('#selectIndustoryCategory').val();
 		var IndustorySubCategory = $('#selectIndustorySubCategory').val();
+		var Type = $('#selectCategory').val();
+		var Country = $('#selectCountry').val();
 		
-		window.open('header/export_company.php?CompanyName='+CompanyName+'&IndustoryCategory='+IndustoryCategory+'&IndustorySubCategory='+IndustorySubCategory, '_blank');
+		window.open('header/export_company.php?CompanyName='+CompanyName+'&IndustoryCategory='+IndustoryCategory+'&IndustorySubCategory='+IndustorySubCategory+'&Type='+Type+'&Country='+Country, '_blank');
 		return false;
 	}
 	
-	
+	function SelectCategory(value){
+		var s = document.getElementById("selectCategory");
+		for ( var i = 0; i < s.options.length; i++ ) {
+			if ( s.options[i].value == value) {
+				s.options[i].selected = true;
+				return;
+			}
+    	}
+	}
+	function SelectCountry(value){
+		var s = document.getElementById("selectCountry");
+		for ( var i = 0; i < s.options.length; i++ ) {
+			if ( s.options[i].value == value) {
+				s.options[i].selected = true;
+				return;
+			}
+    	}
+	}
+	$(document).ready(function(e) {
+        SelectCategory('<?PHP echo $Type; ?>');
+        SelectCountry('<?PHP echo $Country; ?>');
+    });
 </script>
     
     
@@ -145,6 +172,26 @@ return true;
               </select>
             </div>
           </div>
+          <div class="form-group">
+            <label for="selectCategory" class="col-sm-2 control-label">Type</label>
+            <div class="col-sm-10">
+              <select class="form-control" id="selectCategory" name="selectCategory">
+              	<option value="0">Select</option>
+              	<option value="1">Customer</option>
+              	<option value="2">Supplier</option>
+              	<option value="3">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="selectCountry" class="col-sm-2 control-label">Country</label>
+            <div class="col-sm-10" style="height:35px;" >
+              <select class="form-control" id="selectCountry" name="selectCountry" >
+				<option value="">Select Country</option>
+				<?PHP FillCountryCombo(); ?>
+              </select>
+            </div>
+          </div>
           <!--<div class="form-group">
             <label for="inputTitle" class="col-sm-2 control-label">Status</label>
             <div class="col-sm-10">
@@ -174,9 +221,11 @@ return true;
     <table style="width:100%;" class="table table-bordered">
       <thead style="text-align:center;">
       <tr>
-         <th>CompanyName</th>
-         <th>Website</th>
-         <th>Remarks</th>
+         <th>Company Name</th>
+         <th>Industory Category</th>
+         <th>Industory Sub Category</th>
+         <th>Type</th>
+         <th>Country</th>
            <?PHP
     if($canVerify==1){
 	 echo"<th>Verify</th>";
@@ -203,32 +252,34 @@ return true;
 			$CompanyName = $CompanyName==""? null : $CompanyName;
 			$IndustoryCategory = $IndustoryCategory==0? null : $IndustoryCategory;
 			$IndustorySubCategory = $IndustorySubCategory==0? null : $IndustorySubCategory;
+			$Type = $Type==0? null : $Type;
+			$Country = $Country==""? null : $Country;
 
 			try {
-				$query = "SELECT CompanyName, Website, Remarks,CompanyID,isVerified FROM companies WHERE CompanyName LIKE IFNULL(CONCAT('%',?,'%'), CompanyName) AND IndustoryCategory = IFNULL(?, IndustoryCategory) AND IndustorySubCategory = IFNULL(?, IndustorySubCategory);";
+				$query = "SELECT CompanyName, CategoryName, SubCategoryName, CASE Category WHEN 1 THEN 'Customer' WHEN 2 THEN 'Supplier' WHEN 3 THEN 'Other' ELSE '' END AS Category, Country, c.CompanyID, isVerified FROM companies c INNER JOIN user u ON u.username LIKE c.insertedBy LEFT JOIN industorycategories ic ON ic.CategoryID = c.IndustoryCategory LEFT JOIN industorysubcategories isc ON isc.SubCategoryID = c.IndustorySubCategory LEFT JOIN branches b ON c.CompanyID = b.CompanyID AND b.IsHeadOffice = 1 LEFT JOIN addresses a ON a.AddressID = b.AddressID WHERE CompanyName LIKE IFNULL(CONCAT('%',?,'%'), CompanyName) AND IndustoryCategory = IFNULL(?, IndustoryCategory) AND IndustorySubCategory = IFNULL(?, IndustorySubCategory) AND Category = IFNULL(?, Category) AND IFNULL(Country, '') LIKE IFNULL(?, IFNULL(Country, '')) AND (c.Scope = 1 OR 1 <> ? OR u.userID = ?) ;";
 				$sth = $dbh->prepare($query);
-				$sth->execute(array($CompanyName, $IndustoryCategory, $IndustorySubCategory)) ;
+				$sth->execute(array($CompanyName, $IndustoryCategory, $IndustorySubCategory, $Type, $Country, $userTypeID, $userID)) ;
 				//$sth->debugDumpParams();
 				//var_dump($sth->ErrorInfo());
-				while ($row = $sth->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
-				  echo "<tr><td>".$row[0]."</td><td>".$row[1]."</td><td>".$row[2]."</td>";
+				while ($row = $sth->fetch(PDO::FETCH_ORI_NEXT)) {
+				  echo "<tr><td>".$row[0]."</td><td>".$row[1]."</td><td>".$row[2]."</td><td>".$row[3]."</td><td>".$row[4]."</td>";
 				  
 				  
 				  if($canVerify==1){
-		if($row[4]==1){
+		if($row['isVerified']==1){
 			
-		 echo"	<td><a href='verification.php?id={$row[3]}&action=unverify&type=company' onclick='return unverifyConfirm();'><span class='glyphicon glyphicon-star'></span> UnVerify </a></td>";
+		 echo"	<td><a href='verification.php?id={$row['CompanyID']}&action=unverify&type=company' onclick='return unverifyConfirm();'><span class='glyphicon glyphicon-star'></span> UnVerify </a></td>";
 		
 			}else{
 		
-	 echo"	<td><a href='verification.php?id={$row[3]}&action=verify&type=company' onclick='return verifyConfirm();'><span class='glyphicon glyphicon-star'></span> Verify </a></td>";
+	 echo"	<td><a href='verification.php?id={$row['CompanyID']}&action=verify&type=company' onclick='return verifyConfirm();'><span class='glyphicon glyphicon-star'></span> Verify </a></td>";
 	}
 	}
 	if($canUpdate==1){
-	 echo"<td><a href='company_update.php?id={$row[3]}'><span class='glyphicon glyphicon-star'></span> Update </a></td>";
+	 echo"<td><a href='company_update.php?id={$row['CompanyID']}'><span class='glyphicon glyphicon-star'></span> Update </a></td>";
 	}
 	if($canDelete==1){
-	 echo"<td><a href='delete.php?type=company&id={$row[3]}' onclick='return deleteConfirm();'><span class='glyphicon glyphicon-star'></span> Delete </a></td>";
+	 echo"<td><a href='delete.php?type=company&id={$row['CompanyID']}' onclick='return deleteConfirm();'><span class='glyphicon glyphicon-star'></span> Delete </a></td>";
 	}
 		
 	if($userTypeID==1){

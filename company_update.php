@@ -377,7 +377,7 @@ include 'header/FillCombos.php';
             <div class="col-sm-10">
               <select class="form-control" id="inputScope" name="inputScope">
 <option value="1" <?PHP echo ($Scope=='1'?'selected':''); ?> >Global </option>
-              	<option value="2"  <?PHP echo ($Scope=='2'?'selected':'');?> >Shared</option>	
+              	<option value="2"  <?PHP echo ($Scope=='2'?'selected':'');?> >Private</option>	
                               </select>
             </div>
           </div>
