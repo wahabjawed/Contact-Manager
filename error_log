@@ -1,0 +1,6 @@
+[31-May-2014 05:50:31 America/New_York] PHP Parse error:  syntax error, unexpected end of file in /home/lolism/public_html/ContactManager/login.php on line 88
+[31-May-2014 05:52:33 America/New_York] PHP Parse error:  syntax error, unexpected end of file in /home/lolism/public_html/ContactManager/login.php on line 87
+[31-May-2014 05:52:39 America/New_York] PHP Parse error:  syntax error, unexpected end of file in /home/lolism/public_html/ContactManager/login.php on line 87
+[31-May-2014 05:52:41 America/New_York] PHP Parse error:  syntax error, unexpected end of file in /home/lolism/public_html/ContactManager/login.php on line 87
+[31-May-2014 05:52:42 America/New_York] PHP Parse error:  syntax error, unexpected end of file in /home/lolism/public_html/ContactManager/login.php on line 87
+[31-May-2014 06:07:12 America/New_York] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/lolism/public_html/ContactManager/login.php:4) in /home/lolism/public_html/ContactManager/login.php on line 28

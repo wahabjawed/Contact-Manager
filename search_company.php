@@ -165,7 +165,7 @@ return true;
             </div>
           </div>
           <div class="form-group">
-            <label for="selectIndustorySubCategory" class="col-sm-2 control-label">Industry Sub Category</label>
+            <label for="selectIndustorySubCategory" class="col-sm-2 control-label">Territory</label>
             <div class="col-sm-10">
               <select class="form-control" id="selectIndustorySubCategory" name="selectIndustorySubCategory">
                 	<?PHP FillIndustorySubCategoryCombo($IndustorySubCategory); ?>
@@ -176,10 +176,13 @@ return true;
             <label for="selectCategory" class="col-sm-2 control-label">Type</label>
             <div class="col-sm-10">
               <select class="form-control" id="selectCategory" name="selectCategory">
-              	<option value="0">Select</option>
-              	<option value="1">Customer</option>
-              	<option value="2">Supplier</option>
-              	<option value="3">Other</option>
+              	<option value="">Select</option>
+              	<option value="1">End User Customer</option>
+              	<option value="2">Distributor/Re-seller</option>
+              	<option value="3">Service Vendor</option>
+                <option value="4">Materials Supplier</option>
+                <option value="5">Internal User</option>
+                <option value="6">Others</option>
               </select>
             </div>
           </div>
@@ -256,7 +259,7 @@ return true;
 			$Country = $Country==""? null : $Country;
 
 			try {
-				$query = "SELECT CompanyName, CategoryName, SubCategoryName, CASE Category WHEN 1 THEN 'Customer' WHEN 2 THEN 'Supplier' WHEN 3 THEN 'Other' ELSE '' END AS Category, Country, c.CompanyID, isVerified FROM companies c INNER JOIN user u ON u.username LIKE c.insertedBy LEFT JOIN industorycategories ic ON ic.CategoryID = c.IndustoryCategory LEFT JOIN industorysubcategories isc ON isc.SubCategoryID = c.IndustorySubCategory LEFT JOIN branches b ON c.CompanyID = b.CompanyID AND b.IsHeadOffice = 1 LEFT JOIN addresses a ON a.AddressID = b.AddressID WHERE CompanyName LIKE IFNULL(CONCAT('%',?,'%'), CompanyName) AND IndustoryCategory = IFNULL(?, IndustoryCategory) AND IndustorySubCategory = IFNULL(?, IndustorySubCategory) AND Category = IFNULL(?, Category) AND IFNULL(Country, '') LIKE IFNULL(?, IFNULL(Country, '')) AND (c.Scope = 1 OR 1 <> ? OR u.userID = ?) ;";
+				$query = "SELECT CompanyName, CategoryName, SubCategoryName, CASE Category WHEN 1 THEN 'End User Customer' WHEN 2 THEN 'Distributor/Re-seller' WHEN 3 THEN 'Service Vendor' WHEN 4 THEN 'Materials Supplier' WHEN 5 THEN 'Internal User' WHEN 6 THEN 'Others' ELSE '' END AS Category, Country, c.CompanyID, isVerified FROM companies c INNER JOIN user u ON u.username LIKE c.insertedBy LEFT JOIN industorycategories ic ON ic.CategoryID = c.IndustoryCategory LEFT JOIN industorysubcategories isc ON isc.SubCategoryID = c.IndustorySubCategory LEFT JOIN branches b ON c.CompanyID = b.CompanyID AND b.IsHeadOffice = 1 LEFT JOIN addresses a ON a.AddressID = b.AddressID WHERE CompanyName LIKE IFNULL(CONCAT('%',?,'%'), CompanyName) AND IndustoryCategory = IFNULL(?, IndustoryCategory) AND IndustorySubCategory = IFNULL(?, IndustorySubCategory) AND Category = IFNULL(?, Category) AND IFNULL(Country, '') LIKE IFNULL(?, IFNULL(Country, '')) AND (c.Scope = 1 OR 1 <> ? OR u.userID = ?) ;";
 				$sth = $dbh->prepare($query);
 				$sth->execute(array($CompanyName, $IndustoryCategory, $IndustorySubCategory, $Type, $Country, $userTypeID, $userID)) ;
 				//$sth->debugDumpParams();

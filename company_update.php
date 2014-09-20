@@ -53,39 +53,39 @@ include 'header/FillCombos.php';
 		branchTabContent += '<div class="form-group" >';
         branchTabContent += '<label for="inputBranchName'+branchCounter+'" class="col-sm-2 control-label">Branch Name</label>';
         branchTabContent += '<div class="col-sm-10">';
-        branchTabContent += '<input type="text" class="form-control" id="inputBranchName'+branchCounter+'" name="inputBranchName'+branchCounter+'" placeholder="Branch Name">';
+        branchTabContent += '<input type="text" class="form-control" id="inputBranchName'+branchCounter+'" name="inputBranchName'+branchCounter+'" placeholder="Branch Name" required >';
         branchTabContent += '</div>';
         branchTabContent += '</div>';
 		branchTabContent += '<div class="form-group" >';
         branchTabContent += '<label for="inputAddress'+branchCounter+'" class="col-sm-2 control-label">Address</label>';
         branchTabContent += '<div class="col-sm-10">';
-        branchTabContent += '<input type="text" class="form-control" id="inputAddress'+branchCounter+'" name="inputAddress'+branchCounter+'" placeholder="Address">';
+        branchTabContent += '<input type="text" class="form-control" id="inputAddress'+branchCounter+'" name="inputAddress'+branchCounter+'" placeholder="Address" required >';
         branchTabContent += '</div>';
         branchTabContent += '</div>';
         branchTabContent += '<div class="form-group">';
         branchTabContent += '<label for="inputCountry'+branchCounter+'" class="col-sm-2 control-label">Country</label>';
         branchTabContent += '<div class="col-sm-10" style="height:35px;" >';
-        branchTabContent += '<select class="form-control" onchange="document.getElementById(\'inputCountry'+branchCounter+'\').value=this.options[this.selectedIndex].text; FillStateCombo($(this).data(\'branch\'));" data-branch="'+branchCounter+'">';
+        branchTabContent += '<select class="form-control" onchange="document.getElementById(\'inputCountry'+branchCounter+'\').value=this.options[this.selectedIndex].value; FillStateCombo($(this).data(\'branch\'));" data-branch="'+branchCounter+'">';
 		branchTabContent += '<option value="">Select Country</option>';
 		branchTabContent += '<?PHP FillCountryCombo(); ?>';
         branchTabContent += '</select>';
-        branchTabContent += '<input type="text" class="form-control" id="inputCountry'+branchCounter+'" name="inputCountry'+branchCounter+'" placeholder="Country"  style="position:relative;top:-34px;width:92%" onfocus="this.select()">';
+        branchTabContent += '<input type="text" class="form-control" id="inputCountry'+branchCounter+'" name="inputCountry'+branchCounter+'" placeholder="Country"  style="position:relative;top:-34px;width:92%" onfocus="this.select()" required >';
         branchTabContent += '</div>';
         branchTabContent += '</div>';
         branchTabContent += '<div class="form-group">';
         branchTabContent += '<label for="inputState'+branchCounter+'" class="col-sm-2 control-label">State</label>';
         branchTabContent += '<div class="col-sm-10" style="height:35px;">';
-        branchTabContent += '<select class="form-control" id="selectState'+branchCounter+'" onchange="document.getElementById(\'inputState'+branchCounter+'\').value=this.options[this.selectedIndex].text; FillCityCombo($(this).data(\'branch\'));" data-branch="'+branchCounter+'">';
+        branchTabContent += '<select class="form-control" id="selectState'+branchCounter+'" onchange="document.getElementById(\'inputState'+branchCounter+'\').value=this.options[this.selectedIndex].value; FillCityCombo($(this).data(\'branch\'));" data-branch="'+branchCounter+'">';
         branchTabContent += '</select>';
-        branchTabContent += '<input type="text" class="form-control" id="inputState'+branchCounter+'" name="inputState'+branchCounter+'" placeholder="State" style="position:relative;top:-34px;width:92%" onfocus="this.select()">';
+        branchTabContent += '<input type="text" class="form-control" id="inputState'+branchCounter+'" name="inputState'+branchCounter+'" placeholder="State" style="position:relative;top:-34px;width:92%" onfocus="this.select()" required >';
         branchTabContent += '</div>';
         branchTabContent += '</div>';
         branchTabContent += '<div class="form-group">';
         branchTabContent += '<label for="inputCity'+branchCounter+'" class="col-sm-2 control-label">City</label>';
         branchTabContent += '<div class="col-sm-10" style="height:35px;">';
-        branchTabContent += '<select class="form-control" id="selectCity'+branchCounter+'" onchange="document.getElementById(\'inputCity'+branchCounter+'\').value=this.options[this.selectedIndex].text;">';
+        branchTabContent += '<select class="form-control" id="selectCity'+branchCounter+'" onchange="document.getElementById(\'inputCity'+branchCounter+'\').value=this.options[this.selectedIndex].value;">';
         branchTabContent += '</select>';
-        branchTabContent += '<input type="text" class="form-control" id="inputCity'+branchCounter+'" name="inputCity'+branchCounter+'" placeholder="City" style="position:relative;top:-34px;width:92%" onfocus="this.select()">';
+        branchTabContent += '<input type="text" class="form-control" id="inputCity'+branchCounter+'" name="inputCity'+branchCounter+'" placeholder="City" style="position:relative;top:-34px;width:92%" onfocus="this.select()" required >';
         branchTabContent += '</div>';
         branchTabContent += '</div>';
         branchTabContent += '<div class="form-group">';
@@ -104,13 +104,13 @@ include 'header/FillCombos.php';
         branchTabContent += '<tr>';
         branchTabContent += '<td style="width:35%" ><div class="form-group" Style="margin-left:0px;margin-right:5px;">';
         branchTabContent += '<label for="inputContactTypeb'+branchCounter+'c0" >Type</label>';
-        branchTabContent += '<select class="form-control" id="inputContactTypeb'+branchCounter+'c0" name="inputContactTypeb'+branchCounter+'c0">';
+        branchTabContent += '<select class="form-control" id="inputContactTypeb'+branchCounter+'c0" name="inputContactTypeb'+branchCounter+'c0" required >';
         branchTabContent += '<?PHP FillContactInfoTypeCombo(0); ?>';
         branchTabContent += '</select>';
         branchTabContent += '</div></td>';
         branchTabContent += '<td style="width:60%" ><div class="form-group" Style="margin-left:5px;margin-right:5px;">';
         branchTabContent += '<label for="inputContactInfob'+branchCounter+'c0" >Value</label>';
-        branchTabContent += '<input type="text" class="form-control" id="inputContactInfob'+branchCounter+'c0" name="inputContactInfob'+branchCounter+'c0" placeholder="Value">';
+        branchTabContent += '<input type="text" class="form-control" id="inputContactInfob'+branchCounter+'c0" name="inputContactInfob'+branchCounter+'c0" placeholder="Value" required >';
         branchTabContent += '</div></td>';
         branchTabContent += '<td style="width:5%">';
         branchTabContent += '<div class="form-group" Style="margin-left:5px;margin-right:0px;margin-top:20px;">';
@@ -139,8 +139,8 @@ include 'header/FillCombos.php';
 		var contactInfoBarCounter = $('#contactInfoBarCounter'+branch).val();
 		contactInfoBarCounter++;
 		var contactInfoBar = '<tr>';
-		contactInfoBar += '<td style="width:35%" ><div class="form-group" Style="margin-left:0px;margin-right:5px;"><label for="inputContactTypeb'+branch+'c'+contactInfoBarCounter+'" >Type</label><select class="form-control" id="inputContactTypeb'+branch+'c'+contactInfoBarCounter+'" name="inputContactTypeb'+branch+'c'+contactInfoBarCounter+'"><?PHP FillContactInfoTypeCombo(0); ?></select></div></td>';
-        contactInfoBar += '<td style="width:60%" ><div class="form-group" Style="margin-left:5px;margin-right:5px;"><label for="inputContactInfob'+branch+'c'+contactInfoBarCounter+'" >Value</label><input type="text" class="form-control" id="inputContactInfob'+branch+'c'+contactInfoBarCounter+'" name="inputContactInfob'+branch+'c'+contactInfoBarCounter+'" placeholder="Value"></div></td>';
+		contactInfoBar += '<td style="width:35%" ><div class="form-group" Style="margin-left:0px;margin-right:5px;"><label for="inputContactTypeb'+branch+'c'+contactInfoBarCounter+'" >Type</label><select class="form-control" id="inputContactTypeb'+branch+'c'+contactInfoBarCounter+'" name="inputContactTypeb'+branch+'c'+contactInfoBarCounter+'" required ><?PHP FillContactInfoTypeCombo(0); ?></select></div></td>';
+        contactInfoBar += '<td style="width:60%" ><div class="form-group" Style="margin-left:5px;margin-right:5px;"><label for="inputContactInfob'+branch+'c'+contactInfoBarCounter+'" >Value</label><input type="text" class="form-control" id="inputContactInfob'+branch+'c'+contactInfoBarCounter+'" name="inputContactInfob'+branch+'c'+contactInfoBarCounter+'" placeholder="Value" required ></div></td>';
         contactInfoBar += '<td style="width:5%"><div class="form-group" Style="margin-left:5px;margin-right:0px;margin-top:20px;"><button type="button" class="btn btn-sm " onClick="AddContactInfoBar($(this).data(\'branch\'));" style="padding:5px 10px;" data-branch="'+branch+'" ><span class="glyphicon glyphicon-plus "></span></button></div></td>';
         contactInfoBar += '</tr>';
 		$('#contactInfoBarCounter'+branch).val(contactInfoBarCounter);
@@ -226,7 +226,7 @@ include 'header/FillCombos.php';
 				$BranchID = 0;
 				$ContactInfoBarCounter = $_POST["contactInfoBarCounter$i"];
 								
-				$query = "INSERT INTO Addresses(Address, Country, State, City, ZipCode) VALUES(:Address, :Country, :State, :City, :ZipCode); INSERT INTO Branches(CompanyID, BranchName, AddressID, IsHeadOffice) SELECT :CompanyID, :BranchName, LAST_INSERT_ID( ), :IsHeadOffice;";
+				$query = "INSERT INTO addresses(Address, Country, State, City, ZipCode) VALUES(:Address, :Country, :State, :City, :ZipCode); INSERT INTO branches(CompanyID, BranchName, AddressID, IsHeadOffice) SELECT :CompanyID, :BranchName, LAST_INSERT_ID( ), :IsHeadOffice;";
 				$sth = $dbh->prepare($query);
 				$sth->bindValue(':Address',$Address);
 				$sth->bindValue(':Country',$Country);
@@ -246,7 +246,7 @@ include 'header/FillCombos.php';
 				for($j = 0; $j <= $ContactInfoBarCounter; $j++){
 					$ContactType = $_POST["inputContactTypeb".$i."c".$j];
 					$ContactInfo = $_POST["inputContactInfob".$i."c".$j];
-					$query = "INSERT INTO ContactInfos(ContactTypeID, Value) values (:ContactTypeID, :Value); INSERT INTO BranchDetails(BranchID, ContactInfoID) SELECT MAX(BranchID), LAST_INSERT_ID( ) From Branches ;";
+					$query = "INSERT INTO contactinfos(ContactTypeID, Value) values (:ContactTypeID, :Value); INSERT INTO branchdetails(BranchID, ContactInfoID) SELECT MAX(BranchID), LAST_INSERT_ID( ) From branches ;";
 					$sth = $dbh->prepare($query);
 					$sth->bindValue(':ContactTypeID',$ContactType);
 					$sth->bindValue(':Value',$ContactInfo);
@@ -270,7 +270,7 @@ include 'header/FillCombos.php';
 	if($_GET)
 	{
 		$CompanyID = $_GET['id'];
-		$query = "SELECT * FROM companies C INNER JOIN industorycategories IC ON C.IndustoryCategory = IC.CategoryID INNER JOIN IndustorySubCategories ISC ON C.IndustorySubCategory = ISC.SubCategoryID INNER JOIN (SELECT CompanyID, COUNT(*) BranchCount FROM branches WHERE CompanyID = :CompanyID) B ON C.CompanyID = B.CompanyID;";
+		$query = "SELECT * FROM companies C INNER JOIN industorycategories IC ON C.IndustoryCategory = IC.CategoryID INNER JOIN industorysubcategories ISC ON C.IndustorySubCategory = ISC.SubCategoryID INNER JOIN (SELECT CompanyID, COUNT(*) BranchCount FROM branches WHERE CompanyID = :CompanyID) B ON C.CompanyID = B.CompanyID;";
 		$sth = $dbh->prepare($query);
 		$sth->bindValue(':CompanyID',$CompanyID);
 		$sth->execute() ;
@@ -341,21 +341,21 @@ include 'header/FillCombos.php';
           <div class="form-group">
             <label for="inputCompanyName" class="col-sm-2 control-label">Company Name</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputCompanyName" name="inputCompanyName" placeholder="Company Name" value="<?PHP echo $CompanyName; ?>">
+              <input type="text" class="form-control" id="inputCompanyName" name="inputCompanyName" placeholder="Company Name" value="<?PHP echo $CompanyName; ?>" required >
             </div>
           </div>
           <div class="form-group">
             <label for="inputIndustryCategory" class="col-sm-2 control-label">Industry Category</label>
             <div class="col-sm-10">
-              <select class="form-control" id="inputIndustoryCategory" name="inputIndustoryCategory">
+              <select class="form-control" id="inputIndustoryCategory" name="inputIndustoryCategory" required >
                 <?PHP FillIndustoryCategoryCombo($IndustoryCategory); ?>
               </select>
             </div>
           </div>
           <div class="form-group">
-            <label for="inputIndustrySubCategory" class="col-sm-2 control-label">Industry Sub Category</label>
+            <label for="inputIndustrySubCategory" class="col-sm-2 control-label">Territory</label>
             <div class="col-sm-10">
-              <select class="form-control" id="inputIndustrySubCategory" name="inputIndustrySubCategory">
+              <select class="form-control" id="inputIndustrySubCategory" name="inputIndustrySubCategory" required >
               	<?PHP FillIndustorySubCategoryCombo($IndustorySubCategory); ?>
               </select>
             </div>
@@ -363,11 +363,14 @@ include 'header/FillCombos.php';
           <div class="form-group">
             <label for="inputCategory" class="col-sm-2 control-label">Category</label>
             <div class="col-sm-10">
-              <select class="form-control" id="inputCategory" name="inputCategory">
+              <select class="form-control" id="inputCategory" name="inputCategory" required >
               	<option value="">Select</option>
-                <option value="1">Customer</option>
-              	<option value="2">Supplier</option>
-              	<option value="3">Other</option>
+              	<option value="1">End User Customer</option>
+              	<option value="2">Distributor/Re-seller</option>
+              	<option value="3">Service Vendor</option>
+                <option value="4">Materials Supplier</option>
+                <option value="5">Internal User</option>
+                <option value="6">Others</option>
               </select>
             </div>
           </div>
@@ -375,7 +378,7 @@ include 'header/FillCombos.php';
                      <div class="form-group">
             <label for="inputScope" class="col-sm-2 control-label">Scope</label>
             <div class="col-sm-10">
-              <select class="form-control" id="inputScope" name="inputScope">
+              <select class="form-control" id="inputScope" name="inputScope" required >
 <option value="1" <?PHP echo ($Scope=='1'?'selected':''); ?> >Global </option>
               	<option value="2"  <?PHP echo ($Scope=='2'?'selected':'');?> >Private</option>	
                               </select>
@@ -444,40 +447,40 @@ include 'header/FillCombos.php';
           echo '<div class="form-group" >';
           echo '<label for="inputBranchName'.$j.'" class="col-sm-2 control-label">Branch Name</label>';
           echo '<div class="col-sm-10">';
-          echo '<input type="text" class="form-control" id="inputBranchName'.$j.'" name="inputBranchName'.$j.'" placeholder="Branch Name" value="'.$rows[$j]['BranchName'].'">';
+          echo '<input type="text" class="form-control" id="inputBranchName'.$j.'" name="inputBranchName'.$j.'" placeholder="Branch Name" value="'.$rows[$j]['BranchName'].'" required >';
           echo '</div>';
           echo '</div>';
           echo '<div class="form-group" >';
           echo '<label for="inputAddress'.$j.'" class="col-sm-2 control-label">Address</label>';
           echo '<div class="col-sm-10">';
-          echo '<input type="text" class="form-control" id="inputAddress'.$j.'" name="inputAddress'.$j.'" placeholder="Address" value="'.$rows[$j]['Address'].'">';
+          echo '<input type="text" class="form-control" id="inputAddress'.$j.'" name="inputAddress'.$j.'" placeholder="Address" value="'.$rows[$j]['Address'].'" required >';
           echo '</div>';
           echo '</div>';
           echo '<div class="form-group">';
           echo '<label for="inputCountry'.$j.'" class="col-sm-2 control-label">Country</label>';
           echo '<div class="col-sm-10" style="height:35px;" >';
-          echo '<select class="form-control" onchange="document.getElementById(\'inputCountry'.$j.'\').value=this.options[this.selectedIndex].text; FillStateCombo($(this).data(\'branch\'));" data-branch="'.$j.'">';
+          echo '<select class="form-control" onchange="document.getElementById(\'inputCountry'.$j.'\').value=this.options[this.selectedIndex].value; FillStateCombo($(this).data(\'branch\'));" data-branch="'.$j.'" >';
 		  echo '<option value="">Select Country</option>';
 				 FillCountryCombo();
           echo '</select>';
-          echo '<input type="text" class="form-control" id="inputCountry'.$j.'" name="inputCountry'.$j.'" placeholder="Country"  style="position:relative;top:-34px;width:92%" onfocus="this.select()" value="'.$rows[$j]['Country'].'">';
+          echo '<input type="text" class="form-control" id="inputCountry'.$j.'" name="inputCountry'.$j.'" placeholder="Country"  style="position:relative;top:-34px;width:92%" onfocus="this.select()" value="'.$rows[$j]['Country'].'" required >';
           echo '</div>';
           echo '</div>';
           echo '<div class="form-group">';
           echo '<label for="inputState'.$j.'" class="col-sm-2 control-label">State</label>';
           echo '<div class="col-sm-10" style="height:35px;">';
-          echo '<select class="form-control" id="selectState'.$j.'" onchange="document.getElementById(\'inputState'.$j.'\').value=this.options[this.selectedIndex].text; FillCityCombo($(this).data(\'branch\'));" data-branch="'.$j.'">';
+          echo '<select class="form-control" id="selectState'.$j.'" onchange="document.getElementById(\'inputState'.$j.'\').value=this.options[this.selectedIndex].value; FillCityCombo($(this).data(\'branch\'));" data-branch="'.$j.'">';
                 
           echo '</select>';
-          echo '<input type="text" class="form-control" id="inputState'.$j.'" name="inputState'.$j.'" placeholder="State" style="position:relative;top:-34px;width:92%" onfocus="this.select()" value="'.$rows[$j]['State'].'">';
+          echo '<input type="text" class="form-control" id="inputState'.$j.'" name="inputState'.$j.'" placeholder="State" style="position:relative;top:-34px;width:92%" onfocus="this.select()" value="'.$rows[$j]['State'].'" required >';
           echo '</div>';
           echo '</div>';
           echo '<div class="form-group">';
           echo '<label for="inputCity'.$j.'" class="col-sm-2 control-label">City</label>';
           echo '<div class="col-sm-10" style="height:35px;">';
-          echo '<select class="form-control" id="selectCity'.$j.'" onchange="document.getElementById(\'inputCity'.$j.'\').value=this.options[this.selectedIndex].text;">';
+          echo '<select class="form-control" id="selectCity'.$j.'" onchange="document.getElementById(\'inputCity'.$j.'\').value=this.options[this.selectedIndex].value;">';
           echo '</select>';
-          echo '<input type="text" class="form-control" id="inputCity'.$j.'" name="inputCity'.$j.'" placeholder="City" style="position:relative;top:-34px;width:92%" onfocus="this.select()" value="'.$rows[$j]['City'].'">';
+          echo '<input type="text" class="form-control" id="inputCity'.$j.'" name="inputCity'.$j.'" placeholder="City" style="position:relative;top:-34px;width:92%" onfocus="this.select()" value="'.$rows[$j]['City'].'" required >';
           echo '</div>';
           echo '</div>';
           
@@ -507,13 +510,13 @@ include 'header/FillCombos.php';
 				echo '<tr>';
 				echo '<td style="width:35%" ><div class="form-group" Style="margin-left:0px;margin-right:5px;">';
 				echo '<label for="inputContactTypeb'.$j.'c'.$k.'" >Type</label>';
-				echo '<select class="form-control" id="inputContactTypeb'.$j.'c'.$k.'" name="inputContactTypeb'.$j.'c'.$k.'">';
+				echo '<select class="form-control" id="inputContactTypeb'.$j.'c'.$k.'" name="inputContactTypeb'.$j.'c'.$k.'" required >';
 						 FillContactInfoTypeCombo($row['ContactTypeID']);           
 				echo '</select>';
 				echo '</div></td>';
 				echo '<td style="width:60%" ><div class="form-group" Style="margin-left:5px;margin-right:5px;">';
 				echo '<label for="inputContactInfob'.$j.'c'.$k.'" >Value</label>';
-				echo '<input type="text" class="form-control" id="inputContactInfob'.$j.'c'.$k.'" name="inputContactInfob'.$j.'c'.$k.'" placeholder="Value" value="'.$row['Value'].'">';
+				echo '<input type="text" class="form-control" id="inputContactInfob'.$j.'c'.$k.'" name="inputContactInfob'.$j.'c'.$k.'" placeholder="Value" value="'.$row['Value'].'" required >';
 				echo '</div></td>';
 				echo '<td style="width:5%">';
 				echo '<div class="form-group" Style="margin-left:5px;margin-right:0px;margin-top:20px;">';
